@@ -5,11 +5,8 @@ const { body } = require("express-validator");
 
 router.post(
   "/login",
-  body("email").isEmail().withMessage("must be an email"),
-  body("mot_de_passe")
-    .isLength({ min: 5 })
-    .withMessage("must be at least 5 chars long"),
-
+  body("email").isEmail(),
+  body("mot_de_passe").isLength({ min: 5 }),
   authController.login
 );
 router.post("/logout", authorization.authenticate, authController.logout);

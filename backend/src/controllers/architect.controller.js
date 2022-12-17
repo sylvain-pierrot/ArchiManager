@@ -43,7 +43,7 @@ exports.listAllArchitects = async (req, res) => {
 
     // failed query
     if (rows.length < 1) {
-      return res.status(401).json({ message: "List all architects error" });
+      return res.status(401).json({ message: "Architects not found or error" });
     }
 
     // success
@@ -67,7 +67,7 @@ exports.findArchitectById = async (req, res) => {
 
     // failed query
     if (rows.length < 1) {
-      return res.status(401).send("Not architect found");
+      return res.status(401).send("Architect not found or error");
     }
 
     // success query

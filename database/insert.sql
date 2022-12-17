@@ -23,25 +23,6 @@ VALUES (
   1234567891
 );
 
--- Insert some clients
-INSERT INTO clients (nom, contact_nom, email, adresse, telephone, notes)
-VALUES (
-  'Alice Smith',
-  'Alice Smith',
-  'alice@example.com',
-  '789 Elm St',
-  123456,
-  'Likes modern design'
-),
-(
-  'Bob Jones',
-  'Bob Jones',
-  'bob@example.com',
-  '321 Maple St',
-  987654,
-  'Prefers traditional style'
-);
-
 -- Insert some architectes
 INSERT INTO architectes (numero_national, nom, prenom, email, mot_de_passe, telephone)
 VALUES (
@@ -59,6 +40,27 @@ VALUES (
   'jane@example.com',
   '<hashed_password>',
   987654
+);
+
+-- Insert some clients
+INSERT INTO clients (nom, nom_contact, email, adresse, telephone, notes, architecte_id)
+VALUES (
+  'Alice Smith',
+  'Alice Smith',
+  'alice@example.com',
+  '789 Elm St',
+  123456,
+  'Likes modern design',
+  1
+),
+(
+  'Bob Jones',
+  'Bob Jones',
+  'bob@example.com',
+  '321 Maple St',
+  987654,
+  'Prefers traditional style',
+  1
 );
 
 -- Insert some projets

@@ -29,17 +29,6 @@ CREATE TABLE prestataires (
   siret INTEGER NOT NULL
 );
 
--- Créer la table des clients
-CREATE TABLE clients (
-  id serial PRIMARY KEY,
-  nom VARCHAR(255) NOT NULL,
-  contact_nom VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  adresse VARCHAR(255) NOT NULL,
-  telephone INTEGER NOT NULL,
-  notes TEXT
-);
-
 -- Créer la table des architectes
 CREATE TABLE architectes (
   id serial PRIMARY KEY,
@@ -49,6 +38,18 @@ CREATE TABLE architectes (
   email VARCHAR(255) NOT NULL,
   mot_de_passe VARCHAR(255) NOT NULL,
   telephone INTEGER NOT NULL
+);
+
+-- Créer la table des clients
+CREATE TABLE clients (
+  id serial PRIMARY KEY,
+  nom VARCHAR(255) NOT NULL,
+  nom_contact VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  adresse VARCHAR(255) NOT NULL,
+  telephone INTEGER NOT NULL,
+  notes TEXT,
+  architecte_id INTEGER REFERENCES architectes(id)
 );
 
 -- Créer la table des projets

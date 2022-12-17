@@ -6,6 +6,7 @@ const app = express();
 
 // Routes
 const index = require("./routes/index");
+const clientRoute = require("./routes/client.routes");
 const architectRoute = require("./routes/architect.routes.js");
 const architectAuth = require("./routes/auth.routes");
 
@@ -21,6 +22,7 @@ app.use(cookieParser());
 
 // Routes
 app.use(index);
+app.use("/api/", clientRoute);
 app.use("/api/", architectRoute);
 app.use("/api/", architectAuth);
 
