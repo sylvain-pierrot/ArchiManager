@@ -26,6 +26,7 @@ ArchiManager is an application for architects that facilitates the management of
 | ---------------------- | --------------- |
 | express                |                 |
 | express-promise-router |                 |
+| express-validator      |                 |
 | cors                   |                 |
 | pg                     |                 |
 | dotenv                 |                 |

@@ -1,9 +1,9 @@
 version: "3.8"
 
 services:
-  db:
+  database:
     build:
-      context: .
+      context: database
     restart: always
     environment:
       - POSTGRES_USER_FILE=/run/secrets/db-user
@@ -30,20 +30,23 @@ services:
     networks:
       - private
     depends_on:
-      - db
+      - database
 
-  front-end:
+  frontend:
     build:
-      context: front-end
+      context: frontend
     restart: always
     ports:
       - 8080:8080
     networks:
       - public
+    depends_on:
+      - database
+      - backend
 
-  back-end:
+  backend:
     build:
-      context: back-end
+      context: backend
     restart: always
     ports:
       - 5000
@@ -51,8 +54,7 @@ services:
       - public
       - private
     depends_on:
-      - db
-      - gui
+      - database
 
 volumes:
   db-data:
@@ -63,6 +65,6 @@ networks:
 
 secrets:
   db-user:
-    file: db/user.txt
+    file: database/user.txt
   db-password:
-    file: db/password.txt
+    file: database/password.txt
