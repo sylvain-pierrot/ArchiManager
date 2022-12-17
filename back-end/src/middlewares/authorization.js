@@ -1,20 +1,26 @@
 const jwt = require("jsonwebtoken");
 const dotenv = require("dotenv").config();
 
-exports.authenticateToken = (req, res, next) => {
-  const authHeader = req.headers["authorization"]; // Bearer TOKEN
-  const token = authHeader && authHeader.split(" ")[1];
-  if (token === null) {
-    return res.status(401).json({ error: "Null token" });
+exports.authenticateJWT = (req, res, next) => {
+  // Get the JWT from the request header
+  const authHeader = req.headers.authorization;
+  if (authHeader) {
+    // Extract the JWT from the header
+    const token = authHeader.split(" ")[1];
+    // Verify the JWT using the secret key
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) {
+        // If the JWT is invalid, return a 401 unauthorized response
+        return res.sendStatus(401);
+      }
+      // If the JWT is valid, set the user object on the request object
+      // so that it can be used in the route handler
+      req.user = user;
+      // Call the next middleware function
+      next();
+    });
+  } else {
+    // If the authorization header is not present, return a 401 unauthorized response
+    res.sendStatus(401);
   }
-  jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (error, architect) => {
-    console.log(architect);
-    console.log(process.env.ACCESS_TOKEN_SECRET);
-    console.log(authHeader);
-    if (error) {
-      return res.status(403).json({ error: error.message });
-    }
-    req.architect = architect;
-    next();
-  });
 };
