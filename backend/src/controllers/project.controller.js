@@ -3,7 +3,7 @@ const Controller = require("./global.controller");
 
 class ProjectController extends Controller {
   constructor() {
-    super("clients");
+    super("projets");
   }
 
   getAll(req, res) {

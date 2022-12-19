@@ -12,17 +12,17 @@ router.post(
   body("email").isEmail(),
   body("mot_de_passe").isLength({ min: 5 }),
   body("telephone").isInt(),
-  architectController.createArchitect
+  architectController.create.bind(architectController)
 );
 router.get(
   "/architects",
   authorization.authenticate,
-  architectController.listAllArchitects
+  architectController.getAll.bind(architectController)
 );
 router.get(
   "/architects/:id",
   authorization.authenticate,
-  architectController.findArchitectById
+  architectController.getOne.bind(architectController)
 );
 router.put(
   "/architects/:id",
@@ -32,12 +32,12 @@ router.put(
   body("prenom").isLength({ min: 1 }),
   body("email").isEmail(),
   body("telephone").isInt(),
-  architectController.updateArchitectById
+  architectController.update.bind(architectController)
 );
 router.delete(
   "/architects/:id",
   authorization.authenticate,
-  architectController.deleteArchitectById
+  architectController.delete.bind(architectController)
 );
 
 module.exports = router;

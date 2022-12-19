@@ -11,17 +11,18 @@ router.post(
   body("email").isEmail(),
   body("adresse").isLength({ min: 1 }),
   body("telephone").isInt(),
-  clientController.createClient
+  body("notes").optional(),
+  clientController.create.bind(clientController)
 );
 router.get(
   "/clients",
   authorization.authenticate,
-  clientController.listAllClients
+  clientController.getAll.bind(clientController)
 );
 router.get(
   "/clients/:id",
   authorization.authenticate,
-  clientController.findClientById
+  clientController.getOne.bind(clientController)
 );
 router.put(
   "/clients/:id",
@@ -31,12 +32,13 @@ router.put(
   body("email").isEmail(),
   body("adresse").isLength({ min: 1 }),
   body("telephone").isInt(),
-  clientController.updateClientById
+  body("notes").optional(),
+  clientController.update.bind(clientController)
 );
 router.delete(
   "/clients/:id",
   authorization.authenticate,
-  clientController.deleteClientById
+  clientController.delete.bind(clientController)
 );
 
 module.exports = router;
