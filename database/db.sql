@@ -1,8 +1,8 @@
 -- Supprimer les tables si elles existent
 DROP TABLE IF EXISTS statuts CASCADE;
+DROP TABLE IF EXISTS architectes CASCADE;
 DROP TABLE IF EXISTS prestataires CASCADE;
 DROP TABLE IF EXISTS clients CASCADE;
-DROP TABLE IF EXISTS architectes CASCADE;
 DROP TABLE IF EXISTS projets CASCADE;
 DROP TABLE IF EXISTS parcelles CASCADE;
 DROP TABLE IF EXISTS phases CASCADE;
@@ -17,18 +17,6 @@ CREATE TABLE statuts (
   label VARCHAR(255) NOT NULL
 );
 
--- Créer la table des prestataires
-CREATE TABLE prestataires (
-  id serial PRIMARY KEY,
-  assurance BYTEA NOT NULL,
-  nom VARCHAR(255) NOT NULL,
-  nom_contact VARCHAR(255) NOT NULL,
-  adresse VARCHAR(255) NOT NULL,
-  telephone INTEGER NOT NULL,
-  email VARCHAR(255) NOT NULL,
-  siret INTEGER NOT NULL
-);
-
 -- Créer la table des architectes
 CREATE TABLE architectes (
   id serial PRIMARY KEY,
@@ -38,6 +26,19 @@ CREATE TABLE architectes (
   email VARCHAR(255) NOT NULL,
   mot_de_passe VARCHAR(255) NOT NULL,
   telephone INTEGER NOT NULL
+);
+
+-- Créer la table des prestataires
+CREATE TABLE prestataires (
+  id serial PRIMARY KEY,
+  assurance BYTEA NOT NULL,
+  nom VARCHAR(255) NOT NULL,
+  nom_contact VARCHAR(255) NOT NULL,
+  adresse VARCHAR(255) NOT NULL,
+  telephone INTEGER NOT NULL,
+  email VARCHAR(255) NOT NULL,
+  siret INTEGER NOT NULL,
+  architecte_id INTEGER REFERENCES architectes(id)
 );
 
 -- Créer la table des clients
@@ -115,8 +116,8 @@ CREATE TABLE tags_projets (
   projet_id INTEGER REFERENCES projets(id)
 );
 
--- Créer la table des documents
-CREATE TABLE documents (
+-- Créer la table des fichiers
+CREATE TABLE fichiers (
   id serial PRIMARY KEY,
   nom VARCHAR(255) NOT NULL,
   type VARCHAR(255) NOT NULL,

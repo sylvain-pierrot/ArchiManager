@@ -1,23 +1,24 @@
 const jwt = require("jsonwebtoken");
 const Controller = require("./global.controller");
 
-class ArchitectController extends Controller {
+class StatusController extends Controller {
   constructor() {
-    super("architectes");
+    super("statuts");
   }
 
   getAll(req, res) {
+    // query
     super.get(req, res, [], []);
   }
 
   getOne(req, res) {
     // datas
     const id = parseInt(req.params.id);
-    const data = { id: id };
+    const datas = { id: id };
 
     // keys && values
-    const keys = Object.keys(data);
-    const values = Object.values(data);
+    const keys = Object.keys(datas);
+    const values = Object.values(datas);
 
     // query
     super.get(req, res, keys, values);
@@ -65,4 +66,4 @@ class ArchitectController extends Controller {
   }
 }
 
-module.exports = new ArchitectController();
+module.exports = new StatusController();

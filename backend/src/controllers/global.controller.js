@@ -30,6 +30,30 @@ class Controller {
     }
   }
 
+  // async getWithJoin(req, res, keys, values, joinTable, joinColumn, foreignKey) {
+  //   try {
+  //     // query
+  //     let query = `SELECT * FROM ${this.tableName} JOIN ${joinTable} ON ${this.tableName}.${foreignKey}=${joinTable}.${joinColumn}`;
+  //     if (keys.length > 0) {
+  //       query += ` WHERE ${keys
+  //         .map((key, i) => `${key} = $${i + 1}`)
+  //         .join(" AND ")}`;
+  //     }
+  //     const { rows } = await db.query(query, values);
+
+  //     // failed query
+  //     if (rows.length < 1) {
+  //       return res.status(401).json({ message: `Not found or error` });
+  //     }
+  //     // success
+  //     res.status(200).send(rows);
+  //   } catch (error) {
+  //     // server error
+  //     console.error(error);
+  //     res.status(500).json({ message: "Server error" });
+  //   }
+  // }
+
   async create(req, res, keys, values) {
     try {
       // validation

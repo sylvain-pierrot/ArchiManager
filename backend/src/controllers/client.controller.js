@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const Controller = require("./global.controller");
 
-class ProjectController extends Controller {
+class ClientController extends Controller {
   constructor() {
     super("clients");
   }
@@ -95,4 +95,4 @@ class ProjectController extends Controller {
   }
 }
 
-module.exports = new ProjectController();
+module.exports = new ClientController();

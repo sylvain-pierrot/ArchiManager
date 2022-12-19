@@ -1,19 +1,18 @@
 const jwt = require("jsonwebtoken");
 const Controller = require("./global.controller");
 
-class ArchitectController extends Controller {
+class TagController extends Controller {
   constructor() {
-    super("architectes");
+    super("tags");
   }
 
   getAll(req, res) {
-    super.get(req, res, [], []);
-  }
-
-  getOne(req, res) {
-    // datas
-    const id = parseInt(req.params.id);
-    const data = { id: id };
+    // data
+    const architecte_id = jwt.verify(
+      req.cookies.token,
+      process.env.JWT_SECRET
+    ).id;
+    const data = { architecte_id: architecte_id };
 
     // keys && values
     const keys = Object.keys(data);
@@ -23,9 +22,31 @@ class ArchitectController extends Controller {
     super.get(req, res, keys, values);
   }
 
+  getOne(req, res) {
+    // datas
+    const id = parseInt(req.params.id);
+    const architecte_id = jwt.verify(
+      req.cookies.token,
+      process.env.JWT_SECRET
+    ).id;
+    const datas = { id: id, architecte_id: architecte_id };
+
+    // keys && values
+    const keys = Object.keys(datas);
+    const values = Object.values(datas);
+
+    // query
+    super.get(req, res, keys, values);
+  }
+
   create(req, res) {
     // datas
+    const architecte_id = jwt.verify(
+      req.cookies.token,
+      process.env.JWT_SECRET
+    ).id;
     const datas = req.body;
+    datas.architecte_id = architecte_id;
 
     // keys && values
     const keys = Object.keys(datas);
@@ -38,7 +59,11 @@ class ArchitectController extends Controller {
   delete(req, res) {
     // data
     const id = parseInt(req.params.id);
-    const datas = { id: id };
+    const architecte_id = jwt.verify(
+      req.cookies.token,
+      process.env.JWT_SECRET
+    ).id;
+    const datas = { id: id, architecte_id: architecte_id };
 
     // keys && values
     const keys = Object.keys(datas);
@@ -51,9 +76,14 @@ class ArchitectController extends Controller {
   update(req, res) {
     // datas
     const id = parseInt(req.params.id);
+    const architecte_id = jwt.verify(
+      req.cookies.token,
+      process.env.JWT_SECRET
+    ).id;
     const datas1 = req.body;
     const datas2 = {};
     datas2.id = id;
+    datas2.architecte_id = architecte_id;
 
     // keys && values
     const keys = Object.keys(datas1);
@@ -65,4 +95,4 @@ class ArchitectController extends Controller {
   }
 }
 
-module.exports = new ArchitectController();
+module.exports = new TagController();
