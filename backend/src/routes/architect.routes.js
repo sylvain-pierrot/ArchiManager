@@ -6,6 +6,7 @@ const { body } = require("express-validator");
 router.post(
   "/architects",
   authorization.authenticate,
+  body("id").not().exists(),
   body("numero_national").isInt(),
   body("nom").isLength({ min: 1 }),
   body("prenom").isLength({ min: 1 }),
@@ -27,6 +28,7 @@ router.get(
 router.put(
   "/architects/:id",
   authorization.authenticate,
+  body("id").not().exists(),
   body("numero_national").isInt(),
   body("nom").isLength({ min: 1 }),
   body("prenom").isLength({ min: 1 }),

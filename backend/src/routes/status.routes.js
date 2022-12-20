@@ -6,6 +6,7 @@ const { body } = require("express-validator");
 router.post(
   "/status",
   authorization.authenticate,
+  // body("id").not().exists(),
   body("label").isLength({ min: 1 }),
   statusController.create.bind(statusController)
 );
@@ -22,6 +23,7 @@ router.get(
 router.put(
   "/status/:id",
   authorization.authenticate,
+  // body("id").not().exists(),
   body("label").isLength({ min: 1 }),
   statusController.update.bind(statusController)
 );

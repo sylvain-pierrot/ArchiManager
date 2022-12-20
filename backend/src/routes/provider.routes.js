@@ -6,13 +6,15 @@ const { body } = require("express-validator");
 router.post(
   "/providers",
   authorization.authenticate,
-  body("assurance").isMimeType(["assurance/pdf"]),
+  body("id").not().exists(),
+  // body("assurance").isMimeType(["assurance/pdf"]),
   body("nom").isLength({ min: 1 }),
   body("nom_contact").isLength({ min: 1 }),
   body("adresse").isLength({ min: 1 }),
   body("telephone").isInt(),
   body("email").isEmail(),
   body("siret").isInt(),
+  body("architecte_id").not().exists(),
   providerController.create.bind(providerController)
 );
 router.get(
@@ -28,13 +30,15 @@ router.get(
 router.put(
   "/providers/:id",
   authorization.authenticate,
-  body("assurance").isMimeType(["assurance/pdf"]),
+  body("id").not().exists(),
+  // body("assurance").isMimeType(["assurance/pdf"]),
   body("nom").isLength({ min: 1 }),
   body("nom_contact").isLength({ min: 1 }),
   body("adresse").isLength({ min: 1 }),
   body("telephone").isInt(),
   body("email").isEmail(),
   body("siret").isInt(),
+  body("architecte_id").not().exists(),
   providerController.update.bind(providerController)
 );
 router.delete(

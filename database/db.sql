@@ -23,7 +23,7 @@ CREATE TABLE architectes (
   numero_national INTEGER NOT NULL,
   nom VARCHAR(255) NOT NULL,
   prenom VARCHAR(255) NOT NULL,
-  email VARCHAR(255) NOT NULL,
+  email VARCHAR(255) NOT NULL UNIQUE,
   mot_de_passe VARCHAR(255) NOT NULL,
   telephone INTEGER NOT NULL
 );
@@ -111,9 +111,9 @@ CREATE TABLE tags (
 
 -- Créer la table de relation entre tags et projets
 CREATE TABLE tags_projets (
-  id serial PRIMARY KEY,
   tag_id INTEGER REFERENCES tags(id),
-  projet_id INTEGER REFERENCES projets(id)
+  projet_id INTEGER REFERENCES projets(id),
+  PRIMARY KEY (tag_id, projet_id)
 );
 
 -- Créer la table des fichiers

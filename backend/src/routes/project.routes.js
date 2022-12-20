@@ -6,6 +6,7 @@ const { body } = require("express-validator");
 router.post(
   "/projects",
   authorization.authenticate,
+  body("id").not().exists(),
   body("titre").isLength({ min: 1 }),
   body("surface_fonciere").isInt(),
   body("surface_indicative").isInt(),
@@ -14,7 +15,9 @@ router.post(
   body("date_debut").isDate(),
   body("date_fin").isDate(),
   body("description").optional(),
+  body("statut_id").isInt(),
   body("client_id").isInt(),
+  body("architecte_id").not().exists(),
   projectController.create.bind(projectController)
 );
 router.get(
@@ -30,6 +33,7 @@ router.get(
 router.put(
   "/projects/:id",
   authorization.authenticate,
+  body("id").not().exists(),
   body("titre").isLength({ min: 1 }),
   body("surface_fonciere").isInt(),
   body("surface_indicative").isInt(),
@@ -39,6 +43,8 @@ router.put(
   body("date_fin").isDate(),
   body("description").optional(),
   body("statut_id").isInt(),
+  body("client_id").isInt(),
+  body("architecte_id").not().exists(),
   projectController.update.bind(projectController)
 );
 router.delete(

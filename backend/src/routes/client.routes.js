@@ -6,12 +6,14 @@ const { body } = require("express-validator");
 router.post(
   "/clients",
   authorization.authenticate,
+  body("id").not().exists(),
   body("nom").isLength({ min: 1 }),
   body("nom_contact").isLength({ min: 1 }),
   body("email").isEmail(),
   body("adresse").isLength({ min: 1 }),
   body("telephone").isInt(),
   body("notes").optional(),
+  body("architecte_id").not().exists(),
   clientController.create.bind(clientController)
 );
 router.get(
@@ -27,12 +29,14 @@ router.get(
 router.put(
   "/clients/:id",
   authorization.authenticate,
+  body("id").not().exists(),
   body("nom").isLength({ min: 1 }),
   body("nom_contact").isLength({ min: 1 }),
   body("email").isEmail(),
   body("adresse").isLength({ min: 1 }),
   body("telephone").isInt(),
   body("notes").optional(),
+  body("architecte_id").not().exists(),
   clientController.update.bind(clientController)
 );
 router.delete(
