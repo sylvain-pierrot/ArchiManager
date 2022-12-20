@@ -1,19 +1,19 @@
 const jwt = require("jsonwebtoken");
 const Controller = require("./global.controller");
 
-class TaskController extends Controller {
+class Tag_projectController extends Controller {
   constructor() {
-    super("taches");
+    super("tags_projets");
   }
 
   getAll(req, res) {
     // const query =
-    //   "SELECT * FROM phases ph INNER JOIN projets pr ON ph.projet_id=pr.id WHERE ph.id = $1 AND pr.architecte_id = $2";
+    //   "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2";
 
     // data
     const foreignKey = {
-      key: "phase_id",
-      value: parseInt(req.params.idS),
+      key: "projet_id",
+      value: parseInt(req.params.id),
     };
 
     // query
@@ -22,16 +22,16 @@ class TaskController extends Controller {
 
   getOne(req, res) {
     // const query =
-    //   "SELECT * FROM phases ph INNER JOIN projets pr ON ph.projet_id=pr.id WHERE ph.id = $1 AND pr.architecte_id = $2";
+    //   "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2";
 
     // datas
     const primaryKey = {
-      key: "id",
+      key: "tag_id",
       value: parseInt(req.params.idT),
     };
     const foreignKey = {
-      key: "phase_id",
-      value: parseInt(req.params.idS),
+      key: "projet_id",
+      value: parseInt(req.params.idP),
     };
 
     // query
@@ -40,12 +40,12 @@ class TaskController extends Controller {
 
   create(req, res) {
     // const query =
-    //   "SELECT * FROM phases ph INNER JOIN projets pr ON ph.projet_id=pr.id WHERE ph.id = $1 AND pr.architecte_id = $2";
+    //   "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2";
 
     // datas
     const foreignKey = {
-      key: "phase_id",
-      value: parseInt(req.params.idS),
+      key: "projet_id",
+      value: parseInt(req.params.idP),
     };
     const datas = req.body;
     const keys = Object.keys(datas);
@@ -57,16 +57,16 @@ class TaskController extends Controller {
 
   delete(req, res) {
     // const query =
-    //   "SELECT * FROM phases ph INNER JOIN projets pr ON ph.projet_id=pr.id WHERE ph.id = $1 AND pr.architecte_id = $2";
+    //   "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2";
 
     // datas
     const primaryKey = {
-      key: "id",
+      key: "tag_id",
       value: parseInt(req.params.idT),
     };
     const foreignKey = {
-      key: "phase_id",
-      value: parseInt(req.params.idS),
+      key: "projet_id",
+      value: parseInt(req.params.idP),
     };
 
     // query
@@ -75,16 +75,16 @@ class TaskController extends Controller {
 
   update(req, res) {
     // const query =
-    //   "SELECT * FROM phases ph INNER JOIN projets pr ON ph.projet_id=pr.id WHERE ph.id = $1 AND pr.architecte_id = $2";
+    //   "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2";
 
     // datas
     const primaryKey = {
-      key: "id",
+      key: "tag_id",
       value: parseInt(req.params.idT),
     };
     const foreignKey = {
-      key: "phase_id",
-      value: parseInt(req.params.idS),
+      key: "projet_id",
+      value: parseInt(req.params.idP),
     };
     const datas = req.body;
     const keys = Object.keys(datas);
@@ -95,4 +95,4 @@ class TaskController extends Controller {
   }
 }
 
-module.exports = new TaskController();
+module.exports = new Tag_projectController();
