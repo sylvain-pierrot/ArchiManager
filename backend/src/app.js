@@ -6,6 +6,7 @@ const app = express();
 
 // Routes
 const index = require("./routes/index");
+const tag_projectRoute = require("./routes/tag_project.routes");
 const fileRoute = require("./routes/file.routes");
 const statusRoute = require("./routes/status.routes");
 const providerRoute = require("./routes/provider.routes");
@@ -27,6 +28,7 @@ app.use(cookieParser());
 
 // Routes
 app.use(index);
+app.use("/api/", tag_projectRoute);
 app.use("/api/", fileRoute);
 app.use("/api/", statusRoute);
 app.use("/api/", providerRoute);

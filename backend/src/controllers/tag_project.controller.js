@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const db = require("../config/database");
 const Controller = require("./global.controller");
 
 class Tag_projectController extends Controller {
@@ -6,92 +7,192 @@ class Tag_projectController extends Controller {
     super("tags_projets");
   }
 
-  getAll(req, res) {
-    // const query =
-    //   "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2";
+  async getAll(req, res) {
+    try {
+      // data
+      const id = parseInt(req.params.id);
+      const architecte_id = jwt.verify(
+        req.cookies.token,
+        process.env.JWT_SECRET
+      ).id;
 
-    // data
-    const foreignKey = {
-      key: "projet_id",
-      value: parseInt(req.params.id),
-    };
+      // query
+      const { rows } = await db.query(
+        "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2",
+        [id, architecte_id]
+      );
+      // failed query
+      if (rows.length < 1) {
+        return res.status(403).json({ message: "Forbidden" });
+      }
 
-    // query
-    super.getAll(req, res, foreignKey);
+      // data
+      const foreignKey = {
+        key: "projet_id",
+        value: id,
+      };
+
+      // success
+      super.getAll(req, res, foreignKey);
+    } catch (error) {
+      // server error
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
   }
 
-  getOne(req, res) {
-    // const query =
-    //   "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2";
+  async getOne(req, res) {
+    try {
+      // data
+      const id = parseInt(req.params.idP);
+      const architecte_id = jwt.verify(
+        req.cookies.token,
+        process.env.JWT_SECRET
+      ).id;
 
-    // datas
-    const primaryKey = {
-      key: "tag_id",
-      value: parseInt(req.params.idT),
-    };
-    const foreignKey = {
-      key: "projet_id",
-      value: parseInt(req.params.idP),
-    };
+      // query
+      const { rows } = await db.query(
+        "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2",
+        [id, architecte_id]
+      );
+      // failed query
+      if (rows.length < 1) {
+        return res.status(403).json({ message: "Forbidden" });
+      }
 
-    // query
-    super.getOne(req, res, primaryKey, foreignKey);
+      // data
+      const primaryKey = {
+        key: "tag_id",
+        value: parseInt(req.params.idT),
+      };
+      const foreignKey = {
+        key: "projet_id",
+        value: id,
+      };
+
+      // success
+      super.getOne(req, res, primaryKey, foreignKey);
+    } catch (error) {
+      // server error
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
   }
 
-  create(req, res) {
-    // const query =
-    //   "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2";
+  async create(req, res) {
+    try {
+      // data
+      const id = parseInt(req.params.id);
+      const architecte_id = jwt.verify(
+        req.cookies.token,
+        process.env.JWT_SECRET
+      ).id;
 
-    // datas
-    const foreignKey = {
-      key: "projet_id",
-      value: parseInt(req.params.idP),
-    };
-    const datas = req.body;
-    const keys = Object.keys(datas);
-    const values = Object.values(datas);
+      // query
+      const { rows } = await db.query(
+        "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2",
+        [id, architecte_id]
+      );
+      // failed query
+      if (rows.length < 1) {
+        return res.status(403).json({ message: "Forbidden" });
+      }
 
-    // query
-    super.create(req, res, foreignKey, keys, values);
+      // data
+      const foreignKey = {
+        key: "projet_id",
+        value: id,
+      };
+      const datas = req.body;
+      const keys = Object.keys(datas);
+      const values = Object.values(datas);
+
+      // success
+      super.create(req, res, foreignKey, keys, values);
+    } catch (error) {
+      // server error
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
   }
 
-  delete(req, res) {
-    // const query =
-    //   "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2";
+  async delete(req, res) {
+    try {
+      // data
+      const id = parseInt(req.params.idP);
+      const architecte_id = jwt.verify(
+        req.cookies.token,
+        process.env.JWT_SECRET
+      ).id;
 
-    // datas
-    const primaryKey = {
-      key: "tag_id",
-      value: parseInt(req.params.idT),
-    };
-    const foreignKey = {
-      key: "projet_id",
-      value: parseInt(req.params.idP),
-    };
+      // query
+      const { rows } = await db.query(
+        "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2",
+        [id, architecte_id]
+      );
+      // failed query
+      if (rows.length < 1) {
+        return res.status(403).json({ message: "Forbidden" });
+      }
 
-    // query
-    super.delete(req, res, primaryKey, foreignKey);
+      // data
+      const primaryKey = {
+        key: "tag_id",
+        value: parseInt(req.params.idT),
+      };
+      const foreignKey = {
+        key: "projet_id",
+        value: id,
+      };
+
+      // success
+      super.delete(req, res, primaryKey, foreignKey);
+    } catch (error) {
+      // server error
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
   }
 
-  update(req, res) {
-    // const query =
-    //   "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2";
+  async update(req, res) {
+    try {
+      // data
+      const id = parseInt(req.params.idP);
+      const architecte_id = jwt.verify(
+        req.cookies.token,
+        process.env.JWT_SECRET
+      ).id;
 
-    // datas
-    const primaryKey = {
-      key: "tag_id",
-      value: parseInt(req.params.idT),
-    };
-    const foreignKey = {
-      key: "projet_id",
-      value: parseInt(req.params.idP),
-    };
-    const datas = req.body;
-    const keys = Object.keys(datas);
-    const values = Object.values(datas);
+      // query
+      const { rows } = await db.query(
+        "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2",
+        [id, architecte_id]
+      );
+      // failed query
+      if (rows.length < 1) {
+        return res.status(403).json({ message: "Forbidden" });
+      }
 
-    // query
-    super.update(req, res, primaryKey, foreignKey, keys, values);
+      // data
+      const primaryKey = {
+        key: "tag_id",
+        value: parseInt(req.params.idT),
+      };
+      const foreignKey = {
+        key: "projet_id",
+        value: id,
+      };
+      const datas = req.body;
+      const keys = Object.keys(datas);
+      const values = Object.values(datas);
+
+      // success
+      super.update(req, res, primaryKey, foreignKey, keys, values);
+    } catch (error) {
+      // server error
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
   }
 }
 
