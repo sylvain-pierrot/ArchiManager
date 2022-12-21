@@ -4,7 +4,7 @@ const authorization = require("../middlewares/authorization");
 const { body } = require("express-validator");
 
 router.post(
-  "/projects/:id/stages",
+  "/projects/:idP/stages",
   authorization.authenticate,
   body("id").not().exists(),
   body("code").isLength({ min: 1 }),
@@ -15,7 +15,7 @@ router.post(
   stageController.create.bind(stageController)
 );
 router.get(
-  "/projects/:id/stages",
+  "/projects/:idP/stages",
   authorization.authenticate,
   stageController.getAll.bind(stageController)
 );

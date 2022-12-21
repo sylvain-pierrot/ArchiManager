@@ -4,14 +4,14 @@ const authorization = require("../middlewares/authorization");
 const { body } = require("express-validator");
 
 router.post(
-  "/projects/:id/tags",
+  "/projects/:idP/tags",
   authorization.authenticate,
   body("tag_id").isInt(),
   body("projet_id").not().exists(),
   tag_projectController.create.bind(tag_projectController)
 );
 router.get(
-  "/projects/:id/tags",
+  "/projects/:idP/tags",
   authorization.authenticate,
   tag_projectController.getAll.bind(tag_projectController)
 );
