@@ -4,7 +4,7 @@ const authorization = require("../middlewares/authorization");
 const { body } = require("express-validator");
 
 router.post(
-  "projects/:idP/stages/:idT/tasks",
+  "/projects/:idP/stages/:idS/tasks",
   authorization.authenticate,
   body("id").not().exists(),
   body("titre").isLength({ min: 1 }),
@@ -12,23 +12,23 @@ router.post(
   body("description").isLength({ min: 1 }),
   body("date_echeance").isDate(),
   body("phase_id").not().exists(),
-  body("prestataire_id").isInt(),
+  body("prestataire_id").isInt().optional({ nullable: true }),
   body("realise_par_architecte").isBoolean(),
-  body("architecte_id").isInt(),
+  body("architecte_id").isInt().optional({ nullable: true }),
   taskController.create.bind(taskController)
 );
 router.get(
-  "projects/:idP/stages/:idS/tasks",
+  "/projects/:idP/stages/:idS/tasks",
   authorization.authenticate,
   taskController.getAll.bind(taskController)
 );
 router.get(
-  "projects/:idP/stages/:id/tasks/:idT",
+  "/projects/:idP/stages/:idS/tasks/:idT",
   authorization.authenticate,
   taskController.getOne.bind(taskController)
 );
 router.put(
-  "projects/:idP/stages/:idS/tasks/:idT",
+  "/projects/:idP/stages/:idS/tasks/:idT",
   authorization.authenticate,
   body("id").not().exists(),
   body("titre").isLength({ min: 1 }),
@@ -36,13 +36,13 @@ router.put(
   body("description").isLength({ min: 1 }),
   body("date_echeance").isDate(),
   body("phase_id").not().exists(),
-  body("prestataire_id").isInt(),
+  body("prestataire_id").isInt().optional({ nullable: true }),
   body("realise_par_architecte").isBoolean(),
-  body("architecte_id").isInt(),
+  body("architecte_id").isInt().optional({ nullable: true }),
   taskController.update.bind(taskController)
 );
 router.delete(
-  "projects/:idP/stages/:idS/tasks/:idT",
+  "/projects/:idP/stages/:idS/tasks/:idT",
   authorization.authenticate,
   taskController.delete.bind(taskController)
 );

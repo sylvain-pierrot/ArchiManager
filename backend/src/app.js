@@ -6,6 +6,7 @@ const app = express();
 
 // Routes
 const index = require("./routes/index");
+const taskRoute = require("./routes/task.routes");
 const parcelRoute = require("./routes/parcel.routes");
 const stageRoute = require("./routes/stage.routes");
 const tag_projectRoute = require("./routes/tag_project.routes");
@@ -30,6 +31,7 @@ app.use(cookieParser());
 
 // Routes
 app.use(index);
+app.use("/api/", taskRoute);
 app.use("/api/", parcelRoute);
 app.use("/api/", stageRoute);
 app.use("/api/", tag_projectRoute);
