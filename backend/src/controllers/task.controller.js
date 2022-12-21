@@ -47,12 +47,9 @@ class TaskController extends Controller {
       key: "phase_id",
       value: parseInt(req.params.idS),
     };
-    const datas = req.body;
-    const keys = Object.keys(datas);
-    const values = Object.values(datas);
 
     // query
-    super.create(req, res, foreignKey, keys, values);
+    super.create(req, res, foreignKey);
   }
 
   delete(req, res) {
@@ -86,12 +83,9 @@ class TaskController extends Controller {
       key: "phase_id",
       value: parseInt(req.params.idS),
     };
-    const datas = req.body;
-    const keys = Object.keys(datas);
-    const values = Object.values(datas);
 
     // query
-    super.update(req, res, primaryKey, foreignKey, keys, values);
+    super.update(req, res, primaryKey, foreignKey);
   }
 }
 

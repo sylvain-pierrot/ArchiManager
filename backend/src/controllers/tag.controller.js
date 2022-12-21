@@ -38,12 +38,9 @@ class TagController extends Controller {
       key: "architecte_id",
       value: jwt.verify(req.cookies.token, process.env.JWT_SECRET).id,
     };
-    const datas = req.body;
-    const keys = Object.keys(datas);
-    const values = Object.values(datas);
 
     // query
-    super.create(req, res, foreignKey, keys, values);
+    super.create(req, res, foreignKey);
   }
 
   delete(req, res) {
@@ -71,12 +68,9 @@ class TagController extends Controller {
       key: "architecte_id",
       value: jwt.verify(req.cookies.token, process.env.JWT_SECRET).id,
     };
-    const datas = req.body;
-    const keys = Object.keys(datas);
-    const values = Object.values(datas);
 
     // query
-    super.update(req, res, primaryKey, foreignKey, keys, values);
+    super.update(req, res, primaryKey, foreignKey);
   }
 }
 

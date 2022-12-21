@@ -2,9 +2,9 @@ const jwt = require("jsonwebtoken");
 const db = require("../config/database");
 const Controller = require("./global.controller");
 
-class Tag_projectController extends Controller {
+class ParcelController extends Controller {
   constructor() {
-    super("tags_projets");
+    super("parcelles");
   }
 
   async getAll(req, res) {
@@ -44,7 +44,7 @@ class Tag_projectController extends Controller {
   async getOne(req, res) {
     try {
       // data
-      const id = parseInt(req.params.idP);
+      const id = parseInt(req.params.id);
       const architecte_id = jwt.verify(
         req.cookies.token,
         process.env.JWT_SECRET
@@ -62,12 +62,12 @@ class Tag_projectController extends Controller {
 
       // data
       const primaryKey = {
-        key: "tag_id",
-        value: parseInt(req.params.idT),
+        key: "section",
+        value: parseInt(req.params.section),
       };
       const foreignKey = {
-        key: "projet_id",
-        value: id,
+        key: "numero",
+        value: parseInt(req.params.number),
       };
 
       // success
@@ -116,7 +116,7 @@ class Tag_projectController extends Controller {
   async delete(req, res) {
     try {
       // data
-      const id = parseInt(req.params.idP);
+      const id = parseInt(req.params.id);
       const architecte_id = jwt.verify(
         req.cookies.token,
         process.env.JWT_SECRET
@@ -134,8 +134,8 @@ class Tag_projectController extends Controller {
 
       // data
       const primaryKey = {
-        key: "tag_id",
-        value: parseInt(req.params.idT),
+        key: "id",
+        value: parseInt(req.params.idPa),
       };
       const foreignKey = {
         key: "projet_id",
@@ -154,7 +154,7 @@ class Tag_projectController extends Controller {
   async update(req, res) {
     try {
       // data
-      const id = parseInt(req.params.idP);
+      const id = parseInt(req.params.id);
       const architecte_id = jwt.verify(
         req.cookies.token,
         process.env.JWT_SECRET
@@ -172,8 +172,8 @@ class Tag_projectController extends Controller {
 
       // data
       const primaryKey = {
-        key: "tag_id",
-        value: parseInt(req.params.idT),
+        key: "id",
+        value: parseInt(req.params.idPa),
       };
       const foreignKey = {
         key: "projet_id",
@@ -190,4 +190,4 @@ class Tag_projectController extends Controller {
   }
 }
 
-module.exports = new Tag_projectController();
+module.exports = new ParcelController();

@@ -54,7 +54,7 @@ class Controller {
     }
   }
 
-  async create(req, res, foreignKey, keys, values) {
+  async create(req, res, foreignKey) {
     try {
       // validation
       const errors = validationResult(req);
@@ -63,6 +63,10 @@ class Controller {
       }
 
       // datas
+      const datas = req.body;
+      const keys = Object.keys(datas);
+      const values = Object.values(datas);
+
       if (foreignKey != null) {
         keys.push(foreignKey.key);
         values.push(foreignKey.value);
@@ -113,7 +117,7 @@ class Controller {
     }
   }
 
-  async update(req, res, primaryKey, foreignKey, keys, values) {
+  async update(req, res, primaryKey, foreignKey) {
     try {
       // validation
       const errors = validationResult(req);
@@ -122,6 +126,10 @@ class Controller {
       }
 
       // datas
+      const datas = req.body;
+      const keys = Object.keys(datas);
+      const values = Object.values(datas);
+
       let query = `UPDATE ${this.tableName} SET ${keys
         .map((key, i) => `${key} = $${i + 1}`)
         .join(", ")}  WHERE ${primaryKey.key} = $${keys.length + 1}`;

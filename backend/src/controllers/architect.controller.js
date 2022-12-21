@@ -7,7 +7,11 @@ class ArchitectController extends Controller {
   }
 
   getAll(req, res) {
-    super.getAll(req, res, null);
+    // datas
+    const foreignKey = null;
+
+    // query
+    super.getAll(req, res, foreignKey);
   }
 
   getOne(req, res) {
@@ -25,12 +29,9 @@ class ArchitectController extends Controller {
   create(req, res) {
     // datas
     const foreignKey = null;
-    const datas = req.body;
-    const keys = Object.keys(datas);
-    const values = Object.values(datas);
 
     // query
-    super.create(req, res, foreignKey, keys, values);
+    super.create(req, res, foreignKey);
   }
 
   delete(req, res) {
@@ -52,12 +53,9 @@ class ArchitectController extends Controller {
       value: parseInt(req.params.id),
     };
     const foreignKey = null;
-    const datas = req.body;
-    const keys = Object.keys(datas);
-    const values = Object.values(datas);
 
     // query
-    super.update(req, res, primaryKey, foreignKey, keys, values);
+    super.update(req, res, primaryKey, foreignKey);
   }
 }
 

@@ -103,12 +103,9 @@ class StageController extends Controller {
         key: "projet_id",
         value: id,
       };
-      const datas = req.body;
-      const keys = Object.keys(datas);
-      const values = Object.values(datas);
 
       // success
-      super.create(req, res, foreignKey, keys, values);
+      super.create(req, res, foreignKey);
     } catch (error) {
       // server error
       console.error(error);
@@ -182,12 +179,9 @@ class StageController extends Controller {
         key: "projet_id",
         value: id,
       };
-      const datas = req.body;
-      const keys = Object.keys(datas);
-      const values = Object.values(datas);
 
       // success
-      super.update(req, res, primaryKey, foreignKey, keys, values);
+      super.update(req, res, primaryKey, foreignKey);
     } catch (error) {
       // server error
       console.error(error);
