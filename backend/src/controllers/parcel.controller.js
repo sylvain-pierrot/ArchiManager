@@ -8,7 +8,7 @@ class ParcelController extends Controller {
     super("parcelles");
   }
 
-  async getAll(req, res) {
+  async queryValidator(req, res) {
     try {
       // data
       const id = parseInt(req.params.id);
@@ -26,15 +26,6 @@ class ParcelController extends Controller {
       if (rows.length < 1) {
         return res.status(403).json({ message: "Forbidden" });
       }
-
-      // data
-      const foreignKey = {
-        key: "projet_id",
-        value: id,
-      };
-
-      // success
-      super.getAll(req, res, foreignKey);
     } catch (error) {
       // server error
       console.error(error);
@@ -42,29 +33,34 @@ class ParcelController extends Controller {
     }
   }
 
+  async getAll(req, res) {
+    // queryValidator
+    const result = await this.queryValidator(req, res);
+    if (result) {
+      return;
+    }
+
+    // data
+    const foreignKey = {
+      key: "projet_id",
+      value: parseInt(req.params.id),
+    };
+
+    // success
+    super.getAll(req, res, foreignKey);
+  }
+
   async getOne(req, res) {
+    // queryValidator
+    const result = await this.queryValidator(req, res);
+    if (result) {
+      return;
+    }
     try {
-      // data
-      const id = parseInt(req.params.id);
-      const architecte_id = jwt.verify(
-        req.cookies.token,
-        process.env.JWT_SECRET
-      ).id;
-
-      // query
-      const validationQuery = await db.query(
-        "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2",
-        [id, architecte_id]
-      );
-      // failed query
-      if (validationQuery.rows.length < 1) {
-        return res.status(403).json({ message: "Forbidden" });
-      }
-
       // data
       const section = req.params.section;
       const number = parseInt(req.params.number);
-      const projet_id = id;
+      const projet_id = parseInt(req.params.id);
 
       // success
       const { rows } = await db.query(
@@ -86,68 +82,40 @@ class ParcelController extends Controller {
   }
 
   async create(req, res) {
-    try {
-      // validation
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-
-      // data
-      const id = parseInt(req.params.id);
-      const architecte_id = jwt.verify(
-        req.cookies.token,
-        process.env.JWT_SECRET
-      ).id;
-
-      // query
-      const { rows } = await db.query(
-        "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2",
-        [id, architecte_id]
-      );
-      // failed query
-      if (rows.length < 1) {
-        return res.status(403).json({ message: "Forbidden" });
-      }
-
-      // data
-      const foreignKey = {
-        key: "projet_id",
-        value: id,
-      };
-
-      // success
-      super.create(req, res, foreignKey);
-    } catch (error) {
-      // server error
-      console.error(error);
-      res.status(500).json({ message: "Server error" });
+    // validation
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
     }
+
+    // queryValidator
+    const result = await this.queryValidator(req, res);
+    if (result) {
+      return;
+    }
+
+    // data
+    const foreignKey = {
+      key: "projet_id",
+      value: parseInt(req.params.id),
+    };
+
+    // success
+    super.create(req, res, foreignKey);
   }
 
   async delete(req, res) {
+    // queryValidator
+    const result = await this.queryValidator(req, res);
+    if (result) {
+      return;
+    }
+
     try {
-      // data
-      const id = parseInt(req.params.id);
-      const architecte_id = jwt.verify(
-        req.cookies.token,
-        process.env.JWT_SECRET
-      ).id;
-
-      // query
-      const validationQuery = await db.query(
-        "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2",
-        [id, architecte_id]
-      );
-      // failed query
-      if (validationQuery.rows.length < 1) {
-        return res.status(403).json({ message: "Forbidden" });
-      }
-
       // data
       const section = req.params.section;
       const number = parseInt(req.params.number);
-      const projet_id = id;
+      const projet_id = parseInt(req.params.id);
 
       // success
       const { rows } = await db.query(
@@ -160,7 +128,7 @@ class ParcelController extends Controller {
         return res.status(401).json({ message: `Not found or error` });
       }
       // success
-      res.status(200).send(rows);
+      res.status(200).json({ message: `Deleted successfully` });
     } catch (error) {
       // server error
       console.error(error);
@@ -169,35 +137,24 @@ class ParcelController extends Controller {
   }
 
   async update(req, res) {
+    // validation
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
+    // queryValidator
+    const result = await this.queryValidator(req, res);
+    if (result) {
+      return;
+    }
+
     try {
-      // validation
-      const errors = validationResult(req);
-      if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
-      }
-
-      // data
-      const id = parseInt(req.params.id);
-      const architecte_id = jwt.verify(
-        req.cookies.token,
-        process.env.JWT_SECRET
-      ).id;
-
-      // query
-      const validationQuery = await db.query(
-        "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2",
-        [id, architecte_id]
-      );
-      // failed query
-      if (validationQuery.rows.length < 1) {
-        return res.status(403).json({ message: "Forbidden" });
-      }
-
       // data
       const surface = parseInt(req.body.surface);
       const section = req.params.section;
       const number = parseInt(req.params.number);
-      const projet_id = id;
+      const projet_id = parseInt(req.params.id);
 
       // success
       const { rows } = await db.query(
