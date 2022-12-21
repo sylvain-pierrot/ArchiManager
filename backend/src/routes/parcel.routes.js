@@ -25,8 +25,8 @@ router.get(
 router.put(
   "/projects/:id/parcels/:section/:number",
   authorization.authenticate,
-  body("section").isLength({ min: 1 }),
-  body("numero").isInt(),
+  body("section").not().exists(),
+  body("numero").not().exists(),
   body("surface").isInt(),
   body("projet_id").not().exists(),
   parcelController.update.bind(parcelController)

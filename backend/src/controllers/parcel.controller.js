@@ -1,5 +1,6 @@
 const jwt = require("jsonwebtoken");
 const db = require("../config/database");
+const { validationResult } = require("express-validator");
 const Controller = require("./global.controller");
 
 class ParcelController extends Controller {
@@ -51,27 +52,32 @@ class ParcelController extends Controller {
       ).id;
 
       // query
-      const { rows } = await db.query(
+      const validationQuery = await db.query(
         "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2",
         [id, architecte_id]
       );
       // failed query
-      if (rows.length < 1) {
+      if (validationQuery.rows.length < 1) {
         return res.status(403).json({ message: "Forbidden" });
       }
 
       // data
-      const primaryKey = {
-        key: "section",
-        value: parseInt(req.params.section),
-      };
-      const foreignKey = {
-        key: "numero",
-        value: parseInt(req.params.number),
-      };
+      const section = req.params.section;
+      const number = parseInt(req.params.number);
+      const projet_id = id;
 
       // success
-      super.getOne(req, res, primaryKey, foreignKey);
+      const { rows } = await db.query(
+        "SELECT * FROM parcelles WHERE section = $1 AND numero = $2 AND projet_id = $3",
+        [section, number, projet_id]
+      );
+
+      // failed query
+      if (rows.length < 1) {
+        return res.status(401).json({ message: `Not found or error` });
+      }
+      // success
+      res.status(200).send(rows);
     } catch (error) {
       // server error
       console.error(error);
@@ -81,6 +87,12 @@ class ParcelController extends Controller {
 
   async create(req, res) {
     try {
+      // validation
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
       // data
       const id = parseInt(req.params.id);
       const architecte_id = jwt.verify(
@@ -123,27 +135,32 @@ class ParcelController extends Controller {
       ).id;
 
       // query
-      const { rows } = await db.query(
+      const validationQuery = await db.query(
         "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2",
         [id, architecte_id]
       );
       // failed query
-      if (rows.length < 1) {
+      if (validationQuery.rows.length < 1) {
         return res.status(403).json({ message: "Forbidden" });
       }
 
       // data
-      const primaryKey = {
-        key: "id",
-        value: parseInt(req.params.idPa),
-      };
-      const foreignKey = {
-        key: "projet_id",
-        value: id,
-      };
+      const section = req.params.section;
+      const number = parseInt(req.params.number);
+      const projet_id = id;
 
       // success
-      super.delete(req, res, primaryKey, foreignKey);
+      const { rows } = await db.query(
+        "DELETE FROM parcelles WHERE section = $1 AND numero = $2 AND projet_id = $3 RETURNING *",
+        [section, number, projet_id]
+      );
+
+      // failed query
+      if (rows.length < 1) {
+        return res.status(401).json({ message: `Not found or error` });
+      }
+      // success
+      res.status(200).send(rows);
     } catch (error) {
       // server error
       console.error(error);
@@ -153,6 +170,12 @@ class ParcelController extends Controller {
 
   async update(req, res) {
     try {
+      // validation
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+      }
+
       // data
       const id = parseInt(req.params.id);
       const architecte_id = jwt.verify(
@@ -161,27 +184,33 @@ class ParcelController extends Controller {
       ).id;
 
       // query
-      const { rows } = await db.query(
+      const validationQuery = await db.query(
         "SELECT * FROM projets WHERE id = $1 AND architecte_id = $2",
         [id, architecte_id]
       );
       // failed query
-      if (rows.length < 1) {
+      if (validationQuery.rows.length < 1) {
         return res.status(403).json({ message: "Forbidden" });
       }
 
       // data
-      const primaryKey = {
-        key: "id",
-        value: parseInt(req.params.idPa),
-      };
-      const foreignKey = {
-        key: "projet_id",
-        value: id,
-      };
+      const surface = parseInt(req.body.surface);
+      const section = req.params.section;
+      const number = parseInt(req.params.number);
+      const projet_id = id;
 
       // success
-      super.update(req, res, primaryKey, foreignKey);
+      const { rows } = await db.query(
+        "UPDATE parcelles SET surface = $1 WHERE section = $2 AND numero = $3 AND projet_id = $4 RETURNING *",
+        [surface, section, number, projet_id]
+      );
+
+      // failed query
+      if (rows.length < 1) {
+        return res.status(401).json({ message: `Not found or error` });
+      }
+      // success
+      res.status(200).send(rows);
     } catch (error) {
       // server error
       console.error(error);
