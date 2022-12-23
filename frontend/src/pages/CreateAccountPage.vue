@@ -10,20 +10,10 @@
     <div class="text-h6 text-white q-mb-xl">
       Connectez-vous et commencez à gérer vos projets
     </div>
-    <FormLogin></FormLogin>
-    <div class="text-subtitle2 text-white">Vous n'avez pas de compte ?</div>
-    <q-btn
-      flat
-      style="color: #ff0080"
-      label="Créez un compte"
-      :to="{ name: 'CreateAccount' }"
-    />
   </q-page>
 </template>
 
-<script setup>
-import FormLogin from "src/components/forms/FormLogin.vue";
-</script>
+<script setup></script>
 
 <style>
 .login-page {

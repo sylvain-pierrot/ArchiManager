@@ -3,43 +3,39 @@ const routes = [
     path: "/",
     component: () => import("layouts/MainLayout.vue"),
     children: [
-      { path: "", component: () => import("src/pages/DashboardPage.vue") },
-    ],
-  },
-  {
-    path: "/login",
-    name: "Login",
-    component: () => import("src/layouts/LoginLayout.vue"),
-  },
-  {
-    path: "/profile",
-    component: () => import("layouts/MainLayout.vue"),
-    children: [
-      { path: "", component: () => import("src/pages/DashboardPage.vue") },
-    ],
-  },
-  {
-    path: "/projects",
-    component: () => import("layouts/MainLayout.vue"),
-    children: [
       {
-        path: "",
+        path: "dashboard",
+        name: "Dashboard",
+        component: () => import("src/pages/DashboardPage.vue"),
+      },
+      {
+        path: "projects",
         component: () => import("pages/ProjectsPage.vue"),
       },
       {
-        path: ":id",
+        path: "projects/:id",
         component: () => import("pages/ProjectDetailPage.vue"),
         props: true,
+      },
+      {
+        path: "contacts",
+        component: () => import("src/pages/ContactsPage.vue"),
       },
     ],
   },
   {
-    path: "/contacts",
-    component: () => import("layouts/MainLayout.vue"),
+    path: "/",
+    component: () => import("layouts/AccountLayout.vue"),
     children: [
       {
-        path: "",
-        component: () => import("src/pages/ContactsPage.vue"),
+        path: "login",
+        name: "Login",
+        component: () => import("src/pages/LoginPage.vue"),
+      },
+      {
+        path: "createaccount",
+        name: "CreateAccount",
+        component: () => import("src/pages/CreateAccountPage.vue"),
       },
     ],
   },

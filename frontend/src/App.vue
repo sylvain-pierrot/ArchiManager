@@ -3,9 +3,11 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent } from "vue";
+import { onBeforeMount } from "vue";
 
+onBeforeMount(() => {});
 export default defineComponent({
-  name: 'App'
-})
+  name: "App",
+});
 </script>

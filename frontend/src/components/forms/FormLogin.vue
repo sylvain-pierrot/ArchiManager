@@ -10,8 +10,7 @@
       label="Email"
       placeholder="Nom du tag"
       flat
-      class="col-12 text-white"
-      :rules="[(val) => isValidEmail(val) || 'Email invalide']"
+      class="col-8 q-mb-xs text-white"
     />
 
     <q-input
@@ -24,8 +23,7 @@
       label="Mot de passe"
       placeholder="Nom du tag"
       flat
-      class="col-12 text-white"
-      :rules="[(val) => val.length >= 5 || 'Mot de passe trop court']"
+      class="col-8 q-mb-lg text-white"
     />
 
     <q-btn
@@ -34,7 +32,7 @@
       label="Se connecter"
       type="submit"
       color="warning"
-      class="col-12"
+      class="col-8"
     />
   </q-form>
 </template>
@@ -42,16 +40,17 @@
 import { ref } from "vue";
 import { useQuasar } from "quasar";
 import { api } from "../../boot/axios";
-import { Cookies } from "quasar";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const email = ref("");
 const password = ref("");
 
-function isValidEmail(val) {
-  const emailPattern =
-    /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
-  return emailPattern.test(val) || "Invalid email";
-}
+// function isValidEmail(val) {
+//   const emailPattern =
+//     /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
+//   return emailPattern.test(val) || "Invalid email";
+// }
 
 const $q = useQuasar();
 const data = ref(null);
@@ -65,15 +64,13 @@ function login() {
     .then((response) => {
       data.value = response.data;
       console.log(response.data);
+      router.push({ name: "Dashboard" });
+      $q.notify({
+        type: "positive",
+        position: "top-right",
+        message: "Connexion réussie",
+      });
     });
-  // .catch(() => {
-  //   $q.notify({
-  //     color: "negative",
-  //     position: "top",
-  //     message: "Loading failed",
-  //     icon: "report_problem",
-  //   });
-  // });
 }
 </script>
 

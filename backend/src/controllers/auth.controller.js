@@ -68,9 +68,14 @@ exports.refresh = (req, res) => {
 exports.isAuthenticated = (req, res) => {
   try {
     const token = req.cookies.token;
+    if (!token) {
+      return res
+        .status(400)
+        .json({ message: "Token is invalid", authenticated: false });
+    }
     jwt.verify(token, process.env.JWT_SECRET);
     return res.json({ message: "Token is valid", authenticated: true });
-  } catch (err) {
+  } catch (error) {
     return res
       .status(400)
       .json({ message: "Token is invalid", authenticated: false });

@@ -37,6 +37,7 @@
             label="Déconnexion"
             icon-right="logout"
             no-caps
+            @click="logout"
             class="q-ml-sm"
           />
         </q-list>
@@ -74,14 +75,17 @@
 
 <script setup>
 import NavigationLink from "../components/NavigationLink.vue";
+import { api } from "../boot/axios";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 
+const router = useRouter();
 const tab = ref("");
 const navs = ref([
   {
     title: "Tableau de bord",
     icon: "space_dashboard",
-    path: "/",
+    path: "/dashboard",
   },
   {
     title: "Projets",
@@ -93,21 +97,17 @@ const navs = ref([
     icon: "contacts",
     path: "/contacts",
   },
-  // {
-  //   title: "Dossiers et documents",
-  //   icon: "folder_copy",
-  //   path: "/folders",
-  // },
-  // {
-  //   title: "Mes revenus",
-  //   icon: "paid",
-  //   path: "/profile",
-  // },
 ]);
 const leftDrawerOpen = ref(false);
-
 const image = ref(require("../assets/logo-LP.png"));
 const nom = ref("Loïc Pierrot");
+
+function logout() {
+  api.post("/api/logout", {}).then((response) => {
+    console.log(response.data);
+    router.push({ name: "Login" });
+  });
+}
 </script>
 
 <style>
