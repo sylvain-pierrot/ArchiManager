@@ -7,6 +7,11 @@ const routes = [
     ],
   },
   {
+    path: "/login",
+    name: "Login",
+    component: () => import("src/layouts/LoginLayout.vue"),
+  },
+  {
     path: "/profile",
     component: () => import("layouts/MainLayout.vue"),
     children: [

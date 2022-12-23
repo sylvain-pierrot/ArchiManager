@@ -3,6 +3,8 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const { validationResult } = require("express-validator");
 
+// exports.isAuthenticated = async (req, res) => {};
+
 exports.login = async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -37,8 +39,10 @@ exports.login = async (req, res) => {
     });
 
     // Set the JWT as a cookie and send it to the client
-    res.cookie("token", token, { httpOnly: true });
-    res.json({ message: "Successfully logged in" });
+    res.cookie("token", token, {
+      httpOnly: true,
+    });
+    res.send({ message: "Successfully logged in" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });
@@ -59,4 +63,16 @@ exports.refresh = (req, res) => {
   });
   res.cookie("token", newToken, { httpOnly: true });
   res.json({ message: "Token refreshed" });
+};
+
+exports.isAuthenticated = (req, res) => {
+  try {
+    const token = req.cookies.token;
+    jwt.verify(token, process.env.JWT_SECRET);
+    return res.json({ message: "Token is valid", authenticated: true });
+  } catch (err) {
+    return res
+      .status(400)
+      .json({ message: "Token is invalid", authenticated: false });
+  }
 };

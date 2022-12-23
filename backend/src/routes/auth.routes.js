@@ -11,5 +11,6 @@ router.post(
 );
 router.post("/logout", authorization.authenticate, authController.logout);
 router.post("/refresh", authorization.authenticate, authController.refresh);
+router.post("/isAuthenticated", authController.isAuthenticated);
 
 module.exports = router;

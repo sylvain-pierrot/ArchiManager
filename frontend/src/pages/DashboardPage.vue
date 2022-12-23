@@ -114,9 +114,30 @@
 
 <script setup>
 import { useQuasar } from "quasar";
+import { api } from "../boot/axios";
 import { ref } from "vue";
 
 const $q = useQuasar();
+const data = ref(null);
+
+function loadData() {
+  api.get("/api").then((response) => {
+    data.value = response.data;
+    console.log(response.data);
+  });
+  // .catch(() => {
+  //   $q.notify({
+  //     color: "negative",
+  //     position: "top",
+  //     message: "Loading failed",
+  //     icon: "report_problem",
+  //   });
+  // });
+}
+loadData();
+
+// const value = await axios.get("http://backend:5000/api");
+// console.log(value);
 
 const project = ref("month");
 const navs = ref([
