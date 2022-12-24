@@ -1,29 +1,22 @@
 <template>
   <q-form @submit="login" @reset="onReset" class="row justify-center">
     <q-input
-      outlined
-      type="text"
-      color="warning"
-      label-color="grey-13"
+      standout="bg-warning text-white"
       bg-color="grey-14"
+      label-color="grey-13"
+      type="text"
       v-model="email"
       label="Email"
-      placeholder="Nom du tag"
-      flat
-      class="col-8 q-mb-xs text-white"
+      class="col-8 q-mb-sm"
     />
-
     <q-input
-      outlined
-      type="text"
-      color="warning"
-      label-color="grey-13"
+      standout="bg-warning text-white"
       bg-color="grey-14"
+      label-color="grey-13"
+      type="text"
       v-model="password"
       label="Mot de passe"
-      placeholder="Nom du tag"
-      flat
-      class="col-8 q-mb-lg text-white"
+      class="col-8 q-mb-lg"
     />
 
     <q-btn
@@ -45,13 +38,6 @@ import { useRouter } from "vue-router";
 const router = useRouter();
 const email = ref("");
 const password = ref("");
-
-// function isValidEmail(val) {
-//   const emailPattern =
-//     /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
-//   return emailPattern.test(val) || "Invalid email";
-// }
-
 const $q = useQuasar();
 const data = ref(null);
 
@@ -74,11 +60,4 @@ function login() {
 }
 </script>
 
-<style>
-.bg-input {
-  background-color: #4d4d4d;
-}
-.text-input {
-  color: #dddddd;
-}
-</style>
+<style></style>

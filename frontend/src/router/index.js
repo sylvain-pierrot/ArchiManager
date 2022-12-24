@@ -6,9 +6,6 @@ import {
   createWebHashHistory,
 } from "vue-router";
 import routes from "./routes";
-import { api } from "../boot/axios";
-import { ref } from "vue";
-
 import { useUserStore } from "../stores/user";
 
 /*
@@ -43,13 +40,13 @@ export default route(function (/* { store, ssrContext } */) {
     const userStore = useUserStore();
     const valid = await userStore.checkAuthentication();
     if (!valid) {
-      if (to.name === "CreateAccount" || to.name === "Login") {
+      if (to.name === "SignUp" || to.name === "SignIn") {
         next();
       } else {
-        next({ name: "Login" });
+        next({ name: "SignIn" });
       }
     } else {
-      if (to.name === "Login" || to.name === "CreateAccount") {
+      if (to.name === "SignUp" || to.name === "SignIn") {
         next({ name: "Dashboard" });
       } else {
         next();

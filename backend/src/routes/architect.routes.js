@@ -5,7 +5,6 @@ const { body } = require("express-validator");
 
 router.post(
   "/architects",
-  authorization.authenticate,
   body("id").not().exists(),
   body("numero_national").isInt(),
   body("nom").isLength({ min: 1 }),

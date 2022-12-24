@@ -16,5 +16,21 @@ export const useUserStore = defineStore("user", () => {
     }
   }
 
-  return { authenticated, checkAuthentication };
+  const createUser = async (email, password, number, name, firstname, tel) => {
+    console.log(email);
+    try {
+      const response = await api.post("/api/architects", {
+        email: email,
+        mot_de_passe: password,
+        numero_national: number,
+        nom: name,
+        prenom: firstname,
+        telephone: tel,
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  return { authenticated, checkAuthentication, createUser };
 });

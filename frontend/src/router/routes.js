@@ -25,17 +25,17 @@ const routes = [
   },
   {
     path: "/",
-    component: () => import("layouts/AccountLayout.vue"),
+    component: () => import("src/layouts/ProcessUserAccountLayout.vue"),
     children: [
       {
-        path: "login",
-        name: "Login",
-        component: () => import("src/pages/LoginPage.vue"),
+        path: "signin",
+        name: "SignIn",
+        component: () => import("src/pages/SignInPage.vue"),
       },
       {
-        path: "createaccount",
-        name: "CreateAccount",
-        component: () => import("src/pages/CreateAccountPage.vue"),
+        path: "signup",
+        name: "SignUp",
+        component: () => import("src/pages/SignUpPage.vue"),
       },
     ],
   },
