@@ -4,7 +4,7 @@
     <div class="text-h6 text-white q-mb-xl">
       Connectez-vous et commencez à gérer vos projets
     </div>
-    <FormSignIn />
+    <FormSignIn @login="login" />
     <div class="text-subtitle2 text-white">Vous n'avez pas de compte ?</div>
     <q-btn
       flat
@@ -17,6 +17,16 @@
 
 <script setup>
 import FormSignIn from "src/components/forms/FormSignIn.vue";
+import { useUserStore } from "../stores/user";
+import { useRouter } from "vue-router";
+
+const userStore = useUserStore();
+const router = useRouter();
+
+const login = async (email, password) => {
+  await userStore.login(email, password);
+  router.push({ name: "Dashboard" });
+};
 </script>
 
 <style></style>

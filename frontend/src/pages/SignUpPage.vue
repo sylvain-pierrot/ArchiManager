@@ -18,11 +18,4 @@ onBeforeMount(async () => {
 });
 </script>
 
-<style>
-.login-page {
-  background-image: url(../assets/bg-rectangular.svg) !important;
-  background-position: bottom !important;
-  background-repeat: no-repeat !important;
-  background-size: cover !important;
-}
-</style>
+<style></style>

@@ -75,11 +75,12 @@
 
 <script setup>
 import NavigationLink from "../components/NavigationLink.vue";
-import { api } from "../boot/axios";
 import { ref } from "vue";
+import { useUserStore } from "../stores/user";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
+const userStore = useUserStore();
 const tab = ref("");
 const navs = ref([
   {
@@ -102,12 +103,10 @@ const leftDrawerOpen = ref(false);
 const image = ref(require("../assets/logo-LP.png"));
 const nom = ref("Loïc Pierrot");
 
-function logout() {
-  api.post("/api/logout", {}).then((response) => {
-    console.log(response.data);
-    router.push({ name: "Login" });
-  });
-}
+const logout = async () => {
+  await userStore.logout();
+  router.push({ name: "SignIn" });
+};
 </script>
 
 <style>

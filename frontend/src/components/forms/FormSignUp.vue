@@ -5,7 +5,7 @@
     animated
     done-color="green"
     active-color="warning"
-    inactive-color="red"
+    inactive-color="warning"
   >
     <q-step
       :name="1"
