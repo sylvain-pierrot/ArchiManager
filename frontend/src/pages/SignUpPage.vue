@@ -1,15 +1,21 @@
 <template>
   <q-page padding class="row justify-center items-center">
-    <FormSignUp @user="userStore.createUser" />
+    <FormSignUp @user="userStore.createUser" :emails="emails" v-if="emails" />
   </q-page>
 </template>
 
 <script setup>
 import { useUserStore } from "../stores/user";
+import { onBeforeMount, ref } from "vue";
 import FormSignUp from "src/components/forms/FormSignUp.vue";
 
 const userStore = useUserStore();
-// userStore.createUser();
+const emails = ref(null);
+
+onBeforeMount(async () => {
+  const users = await userStore.getAllUsers();
+  emails.value = users.map((user) => user.email);
+});
 </script>
 
 <style>

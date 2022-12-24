@@ -32,5 +32,15 @@ export const useUserStore = defineStore("user", () => {
       console.error(error);
     }
   };
-  return { authenticated, checkAuthentication, createUser };
+
+  const getAllUsers = async () => {
+    try {
+      const response = await api.get("/api/architects");
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  return { authenticated, checkAuthentication, createUser, getAllUsers };
 });

@@ -20,7 +20,7 @@
           v-model="email"
           type="email"
           label="Email"
-          :rules="[(val) => (!!val && isValidEmail(val)) || 'Email invalide']"
+          :rules="[emailRule, emailNotExistRule]"
           lazy-rules
         />
       </q-form>
@@ -152,7 +152,7 @@
           "
           unelevated
           @click="
-            step < 3
+            step === 3
               ? $refs.stepper.next()
               : $emit('user', email, password, number, name, firstname, tel)
           "
@@ -181,8 +181,29 @@
   </q-stepper>
 </template>
 <script setup>
-import { ref, computed, defineEmits } from "vue";
+import { ref, computed, defineEmits, defineProps, toRefs } from "vue";
 
+function emailRule(val) {
+  if (!isValidEmail(val)) {
+    return "Email invalide";
+  }
+  return true;
+}
+function emailNotExistRule(val) {
+  if (emails.value.includes(val)) {
+    return "Cet email existe déjà";
+  }
+  return true;
+}
+
+const props = defineProps({
+  emails: {
+    type: Array,
+    required: true,
+  },
+});
+const { emails } = toRefs(props);
+console.log(emails.value);
 const emit = defineEmits(["user"]);
 
 const number = ref(null);

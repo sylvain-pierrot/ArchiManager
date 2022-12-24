@@ -14,11 +14,7 @@ router.post(
   body("telephone").isInt(),
   architectController.create.bind(architectController)
 );
-router.get(
-  "/architects",
-  authorization.authenticate,
-  architectController.getAll.bind(architectController)
-);
+router.get("/architects", architectController.getAll.bind(architectController));
 router.get(
   "/architects/:id",
   authorization.authenticate,

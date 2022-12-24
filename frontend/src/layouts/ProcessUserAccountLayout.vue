@@ -10,14 +10,14 @@
       />
     </q-header>
     <q-page-container>
-      <router-view class="login-page bg-dark" />
+      <router-view class="bg-img bg-dark" />
     </q-page-container>
   </q-layout>
 </template>
 
 <script setup></script>
 <style>
-.login-page {
+.bg-img {
   background-image: url(../assets/bg-rectangular.svg) !important;
   background-position: bottom !important;
   background-repeat: no-repeat !important;
