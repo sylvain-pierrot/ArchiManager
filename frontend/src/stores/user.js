@@ -64,7 +64,6 @@ export const useUserStore = defineStore("user", () => {
         message: "Compte créé avec succés",
       });
       console.log(response.data);
-      this.router.push({ name: "SignIn" });
     } catch (error) {
       console.error(error);
     }
