@@ -20,7 +20,7 @@
           v-model="email"
           type="email"
           label="Email"
-          :rules="[emailRule, emailNotExistRule]"
+          :rules="[emailValidation]"
           lazy-rules
         />
       </q-form>
@@ -64,15 +64,15 @@
       <q-linear-progress
         size="5px"
         :value="progress"
-        :color="progressColor"
+        :color="passwordColor"
         rounded
         instant-feedback
       />
 
       <q-badge
         color="transparent"
-        :text-color="progressColor"
-        :label="progressLabel"
+        :text-color="passwordColor"
+        :label="passwordLevel"
       />
 
       <div class="text-subtitle2 q-mt-md text-grey-14">
@@ -105,7 +105,7 @@
         <q-input
           outlined
           color="black"
-          v-model="number"
+          v-model="nationalnumber"
           type="number"
           label="Numero national"
           :rules="[(val) => !!val || 'Numero invalide']"
@@ -152,9 +152,17 @@
           "
           unelevated
           @click="
-            step === 3
+            step < 3
               ? $refs.stepper.next()
-              : $emit('user', email, password, number, name, firstname, tel)
+              : $emit(
+                  'user',
+                  email,
+                  password,
+                  nationalnumber,
+                  name,
+                  firstname,
+                  tel
+                )
           "
           color="blue"
           :label="step === 3 ? 'Terminer' : 'Continuer'"
@@ -181,20 +189,7 @@
   </q-stepper>
 </template>
 <script setup>
-import { ref, computed, defineEmits, defineProps, toRefs } from "vue";
-
-function emailRule(val) {
-  if (!isValidEmail(val)) {
-    return "Email invalide";
-  }
-  return true;
-}
-function emailNotExistRule(val) {
-  if (emails.value.includes(val)) {
-    return "Cet email existe déjà";
-  }
-  return true;
-}
+import { ref, computed, defineProps, toRefs } from "vue";
 
 const props = defineProps({
   emails: {
@@ -203,14 +198,10 @@ const props = defineProps({
   },
 });
 const { emails } = toRefs(props);
-console.log(emails.value);
-const emit = defineEmits(["user"]);
-
-const number = ref(null);
+const nationalnumber = ref(null);
 const name = ref("");
 const firstname = ref("");
 const tel = ref(null);
-
 const validations = [
   { label: "Une minuscule", function: hasLowerCase },
   { label: "Une majuscule", function: hasUpperCase },
@@ -247,7 +238,7 @@ const progress = computed(() => {
   sum += strong.value ? 0.34 : 0;
   return sum;
 });
-const progressLabel = computed(() => {
+const passwordLevel = computed(() => {
   if (progress.value === 0) {
     return "";
   } else if (progress.value === 0.33) {
@@ -258,7 +249,7 @@ const progressLabel = computed(() => {
     return "Fort";
   }
 });
-const progressColor = computed(() => {
+const passwordColor = computed(() => {
   if (progress.value === 0) {
     return "";
   } else if (progress.value === 0.33) {
@@ -297,6 +288,15 @@ function isValidEmail(val) {
   const emailPattern =
     /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
   return emailPattern.test(val);
+}
+function emailValidation(val) {
+  if (!isValidEmail(val)) {
+    return "Email invalide";
+  } else if (emails.value.includes(val)) {
+    return "Cet email existe déjà";
+  } else {
+    return true;
+  }
 }
 </script>
 
