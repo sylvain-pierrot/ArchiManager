@@ -8,6 +8,8 @@
       v-model="email"
       label="Email"
       class="col-8 q-mb-sm"
+      :rules="[(val) => !!val || 'Le champ est obligatoire']"
+      lazy-rules
     />
     <q-input
       standout="bg-warning text-white"
@@ -17,6 +19,8 @@
       v-model="password"
       label="Mot de passe"
       class="col-8 q-mb-lg"
+      :rules="[(val) => !!val || 'Le champ est obligatoire']"
+      lazy-rules
     />
 
     <q-btn
@@ -36,4 +40,8 @@ const email = ref("");
 const password = ref("");
 </script>
 
-<style></style>
+<style>
+.q-field__native {
+  color: white !important;
+}
+</style>

@@ -39,27 +39,19 @@
 
 <script setup>
 import FormAddProject from "../forms/FormAddProject.vue";
-import { getCssVar } from "quasar";
-import { ref } from "vue";
+import { ref, defineProps, toRefs } from "vue";
 import { useRouter } from "vue-router";
 
+const props = defineProps({
+  projects: {
+    type: Array,
+    required: true,
+  },
+});
+const { projects } = toRefs(props);
 const router = useRouter();
-
 const dialog_project = ref(false);
 const cancelEnabled = ref(false);
-
-function onRowClick(evt, row) {
-  router.push(`/projects/${row.id}`);
-}
-
-function getSelectedString() {
-  return selected.value.length === 0
-    ? ""
-    : `${selected.value.length} record${
-        selected.value.length > 1 ? "s" : ""
-      } selected of ${rows.value.length}`;
-}
-
 const selected = ref([]);
 const columns = ref([
   {
@@ -98,68 +90,32 @@ const columns = ref([
     field: "files",
   },
 ]);
+const rows = ref(
+  projects.value.map((project) => {
+    return {
+      id: project.id,
+      project: `${project.titre} | ${project.ville}`,
+      status: getStatus(project.statut_id),
+      fee: "test",
+      files: 0,
+    };
+  })
+);
 
-const rows = ref([
-  {
-    id: "LP-2022-1",
-    project: "Logement | Narbonne",
-    status: "En attente",
-    fee: "1 509 EUR",
-    files: 3,
-  },
-  {
-    id: "LP-2022-2",
-    project: "Logement | Narbonne",
-    status: "En attente",
-    fee: "1 509 EUR",
-    files: 3,
-  },
-  {
-    id: "LP-2022-5",
-    project: "Logement | Narbonne",
-    status: "En attente",
-    fee: "1 509 EUR",
-    files: 3,
-  },
-  {
-    id: "LP-2022-6",
-    project: "Logement | Narbonne",
-    status: "En attente",
-    fee: "1 509 EUR",
-    files: 3,
-  },
-  {
-    id: "LP-2022-9",
-    project: "Logement | Narbonne",
-    status: "En attente",
-    fee: "1 509 EUR",
-    files: 3,
-  },
-]);
+function getStatus(id) {
+  return id === 1 ? "En cours" : id === 2 ? "Terminé" : "Annulé";
+}
+function onRowClick(evt, row) {
+  router.push(`/projects/${row.id}`);
+}
 
-const options = ref({
-  title: {
-    text: "PROJETS",
-    align: "left",
-  },
-  chart: {
-    id: "apex-donut",
-  },
-  colors: [
-    getCssVar("primary"),
-    getCssVar("secondary"),
-    getCssVar("negative"),
-    getCssVar("accent"),
-  ],
-  markers: {
-    size: 4,
-    hover: {
-      sizeOffset: 6,
-    },
-  },
-  labels: ["Narbonne", "Paris", "Montpellier", "Toulouse"],
-});
-const series = ref([3, 1, 6, 5]);
+function getSelectedString() {
+  return selected.value.length === 0
+    ? ""
+    : `${selected.value.length} record${
+        selected.value.length > 1 ? "s" : ""
+      } selected of ${rows.value.length}`;
+}
 </script>
 
 <style></style>

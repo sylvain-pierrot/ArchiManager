@@ -1,7 +1,7 @@
 <template>
   <q-layout view="hHh Lpr lFf">
     <q-drawer
-      breakpoint="1024"
+      :breakpoint="1024"
       v-model="leftDrawerOpen"
       show-if-above
       :width="250"
@@ -17,30 +17,23 @@
 
       <q-separator inset class="bg-grey-9 q-mb-lg" />
 
-      <div class="row justify-center">
-        <q-list class="column items-start">
-          <q-item>
-            <q-item-section>
-              <q-chip size="xl" class="dark-chip">
-                <q-avatar>
-                  <img :src="image" />
-                </q-avatar>
-                <small>{{ nom }}</small>
-              </q-chip>
-            </q-item-section>
-          </q-item>
-
-          <q-btn
-            flat
-            rounded
-            color="white"
-            label="Déconnexion"
-            icon-right="logout"
-            no-caps
-            @click="logout"
-            class="q-ml-sm"
-          />
-        </q-list>
+      <div class="row justify-center q-gutter-sm">
+        <q-chip>
+          <q-avatar color="blue" text-color="white">{{
+            nom.charAt(0)
+          }}</q-avatar>
+          {{ nom }}
+        </q-chip>
+        <q-btn
+          flat
+          rounded
+          color="white"
+          label="Déconnexion"
+          icon-right="logout"
+          no-caps
+          @click="logout"
+          class="q-ml-sm"
+        />
       </div>
 
       <q-separator inset class="bg-grey-9 q-mt-md q-mb-md" />
@@ -81,6 +74,10 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const userStore = useUserStore();
+
+const userCookie = decodeURIComponent(userStore.getCookie("user"));
+const user = ref(JSON.parse(userCookie.substring(2)));
+const nom = ref(`${user.value.nom} ${user.value.prenom}`);
 const tab = ref("");
 const navs = ref([
   {
@@ -100,8 +97,7 @@ const navs = ref([
   },
 ]);
 const leftDrawerOpen = ref(false);
-const image = ref(require("../assets/logo-LP.png"));
-const nom = ref("Loïc Pierrot");
+// const image = ref(require("../assets/logo-LP.png"));
 
 const logout = async () => {
   await userStore.logout();

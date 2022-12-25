@@ -39,6 +39,9 @@ exports.login = async (req, res) => {
     });
 
     // Set the JWT as a cookie and send it to the client
+    res.cookie("user", architect, {
+      httpOnly: false,
+    });
     res.cookie("token", token, {
       httpOnly: false,
     });
@@ -50,6 +53,7 @@ exports.login = async (req, res) => {
 };
 
 exports.logout = (req, res) => {
+  res.clearCookie("user");
   res.clearCookie("token");
   res.json({ message: "Successfully logged out" });
 };

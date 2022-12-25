@@ -26,7 +26,7 @@ router.get(
   projectController.getAll.bind(projectController)
 );
 router.get(
-  "/projects/:id",
+  "/projects/:id(\\d+)",
   authorization.authenticate,
   projectController.getOne.bind(projectController)
 );
@@ -51,6 +51,11 @@ router.delete(
   "/projects/:id",
   authorization.authenticate,
   projectController.delete.bind(projectController)
+);
+router.get(
+  "/projects/fees",
+  authorization.authenticate,
+  projectController.getTotalFees.bind(projectController)
 );
 
 module.exports = router;

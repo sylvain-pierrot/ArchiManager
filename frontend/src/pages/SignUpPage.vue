@@ -22,6 +22,10 @@ const signup = async (
   firstname,
   tel
 ) => {
+  name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+  firstname =
+    firstname.charAt(0).toUpperCase() + firstname.slice(1).toLowerCase();
+
   await userStore.createUser(
     email,
     password,

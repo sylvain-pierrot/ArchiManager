@@ -7,10 +7,10 @@ exports.authenticate = (req, res, next) => {
     if (token) {
       jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
         if (err) {
+          res.clearCookie("user");
           res.clearCookie("token");
           res.send({ message: "Invalid token" });
         } else {
-          console.log("test");
           // req.user = decoded;
           next();
         }

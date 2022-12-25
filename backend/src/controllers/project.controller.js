@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const db = require("../config/database");
 const Controller = require("./global.controller");
 
 class ProjectController extends Controller {
@@ -72,6 +73,33 @@ class ProjectController extends Controller {
     // query
     super.update(req, res, primaryKey, foreignKey);
   }
+
+  getTotalFees = async (req, res) => {
+    try {
+      // data
+      const architecte_id = jwt.verify(
+        req.cookies.token,
+        process.env.JWT_SECRET
+      ).id;
+
+      // query
+      const { rows } = await db.query(
+        "SELECT SUM(ph.honoraires) FROM phases ph INNER JOIN projets pr ON ph.projet_id=pr.id WHERE pr.architecte_id = $1",
+        [architecte_id]
+      );
+      // failed query
+      if (rows.length < 1) {
+        return res.status(401).json({ message: `Not found or error` });
+      }
+
+      // success
+      res.status(200).send(rows);
+    } catch (error) {
+      // server error
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  };
 }
 
 module.exports = new ProjectController();

@@ -39,8 +39,8 @@ export default route(function (/* { store, ssrContext } */) {
   Router.beforeEach((to, from, next) => {
     const userStore = useUserStore();
     const token = userStore.getCookie("token");
-    console.log(token);
-    if (token === undefined) {
+
+    if (token === null) {
       if (to.name === "SignUp" || to.name === "SignIn") {
         next();
       } else {

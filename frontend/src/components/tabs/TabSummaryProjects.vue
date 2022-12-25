@@ -7,10 +7,14 @@
             <div class="text-h6 text-dark">Projets en cours</div>
             <div class="text-caption text-grey-7">Projets initiées</div>
           </q-card-section>
-          <q-card-actions class="col-4" align="right">
-            <div class="text-h6 text-blue q-mr-md">5</div>
-            <q-btn flat round color="secondary" icon="arrow_forward_ios" />
-          </q-card-actions>
+          <q-card-section class="col-4" align="top">
+            <div class="row items-center">
+              <div class="text-h6 text-blue q-mr-md">
+                {{ projectInPogress }}
+              </div>
+              <q-btn flat round color="warning" icon="arrow_forward_ios" />
+            </div>
+          </q-card-section>
         </q-card-section>
       </q-card>
     </div>
@@ -24,10 +28,14 @@
               Projets actuellement achevés
             </div>
           </q-card-section>
-          <q-card-actions class="col-4" align="right">
-            <div class="text-h6 text-green q-mr-md">0</div>
-            <q-btn flat round color="secondary" icon="arrow_forward_ios" />
-          </q-card-actions>
+          <q-card-section class="col-4" align="top">
+            <div class="row items-center">
+              <div class="text-h6 text-green q-mr-md">
+                {{ projectCompleted }}
+              </div>
+              <q-btn flat round color="warning" icon="arrow_forward_ios" />
+            </div>
+          </q-card-section>
         </q-card-section>
       </q-card>
     </div>
@@ -37,7 +45,9 @@
         <q-card-section class="col-8">
           <div class="row justify-between">
             <div class="text-h6 text-dark q-mb-md">Honoraire</div>
-            <div class="text-h6 text-warning q-mb-md">1 507 €</div>
+            <div class="text-h6 text-warning q-mb-md">
+              {{ `${totalFees} EUR` }}
+            </div>
           </div>
 
           <q-linear-progress
@@ -94,8 +104,27 @@
 
 <script setup>
 import { getCssVar } from "quasar";
-import { ref } from "vue";
+import { ref, defineProps, toRefs } from "vue";
 
+const props = defineProps({
+  totalFees: {
+    type: Number,
+    required: true,
+  },
+  projectInPogress: {
+    type: Number,
+    required: true,
+  },
+  projectCompleted: {
+    type: Number,
+    required: true,
+  },
+  cities: {
+    type: Array,
+    required: true,
+  },
+});
+const { totalFees, projectInPogress, projectCompleted, cities } = toRefs(props);
 const progress1 = ref("0.6");
 const columns = ref([
   {
@@ -138,6 +167,8 @@ const rows = ref([
   },
 ]);
 
+const labels = cities.value.map((elem) => elem.city);
+const series = ref(cities.value.map((elem) => elem.serie));
 const options = ref({
   title: {
     text: "PROJETS",
@@ -146,21 +177,16 @@ const options = ref({
   chart: {
     id: "apex-donut",
   },
-  colors: [
-    getCssVar("primary"),
-    getCssVar("secondary"),
-    getCssVar("negative"),
-    getCssVar("accent"),
-  ],
+  colors: [getCssVar("negative"), getCssVar("primary"), getCssVar("accent")],
   markers: {
     size: 4,
     hover: {
       sizeOffset: 6,
     },
   },
-  labels: ["Narbonne", "Paris", "Montpellier", "Toulouse"],
+  labels: labels,
 });
-const series = ref([3, 1, 6, 5]);
+// const series = ref([3, 1, 6, 5]);
 </script>
 
 <style></style>

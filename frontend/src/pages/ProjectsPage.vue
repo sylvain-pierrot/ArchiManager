@@ -23,11 +23,17 @@
 
     <q-tab-panels v-model="tab">
       <q-tab-panel name="summary" class="q-pa-none q-mt-md">
-        <TabSummaryProjects />
+        <TabSummaryProjects
+          :totalFees="totalFees"
+          :projectInPogress="projectInPogress"
+          :projectCompleted="projectCompleted"
+          :cities="cities"
+          v-if="totalFees"
+        />
       </q-tab-panel>
 
       <q-tab-panel name="projects" class="q-pa-none q-mt-md">
-        <TabProjects />
+        <TabProjects :projects="projects" v-if="projects" />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -36,67 +42,36 @@
 <script setup>
 import TabSummaryProjects from "../components/tabs/TabSummaryProjects.vue";
 import TabProjects from "../components/tabs/TabProjects.vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import { useProjectsStore } from "../stores/projects";
 
+const projectsStore = useProjectsStore();
+const totalFees = ref();
+const projects = ref();
+const projectInPogress = ref(0);
+const projectCompleted = ref(0);
+const cities = ref([]);
 const tab = ref("summary");
-const filter = ref("");
-const columns = ref([
-  {
-    name: "reference",
-    label: "Référence",
-    field: "reference",
-    align: "left",
-    sortable: true,
-  },
-  {
-    name: "date",
-    align: "center",
-    label: "Date",
-    field: "date",
-    align: "left",
-    sortable: true,
-  },
-  { name: "surface", label: "Surface", field: "surface", sortable: true },
-  { name: "commune", label: "Commune", field: "commune", sortable: true },
-]);
-const rows = ref([
-  {
-    reference: "LP-2022-027",
-    date: "Novemebre 2022",
-    nature: "Création d'un logement sur le garage d'une maison d'habitation",
-    surface: 200,
-    commune: "Narbonne",
-    client: "MARRILLAT",
-    icon: "face",
-  },
-  {
-    reference: "LP-2022-020",
-    date: "Novemebre 2022",
-    nature: "Création d'un logement sur le garage d'une maison d'habitation",
-    surface: 90,
-    commune: "Narbonne",
-    client: "LAPIN",
-    icon: "face",
-  },
-  {
-    reference: "LP-2022-017",
-    date: "Novemebre 2022",
-    nature: "Création d'un logement sur le garage d'une maison d'habitation",
-    surface: 23,
-    commune: "Gruissan",
-    client: "CANAPA",
-    icon: "face",
-  },
-  {
-    reference: "LP-2022-007",
-    date: "Novemebre 2022",
-    nature: "Création d'un logement sur le garage d'une maison d'habitation",
-    surface: 600,
-    commune: "Paris",
-    client: "SACADOS",
-    icon: "face",
-  },
-]);
+
+onMounted(async () => {
+  projects.value = await projectsStore.getAllProjects();
+  totalFees.value = (await projectsStore.getTotalFees())[0].sum;
+  projects.value.forEach((project) => {
+    // cities
+    const index = cities.value.findIndex((elem) => elem.city === project.ville);
+    if (index === -1) {
+      cities.value.push({ city: project.ville, serie: 1 });
+    } else {
+      cities.value[index].serie += 1;
+    }
+    // status
+    if (project.statut_id === 1) {
+      projectInPogress.value += 1;
+    } else if (project.statut_id === 2) {
+      projectCompleted.value += 1;
+    }
+  });
+});
 </script>
 
 <style lang="scss">

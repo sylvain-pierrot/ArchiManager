@@ -58,7 +58,7 @@
             </q-card-section>
             <q-card-section>
               <q-tabs
-                breakpoint="0"
+                breakpoint
                 v-model="project"
                 dense
                 :vertical="$q.screen.lt.sm"
@@ -89,11 +89,9 @@
                   :rows="rows"
                   :columns="columns"
                   row-key="id"
-                  v-model:selected="selected"
                   flat
                   bordered
                   hide-pagination
-                  @row-click="onRowClick"
                 />
               </q-tab-panel>
 
@@ -113,31 +111,7 @@
 </template>
 
 <script setup>
-import { useQuasar } from "quasar";
-import { api } from "../boot/axios";
 import { ref } from "vue";
-
-const $q = useQuasar();
-const data = ref(null);
-
-function loadData() {
-  api.get("/api").then((response) => {
-    data.value = response.data;
-    console.log(response.data);
-  });
-  // .catch(() => {
-  //   $q.notify({
-  //     color: "negative",
-  //     position: "top",
-  //     message: "Loading failed",
-  //     icon: "report_problem",
-  //   });
-  // });
-}
-loadData();
-
-// const value = await axios.get("http://backend:5000/api");
-// console.log(value);
 
 const project = ref("month");
 const navs = ref([
@@ -151,16 +125,6 @@ const navs = ref([
     icon: "contacts",
     path: "/contacts",
   },
-  // {
-  //   title: "Dossiers et documents",
-  //   icon: "folder_copy",
-  //   path: "/folders",
-  // },
-  // {
-  //   title: "Mes revenus",
-  //   icon: "paid",
-  //   path: "/profile",
-  // },
 ]);
 
 const columns = ref([
