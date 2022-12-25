@@ -6,16 +6,24 @@ import { Notify } from "quasar";
 export const useUserStore = defineStore("user", () => {
   const authenticated = ref(null);
 
-  const checkAuthentication = async () => {
-    try {
-      const response = await api.get("/api/isAuthenticated");
-      authenticated.value = response.data.authenticated;
-      console.log(response.data.authenticated);
-      return response.data.authenticated;
-    } catch (error) {
-      console.error(error);
+  // const checkAuthentication = async () => {
+  //   try {
+  //     const response = await api.get("/api/isAuthenticated");
+  //     authenticated.value = response.data.authenticated;
+  //     console.log(response.data.authenticated);
+  //     return response.data.authenticated;
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  function getCookie(name) {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop().split(";").shift();
     }
-  };
+  }
 
   const login = async (email, password) => {
     try {
@@ -30,6 +38,11 @@ export const useUserStore = defineStore("user", () => {
       });
       console.log(response.data);
     } catch (error) {
+      Notify.create({
+        type: "negative",
+        position: "top-right",
+        message: "Connexion échouée",
+      });
       console.error(error);
     }
   };
@@ -80,7 +93,7 @@ export const useUserStore = defineStore("user", () => {
   };
   return {
     authenticated,
-    checkAuthentication,
+    getCookie,
     createUser,
     getAllUsers,
     login,

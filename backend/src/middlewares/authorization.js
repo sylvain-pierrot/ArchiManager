@@ -4,9 +4,19 @@ const dotenv = require("dotenv").config();
 exports.authenticate = (req, res, next) => {
   try {
     const token = req.cookies.token;
-    jwt.verify(token, process.env.JWT_SECRET);
-    next();
+    if (token) {
+      jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+        if (err) {
+          res.clearCookie("token");
+          res.send({ message: "Invalid token" });
+        } else {
+          console.log("test");
+          // req.user = decoded;
+          next();
+        }
+      });
+    }
   } catch (err) {
-    res.status(401).json({ message: "Token is invalid" });
+    res.status(401).json({ message: "Access denided" });
   }
 };

@@ -25,13 +25,13 @@ exports.login = async (req, res) => {
     }
 
     // Compare the provided password with the hashed password in the database
-    // const validPassword = await bcrypt.compare(
-    //   mot_de_passe,
-    //   architect.mot_de_passe
-    // );
-    // if (!validPassword) {
-    //   return res.status(401).send("Invalid email or password");
-    // }
+    const validPassword = await bcrypt.compare(
+      mot_de_passe,
+      architect.mot_de_passe
+    );
+    if (!validPassword) {
+      return res.status(401).send("Invalid email or password");
+    }
 
     // Create a JWT
     const token = jwt.sign({ id: architect.id }, process.env.JWT_SECRET, {
@@ -40,7 +40,7 @@ exports.login = async (req, res) => {
 
     // Set the JWT as a cookie and send it to the client
     res.cookie("token", token, {
-      httpOnly: true,
+      httpOnly: false,
     });
     res.send({ message: "Successfully logged in" });
   } catch (error) {
@@ -61,23 +61,23 @@ exports.refresh = (req, res) => {
   const newToken = jwt.sign({ id: id }, process.env.JWT_SECRET, {
     expiresIn: "1h",
   });
-  res.cookie("token", newToken, { httpOnly: true });
+  res.cookie("token", newToken, { httpOnly: false });
   res.json({ message: "Token refreshed" });
 };
 
-exports.isAuthenticated = (req, res) => {
-  try {
-    const token = req.cookies.token;
-    if (!token) {
-      return res
-        .status(400)
-        .json({ message: "Token is invalid", authenticated: false });
-    }
-    jwt.verify(token, process.env.JWT_SECRET);
-    return res.json({ message: "Token is valid", authenticated: true });
-  } catch (error) {
-    return res
-      .status(400)
-      .json({ message: "Token is invalid", authenticated: false });
-  }
-};
+// exports.isAuthenticated = (req, res) => {
+//   try {
+//     const token = req.cookies.token;
+//     if (!token) {
+//       return res
+//         .status(400)
+//         .json({ message: "Token is invalid", authenticated: false });
+//     }
+//     jwt.verify(token, process.env.JWT_SECRET);
+//     return res.json({ message: "Token is valid", authenticated: true });
+//   } catch (error) {
+//     return res
+//       .status(400)
+//       .json({ message: "Token is invalid", authenticated: false });
+//   }
+// };

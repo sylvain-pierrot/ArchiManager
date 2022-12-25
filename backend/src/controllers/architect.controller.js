@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const Controller = require("./global.controller");
 
 class ArchitectController extends Controller {
@@ -26,13 +26,29 @@ class ArchitectController extends Controller {
     super.getOne(req, res, primaryKey, foreignKey);
   }
 
-  create(req, res) {
-    // datas
+  create = async (req, res) => {
+    // Data
     const foreignKey = null;
+    const password = req.body.mot_de_passe;
 
-    // query
+    // Generate a salt
+    const saltRounds = 10;
+    try {
+      const salt = await bcrypt.genSalt(saltRounds);
+
+      // Hash the password using the salt
+      const hashedPassword = await bcrypt.hash(password, salt);
+      console.log(`The hashed password is: ${hashedPassword}`);
+
+      // Store the hashed password in the request body
+      req.body.mot_de_passe = hashedPassword;
+    } catch (err) {
+      console.error(err);
+    }
+
+    // Query
     super.create(req, res, foreignKey);
-  }
+  };
 
   delete(req, res) {
     // datas

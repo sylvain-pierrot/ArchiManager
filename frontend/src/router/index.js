@@ -35,22 +35,21 @@ export default route(function (/* { store, ssrContext } */) {
       process.env.MODE === "ssr" ? void 0 : process.env.VUE_ROUTER_BASE
     ),
   });
-  // const data = ref(false);
-  Router.beforeEach(async (to, from, next) => {
+
+  Router.beforeEach((to, from, next) => {
     const userStore = useUserStore();
-    const valid = await userStore.checkAuthentication();
-    if (!valid) {
+    const token = userStore.getCookie("token");
+    console.log(token);
+    if (token === undefined) {
       if (to.name === "SignUp" || to.name === "SignIn") {
         next();
       } else {
         next({ name: "SignIn" });
       }
+    } else if (to.name === "SignUp" || to.name === "SignIn") {
+      next({ name: "Dashboard" });
     } else {
-      if (to.name === "SignUp" || to.name === "SignIn") {
-        next({ name: "Dashboard" });
-      } else {
-        next();
-      }
+      next();
     }
   });
 
