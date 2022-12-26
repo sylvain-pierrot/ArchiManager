@@ -12,20 +12,21 @@
         <q-input
           outlined
           type="text"
-          color="warning"
+          color="black"
           bg-color="primary"
           v-model="title"
           label="Titre"
           placeholder="Titre"
           flat
-          class="col-6"
+          class="col-12"
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          lazy-rules
         />
 
-        <q-input
+        <!-- <q-input
           outlined
           type="text"
-          color="warning"
+          color="black"
           bg-color="primary"
           v-model="id"
           label="ID projet"
@@ -33,11 +34,11 @@
           flat
           class="col-6"
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
-        />
+        /> -->
 
         <q-select
           outlined
-          color="warning"
+          color="black"
           bg-color="primary"
           v-model="mission"
           :options="missions"
@@ -46,11 +47,12 @@
           flat
           class="col-6"
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          lazy-rules
         />
 
         <q-select
           outlined
-          color="warning"
+          color="black"
           bg-color="primary"
           v-model="designation"
           :options="designations"
@@ -59,11 +61,12 @@
           flat
           class="col-6"
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          lazy-rules
         />
 
         <q-select
           outlined
-          color="warning"
+          color="black"
           bg-color="primary"
           v-model="client"
           :options="clients"
@@ -72,6 +75,7 @@
           flat
           class="col-6"
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          lazy-rules
         />
 
         <div class="row items-start q-mt-sm col-6">
@@ -94,7 +98,7 @@
           outlined
           type="number"
           min="0"
-          color="warning"
+          color="black"
           bg-color="primary"
           v-model="landSurface"
           label="Surface foncière"
@@ -102,13 +106,14 @@
           flat
           class="col-6"
           :rules="[(val) => (val && val > 0) || 'Ce champs est requis']"
+          lazy-rules
         />
 
         <q-input
           outlined
           type="number"
           min="0"
-          color="warning"
+          color="black"
           bg-color="primary"
           v-model="indicativeSurface"
           label="Surface indicative"
@@ -116,12 +121,13 @@
           flat
           class="col-6"
           :rules="[(val) => (val && val > 0) || 'Ce champs est requis']"
+          lazy-rules
         />
 
         <q-input
           outlined
           type="text"
-          color="warning"
+          color="black"
           bg-color="primary"
           v-model="address"
           label="Adresse"
@@ -129,12 +135,13 @@
           flat
           class="col-8"
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          lazy-rules
         />
 
         <q-input
           outlined
           type="text"
-          color="warning"
+          color="black"
           bg-color="primary"
           v-model="city"
           label="Ville"
@@ -142,12 +149,13 @@
           flat
           class="col-4"
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          lazy-rules
         />
 
         <q-input
           outlined
           type="date"
-          color="warning"
+          color="black"
           bg-color="primary"
           v-model="startDate"
           label="Date début"
@@ -155,12 +163,13 @@
           flat
           class="col-6"
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          lazy-rules
         />
 
         <q-input
           outlined
           type="date"
-          color="warning"
+          color="black"
           bg-color="primary"
           v-model="endDate"
           label="Date fin"
@@ -168,11 +177,12 @@
           flat
           class="col-6"
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          lazy-rules
         />
 
         <q-select
           outlined
-          color="warning"
+          color="black"
           bg-color="primary"
           v-model="tag"
           :options="tags"
@@ -181,6 +191,7 @@
           flat
           class="col-6"
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          lazy-rules
         />
 
         <div class="row items-start q-mt-sm col-6">
@@ -202,7 +213,7 @@
         <q-input
           outlined
           type="textarea"
-          color="warning"
+          color="black"
           bg-color="primary"
           v-model="title"
           label="Description"
@@ -210,6 +221,7 @@
           flat
           class="col-12"
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          lazy-rules
         />
 
         <div class="col-12 row justify-end">

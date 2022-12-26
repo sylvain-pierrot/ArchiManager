@@ -100,7 +100,7 @@ const value = computed(() => {
   }
 });
 </script>
-<style>
+<style scoped>
 .q-field__native {
   color: black !important;
 }

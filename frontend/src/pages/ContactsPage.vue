@@ -23,7 +23,7 @@
 
     <q-tab-panels v-model="tab">
       <q-tab-panel name="clients" class="q-pa-none q-mt-md">
-        <TabClients />
+        <TabClients :clients="clients" @client="addClient" />
       </q-tab-panel>
 
       <q-tab-panel name="providers" class="q-pa-none q-mt-md">
@@ -36,10 +36,41 @@
 <script setup>
 import TabClients from "../components/tabs/TabClients.vue";
 import TabProviders from "../components/tabs/TabProviders.vue";
-import { ref } from "vue";
+import { useClientsStore } from "../stores/clients";
+import { ref, onMounted } from "vue";
 
 const tab = ref("clients");
-const filter = ref("");
+const clientsStore = useClientsStore();
+const clients = ref([]);
+
+const addClient = async (
+  clientName,
+  clientNameContact,
+  email,
+  address,
+  city,
+  phone,
+  notes
+) => {
+  await clientsStore.createClient(
+    clientName,
+    clientNameContact,
+    email,
+    address,
+    city,
+    phone,
+    notes
+  );
+  await loadClients();
+};
+
+async function loadClients() {
+  clients.value = (await clientsStore.getAllClients()) || [];
+}
+
+onMounted(async () => {
+  await loadClients();
+});
 </script>
 
 <style lang="scss">

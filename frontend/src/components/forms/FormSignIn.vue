@@ -1,27 +1,33 @@
 <template>
   <q-form @submit="$emit('login', email, password)" class="row justify-center">
     <q-input
-      standout="bg-warning text-white"
+      standout="bg-warning"
       bg-color="grey-14"
       label-color="grey-13"
       type="text"
       v-model="email"
       label="Email"
       class="col-8 q-mb-sm"
-      :rules="[(val) => !!val || 'Le champ est obligatoire']"
-      lazy-rules
     />
+
     <q-input
-      standout="bg-warning text-white"
+      standout="bg-warning"
       bg-color="grey-14"
       label-color="grey-13"
-      type="text"
       v-model="password"
+      :type="isPwd ? 'password' : 'text'"
       label="Mot de passe"
       class="col-8 q-mb-lg"
-      :rules="[(val) => !!val || 'Le champ est obligatoire']"
-      lazy-rules
-    />
+    >
+      <template v-slot:append>
+        <q-icon
+          :name="isPwd ? 'visibility_off' : 'visibility'"
+          class="cursor-pointer"
+          color="dark"
+          @click="isPwd = !isPwd"
+        />
+      </template>
+    </q-input>
 
     <q-btn
       unelevated
@@ -36,6 +42,7 @@
 <script setup>
 import { ref } from "vue";
 
+const isPwd = ref(true);
 const email = ref("");
 const password = ref("");
 </script>

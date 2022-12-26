@@ -28,18 +28,13 @@
           :totalFeesCollected="totalFeesCollected"
           :projectInPogress="projectInPogress"
           :projectCompleted="projectCompleted"
+          :projectCancelled="projectCancelled"
           :cities="cities"
-          v-if="totalFees"
         />
       </q-tab-panel>
 
       <q-tab-panel name="projects" class="q-pa-none q-mt-md">
-        <TabProjects
-          :projects="projects"
-          :tags="tags"
-          @edit="updateProjects"
-          v-if="projects"
-        />
+        <TabProjects :projects="projects" :tags="tags" @edit="updateProjects" />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -57,11 +52,12 @@ const tagsStore = useTagsStore();
 const projectsStore = useProjectsStore();
 
 // projects store
-const totalFees = ref();
-const totalFeesCollected = ref();
-const projects = ref();
+const totalFees = ref(0);
+const totalFeesCollected = ref(0);
+const projects = ref([]);
 const projectInPogress = ref(0);
 const projectCompleted = ref(0);
+const projectCancelled = ref(0);
 const cities = ref([]);
 
 // tags store
@@ -71,24 +67,16 @@ const tags = ref();
 const tab = ref("summary");
 
 async function loadProjects() {
-  return await projectsStore.getAllProjects();
-}
-const updateProjects = async (projects_id, obj) => {
-  for (const id of projects_id) {
-    if (obj.attribut === "Statut") {
-      await projectsStore.updateStatusId(id, obj.value);
-    }
-  }
-  projects.value = await loadProjects();
-};
+  projectInPogress.value = 0;
+  projectCompleted.value = 0;
+  projectCancelled.value = 0;
 
-onMounted(async () => {
   // projects store
-  projects.value = await loadProjects();
-  totalFees.value = (await projectsStore.getTotalFees())[0].sum;
-  totalFeesCollected.value = (
-    await projectsStore.getTotalFeesCollected()
-  )[0].sum;
+  projects.value = await projectsStore.getAllProjects();
+
+  totalFees.value = (await projectsStore.getTotalFees())[0].sum || 0;
+  totalFeesCollected.value =
+    (await projectsStore.getTotalFeesCollected())[0].sum || 0;
   projects.value.forEach((project) => {
     // cities
     const index = cities.value.findIndex((elem) => elem.city === project.ville);
@@ -102,11 +90,25 @@ onMounted(async () => {
       projectInPogress.value += 1;
     } else if (project.statut_id === 2) {
       projectCompleted.value += 1;
+    } else {
+      projectCancelled.value += 1;
     }
   });
 
   // tags store
   tags.value = await tagsStore.getAllTags();
+}
+const updateProjects = async (projects_id, obj) => {
+  for (const id of projects_id) {
+    if (obj.attribut === "Statut") {
+      await projectsStore.updateStatusId(id, obj.value);
+    }
+  }
+  await loadProjects();
+};
+
+onMounted(async () => {
+  await loadProjects();
 });
 </script>
 

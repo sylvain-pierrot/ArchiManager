@@ -48,6 +48,7 @@ CREATE TABLE clients (
   nom_contact VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   adresse VARCHAR(255) NOT NULL,
+  ville VARCHAR(255) NOT NULL,
   telephone INTEGER NOT NULL,
   notes TEXT,
   architecte_id INTEGER REFERENCES architectes(id)

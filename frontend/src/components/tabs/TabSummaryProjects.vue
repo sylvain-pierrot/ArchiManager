@@ -8,7 +8,7 @@
             <div class="text-caption text-grey-7">Projets initiées</div>
           </q-card-section>
           <q-card-section class="col-4" align="top">
-            <div class="row items-center">
+            <div class="row items-center justify-center">
               <div class="text-h6 text-blue q-mr-md">
                 {{ projectInPogress }}
               </div>
@@ -29,7 +29,7 @@
             </div>
           </q-card-section>
           <q-card-section class="col-4" align="top">
-            <div class="row items-center">
+            <div class="row items-center justify-center">
               <div class="text-h6 text-green q-mr-md">
                 {{ projectCompleted }}
               </div>
@@ -41,10 +41,31 @@
     </div>
 
     <div class="col-xs-12 col-sm-4">
-      <q-card class="no-shadow fit">
+      <q-card class="no-shadow full-height">
+        <q-card-section horizontal>
+          <q-card-section class="col-8">
+            <div class="text-h6 text-dark">Projets annulés</div>
+            <div class="text-caption text-grey-7">
+              Projets actuellement annulés
+            </div>
+          </q-card-section>
+          <q-card-section class="col-4" align="top">
+            <div class="row items-center justify-center">
+              <div class="text-h6 text-red q-mr-md">
+                {{ projectCancelled }}
+              </div>
+              <q-btn flat round color="warning" icon="arrow_forward_ios" />
+            </div>
+          </q-card-section>
+        </q-card-section>
+      </q-card>
+    </div>
+
+    <div class="col-xs-12 col-sm-5">
+      <q-card class="no-shadow q-mb-md">
         <q-card-section class="col-8">
           <div class="row justify-between">
-            <div class="text-h6 text-dark q-mb-md">Honoraire</div>
+            <div class="text-h6 text-dark q-mb-md">Honoraires</div>
             <div class="text-h6 text-warning q-mb-md">
               {{ `${totalFees} EUR` }}
             </div>
@@ -62,9 +83,7 @@
           </div>
         </q-card-section>
       </q-card>
-    </div>
 
-    <div class="col-xs-12 col-md-6">
       <q-card class="no-shadow">
         <q-card-section>
           <div class="text-subtitle1 text-dark">Tags</div>
@@ -84,7 +103,7 @@
       </q-card>
     </div>
 
-    <div class="col-xs-12 col-md-6">
+    <div class="col-xs-12 col-md-7">
       <q-card class="no-shadow">
         <q-card-section>
           <div class="text-subtitle1 text-dark">Répartition</div>
@@ -125,6 +144,10 @@ const props = defineProps({
     type: Number,
     required: true,
   },
+  projectCancelled: {
+    type: Number,
+    required: true,
+  },
   cities: {
     type: Array,
     required: true,
@@ -135,9 +158,13 @@ const {
   totalFeesCollected,
   projectInPogress,
   projectCompleted,
+  projectCancelled,
   cities,
 } = toRefs(props);
-const progress1 = computed(() => totalFeesCollected.value / totalFees.value);
+
+const progress1 = computed(
+  () => totalFeesCollected.value / totalFees.value || 0
+);
 const columns = ref([
   {
     name: "name",
@@ -179,7 +206,7 @@ const rows = ref([
   },
 ]);
 
-const series = computed(() => cities.value.map((elem) => elem.serie));
+const series = computed(() => cities.value.map((elem) => elem.serie) || []);
 const options = computed(() => {
   return {
     title: {
@@ -196,7 +223,7 @@ const options = computed(() => {
         sizeOffset: 6,
       },
     },
-    labels: cities.value.map((elem) => elem.city),
+    labels: cities.value.map((elem) => elem.city) || [],
   };
 });
 </script>

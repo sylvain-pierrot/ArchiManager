@@ -18,9 +18,9 @@ class Controller {
       const { rows } = await db.query(query, values);
 
       // failed query
-      if (rows.length < 1) {
-        return res.status(401).json({ message: `Not found or error` });
-      }
+      // if (rows.length < 1) {
+      //   return res.status(401).json({ message: `Not found or error` });
+      // }
       // success
       res.status(200).send(rows);
     } catch (error) {

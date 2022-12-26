@@ -19,7 +19,7 @@
           />
 
           <q-dialog v-model="dialog_client">
-            <FormAddClient />
+            <FormAddClient @client="emitClient" />
           </q-dialog>
 
           <q-table
@@ -39,22 +39,39 @@
 
 <script setup>
 import FormAddClient from "../forms/FormAddClient.vue";
-import { getCssVar } from "quasar";
-import { ref } from "vue";
+import { ref, defineEmits, computed, defineProps, toRefs } from "vue";
 
+const props = defineProps({
+  clients: {
+    type: Array,
+    required: true,
+  },
+});
+const { clients } = toRefs(props);
+const emit = defineEmits(["client"]);
 const dialog_client = ref(false);
-const cancelEnabled = ref(false);
 
-function getSelectedString() {
-  return selected.value.length === 0
-    ? ""
-    : `${selected.value.length} record${
-        selected.value.length > 1 ? "s" : ""
-      } selected of ${rows.value.length}`;
+function emitClient(
+  clientName,
+  clientNameContact,
+  email,
+  address,
+  city,
+  phone,
+  notes
+) {
+  emit(
+    "client",
+    clientName,
+    clientNameContact,
+    email,
+    address,
+    city,
+    phone,
+    notes
+  );
 }
-
 const selected = ref([]);
-
 const columns = ref([
   {
     name: "name",
@@ -75,60 +92,28 @@ const columns = ref([
   { name: "phone", label: "Téléphone", field: "phone", sortable: true },
   { name: "city", label: "Ville", field: "city", sortable: true },
 ]);
-const rows = ref([
-  {
-    name: "MARRILLAT",
-    contactName: "MARRILLAT",
-    email: "marrillat@marrillat.com",
-    phone: "06 06 06 06 06",
-    city: "Narbonne",
-  },
-  {
-    name: "MARRILLAT",
-    contactName: "MARRILLAT",
-    email: "marrillat@marrillat.com",
-    phone: "06 06 06 06 06",
-    city: "Narbonne",
-  },
-  {
-    name: "MARRILLAT",
-    contactName: "MARRILLAT",
-    email: "marrillat@marrillat.com",
-    phone: "06 06 06 06 06",
-    city: "Narbonne",
-  },
-  {
-    name: "MARRILLAT",
-    contactName: "MARRILLAT",
-    email: "marrillat@marrillat.com",
-    phone: "06 06 06 06 06",
-    city: "Narbonne",
-  },
-]);
-
-const options = ref({
-  title: {
-    text: "PROJETS",
-    align: "left",
-  },
-  chart: {
-    id: "apex-donut",
-  },
-  colors: [
-    getCssVar("primary"),
-    getCssVar("secondary"),
-    getCssVar("negative"),
-    getCssVar("accent"),
-  ],
-  markers: {
-    size: 4,
-    hover: {
-      sizeOffset: 6,
-    },
-  },
-  labels: ["Narbonne", "Paris", "Montpellier", "Toulouse"],
+const rows = computed(() => {
+  if (clients.value.length > 0) {
+    return clients.value.map((client) => {
+      return {
+        name: client.nom,
+        contactName: client.nom_contact,
+        email: client.email,
+        phone: client.telephone,
+        city: client.ville,
+      };
+    });
+  }
+  return [];
 });
-const series = ref([3, 1, 6, 5]);
+
+function getSelectedString() {
+  return selected.value.length === 0
+    ? ""
+    : `${selected.value.length} record${
+        selected.value.length > 1 ? "s" : ""
+      } selected of ${rows.value.length}`;
+}
 </script>
 
 <style></style>
