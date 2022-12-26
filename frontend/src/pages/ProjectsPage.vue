@@ -30,6 +30,7 @@
           :projectCompleted="projectCompleted"
           :projectCancelled="projectCancelled"
           :cities="cities"
+          :tags="tags"
         />
       </q-tab-panel>
 
@@ -41,6 +42,7 @@
           @edit="updateProjects"
           @client="addClient"
           @project="addProject"
+          @tag="addTag"
         />
       </q-tab-panel>
     </q-tab-panels>
@@ -73,11 +75,15 @@ const projectCancelled = ref(0);
 const cities = ref([]);
 
 // tags store
-const tags = ref();
+const tags = ref([]);
 
 // page
 const tab = ref("summary");
 
+async function loadTags() {
+  tags.value = (await tagsStore.getAllTags()) || [];
+  console.log(tags.value);
+}
 async function loadClients() {
   clients.value = (await clientsStore.getAllClients()) || [];
 }
@@ -111,7 +117,7 @@ async function loadProjects() {
   });
 
   // tags store
-  tags.value = await tagsStore.getAllTags();
+  await loadTags();
 }
 const updateProjects = async (projects_id, obj) => {
   for (const id of projects_id) {
@@ -171,10 +177,15 @@ const addProject = async (
   );
   await loadProjects();
 };
+const addTag = async (label, color) => {
+  await tagsStore.createTag(label, color);
+  await loadTags();
+};
 
 onMounted(async () => {
   await loadProjects();
   await loadClients();
+  await loadTags();
 });
 </script>
 

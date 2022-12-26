@@ -3,20 +3,16 @@ import { api } from "../boot/axios";
 import { Notify } from "quasar";
 
 export const useTagsStore = defineStore("tags", () => {
-  const createTag = async (email, password, number, name, firstname, tel) => {
+  const createTag = async (label, color) => {
     try {
-      const response = await api.post("/api/architects", {
-        email: email,
-        mot_de_passe: password,
-        numero_national: number,
-        nom: name,
-        prenom: firstname,
-        telephone: tel,
+      const response = await api.post("/api/tags", {
+        label: label,
+        color: color,
       });
       Notify.create({
         type: "positive",
         position: "top-right",
-        message: "Compte créé avec succés",
+        message: "Tag créé avec succés",
       });
       console.log(response.data);
     } catch (error) {

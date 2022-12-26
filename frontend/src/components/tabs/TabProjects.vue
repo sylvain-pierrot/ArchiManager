@@ -33,8 +33,10 @@
           <q-dialog v-model="dialog_project">
             <FormAddProject
               :clients="clients"
+              :tags="tags"
               @project="emitProject"
               @client="emitClient"
+              @tag="emitTag"
             />
           </q-dialog>
 
@@ -65,7 +67,7 @@ import FormEditProjects from "../forms/FormEditProjects.vue";
 import { ref, defineProps, toRefs, defineEmits, computed } from "vue";
 import { useRouter } from "vue-router";
 
-const emit = defineEmits(["edit", "client", "project"]);
+const emit = defineEmits(["edit", "client", "project", "tag"]);
 const props = defineProps({
   projects: {
     type: Array,
@@ -186,6 +188,7 @@ function emitProject(
   designation_id,
   client_id
 ) {
+  dialog_project.value = false;
   emit(
     "project",
     title,
@@ -200,6 +203,9 @@ function emitProject(
     designation_id,
     client_id
   );
+}
+function emitTag(label, color) {
+  emit("tag", label, color);
 }
 </script>
 

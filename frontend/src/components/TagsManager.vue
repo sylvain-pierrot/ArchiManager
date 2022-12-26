@@ -19,7 +19,7 @@
       />
 
       <q-dialog v-model="dialog_tag">
-        <FormAddTag />
+        <FormAddTag @tag="emitTag" />
       </q-dialog>
 
       <q-table
@@ -58,16 +58,22 @@
 
 <script setup>
 import FormAddTag from "./forms/FormAddTag.vue";
-import { useQuasar } from "quasar";
-import { ref } from "vue";
+import { ref, defineEmits, defineProps, toRefs, computed } from "vue";
 
+const props = defineProps({
+  tags: {
+    type: Array,
+    required: true,
+  },
+});
+const { tags } = toRefs(props);
 const dialog_tag = ref(false);
+const emit = defineEmits(["tag"]);
 
-const $q = useQuasar();
-
-const name = ref(null);
-const age = ref(null);
-const accept = ref(false);
+function emitTag(label, color) {
+  dialog_tag.value = false;
+  emit("tag", label, color);
+}
 
 const columns = ref([
   {
@@ -81,23 +87,13 @@ const columns = ref([
   },
 ]);
 
-const rows = ref([
-  {
-    name: "Expension",
-  },
-  {
-    name: "Neuf",
-  },
-  {
-    name: "Privé",
-  },
-  {
-    name: "Public",
-  },
-  {
-    name: "Résidentiel",
-  },
-]);
+const rows = computed(() => {
+  return tags.value.map((tag) => {
+    return {
+      name: tag.label,
+    };
+  });
+});
 
 function onSubmit() {
   if (accept.value !== true) {

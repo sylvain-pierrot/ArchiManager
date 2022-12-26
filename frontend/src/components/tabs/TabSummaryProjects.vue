@@ -152,6 +152,10 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  tags: {
+    type: Array,
+    required: true,
+  },
 });
 const {
   totalFees,
@@ -160,6 +164,7 @@ const {
   projectCompleted,
   projectCancelled,
   cities,
+  tags,
 } = toRefs(props);
 
 const progress1 = computed(
@@ -183,29 +188,14 @@ const columns = ref([
   },
 ]);
 
-const rows = ref([
-  {
-    name: "Résidentiel",
-    projects: 6,
-  },
-  {
-    name: "Privé",
-    projects: 1,
-  },
-  {
-    name: "Expansion",
-    projects: 2,
-  },
-  {
-    name: "Public",
-    projects: 4,
-  },
-  {
-    name: "Neuf",
-    projects: 0,
-  },
-]);
-
+const rows = computed(() => {
+  return tags.value.map((tag) => {
+    return {
+      name: tag.label,
+      projects: 0,
+    };
+  });
+});
 const series = computed(() => cities.value.map((elem) => elem.serie) || []);
 const options = computed(() => {
   return {

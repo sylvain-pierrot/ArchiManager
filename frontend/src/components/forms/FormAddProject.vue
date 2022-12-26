@@ -203,7 +203,7 @@
           color="black"
           bg-color="primary"
           v-model="tag"
-          :options="tags"
+          :options="tagsLabels"
           label="Tags"
           placeholder="Tags"
           flat
@@ -224,7 +224,7 @@
           />
 
           <q-dialog v-model="dialog_tags">
-            <TagsManager />
+            <TagsManager :tags="tags" @tag="emitTag" />
           </q-dialog>
         </div>
 
@@ -247,7 +247,6 @@
             label="CRÉER"
             size="12px"
             unelevated
-            v-close-popup
           />
         </div>
       </q-form>
@@ -265,8 +264,15 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  tags: {
+    type: Array,
+    required: true,
+  },
 });
-const { clients } = toRefs(props);
+const { clients, tags } = toRefs(props);
+const tagsLabels = computed(() => {
+  return tags.value.map((tag) => tag.label);
+});
 const clientsNames = computed(() => clients.value.map((client) => client.nom));
 const dialog_client = ref(false);
 const dialog_tags = ref(false);
@@ -291,10 +297,9 @@ const address = ref("");
 const startDate = ref(null);
 const endDate = ref(null);
 const tag = ref();
-const tags = ref(["Expension", "Neuf", "Privé", "Public", "Résidentiel"]);
 const description = ref("");
 
-const emit = defineEmits(["client"]);
+const emit = defineEmits(["client", "tag"]);
 function emitClient(
   clientName,
   clientNameContact,
@@ -314,5 +319,8 @@ function emitClient(
     phone,
     notes
   );
+}
+function emitTag(label, color) {
+  emit("tag", label, color);
 }
 </script>
