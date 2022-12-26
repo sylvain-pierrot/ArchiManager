@@ -8,7 +8,25 @@
       <q-btn icon="close" flat round dense v-close-popup color="white" />
     </q-card-section>
     <q-card-section>
-      <q-form @submit="onSubmit" @reset="onReset" class="row q-col-gutter-sm">
+      <q-form
+        @submit="
+          $emit(
+            'project',
+            title,
+            landSurface,
+            indicativeSurface,
+            city,
+            address,
+            startDate,
+            endDate,
+            description,
+            mission_id,
+            designation_id,
+            client_id
+          )
+        "
+        class="row q-col-gutter-sm"
+      >
         <q-input
           outlined
           type="text"
@@ -68,8 +86,8 @@
           outlined
           color="black"
           bg-color="primary"
-          v-model="client"
-          :options="clients"
+          v-model="clientName"
+          :options="clientsNames"
           label="Client"
           placeholder="Client"
           flat
@@ -90,7 +108,7 @@
           />
 
           <q-dialog v-model="dialog_client">
-            <FormAddClient />
+            <FormAddClient @client="emitClient" />
           </q-dialog>
         </div>
 
@@ -215,17 +233,22 @@
           type="textarea"
           color="black"
           bg-color="primary"
-          v-model="title"
+          v-model="description"
           label="Description"
           placeholder="Description"
           flat
           class="col-12"
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
-          lazy-rules
         />
 
         <div class="col-12 row justify-end">
-          <q-btn color="warning" label="CRÉER" size="12px" unelevated />
+          <q-btn
+            type="submit"
+            color="warning"
+            label="CRÉER"
+            size="12px"
+            unelevated
+            v-close-popup
+          />
         </div>
       </q-form>
     </q-card-section>
@@ -235,20 +258,32 @@
 <script setup>
 import TagsManager from "../TagsManager.vue";
 import FormAddClient from "./FormAddClient.vue";
-import { useQuasar } from "quasar";
-import { ref } from "vue";
+import { ref, defineProps, toRefs, defineEmits, computed } from "vue";
 
+const props = defineProps({
+  clients: {
+    type: Array,
+    required: true,
+  },
+});
+const { clients } = toRefs(props);
+const clientsNames = computed(() => clients.value.map((client) => client.nom));
 const dialog_client = ref(false);
 const dialog_tags = ref(false);
 
 const title = ref("");
-const id = ref("");
-const client = ref(null);
-const clients = ref(["Michel", "Arnaud", "Charley", "Alexandre"]);
+const clientName = ref(null);
+const client_id = computed(
+  () => clients.value.find((client) => client.nom === clientName.value).id
+);
 const mission = ref(null);
-const missions = ref(["complete", "partielle"]);
+const mission_id = computed(() => (mission.value === "Partielle" ? 2 : 1));
+const missions = ref(["Complète", "Partielle"]);
 const designation = ref(null);
-const designations = ref(["usage personnel", "autre usage"]);
+const designation_id = computed(() =>
+  description.value === "Usage personnel" ? 1 : 2
+);
+const designations = ref(["Usage personnel", "Autre usage"]);
 const landSurface = ref(null);
 const indicativeSurface = ref(null);
 const city = ref("");
@@ -257,34 +292,27 @@ const startDate = ref(null);
 const endDate = ref(null);
 const tag = ref();
 const tags = ref(["Expension", "Neuf", "Privé", "Public", "Résidentiel"]);
+const description = ref("");
 
-const $q = useQuasar();
-
-const name = ref(null);
-const age = ref(null);
-const accept = ref(false);
-
-function onSubmit() {
-  if (accept.value !== true) {
-    $q.notify({
-      color: "red-5",
-      textColor: "white",
-      icon: "warning",
-      message: "You need to accept the license and terms first",
-    });
-  } else {
-    $q.notify({
-      color: "green-4",
-      textColor: "white",
-      icon: "cloud_done",
-      message: "Submitted",
-    });
-  }
-}
-
-function onReset() {
-  name.value = null;
-  age.value = null;
-  accept.value = false;
+const emit = defineEmits(["client"]);
+function emitClient(
+  clientName,
+  clientNameContact,
+  email,
+  address,
+  city,
+  phone,
+  notes
+) {
+  emit(
+    "client",
+    clientName,
+    clientNameContact,
+    email,
+    address,
+    city,
+    phone,
+    notes
+  );
 }
 </script>

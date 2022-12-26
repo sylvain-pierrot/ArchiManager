@@ -300,8 +300,11 @@ function emailValidation(val) {
 }
 </script>
 
-<style>
+<style scoped>
 .displayBtn {
   display: none;
+}
+.q-field__native {
+  color: black !important;
 }
 </style>

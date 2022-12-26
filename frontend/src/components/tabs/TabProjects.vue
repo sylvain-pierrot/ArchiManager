@@ -31,7 +31,11 @@
           </q-btn>
 
           <q-dialog v-model="dialog_project">
-            <FormAddProject />
+            <FormAddProject
+              :clients="clients"
+              @project="emitProject"
+              @client="emitClient"
+            />
           </q-dialog>
 
           <q-dialog v-model="dialog_project_edit">
@@ -61,7 +65,7 @@ import FormEditProjects from "../forms/FormEditProjects.vue";
 import { ref, defineProps, toRefs, defineEmits, computed } from "vue";
 import { useRouter } from "vue-router";
 
-const emit = defineEmits(["edit"]);
+const emit = defineEmits(["edit", "client", "project"]);
 const props = defineProps({
   projects: {
     type: Array,
@@ -71,8 +75,12 @@ const props = defineProps({
     type: Array,
     required: true,
   },
+  clients: {
+    type: Array,
+    required: true,
+  },
 });
-const { projects, tags } = toRefs(props);
+const { projects, tags, clients } = toRefs(props);
 const router = useRouter();
 const dialog_project = ref(false);
 const dialog_project_edit = ref(false);
@@ -143,6 +151,55 @@ function getSelectedString() {
 function emitEdit(obj) {
   const projects_id = selected.value.map((project) => project.id);
   emit("edit", projects_id, obj);
+}
+
+function emitClient(
+  clientName,
+  clientNameContact,
+  email,
+  address,
+  city,
+  phone,
+  notes
+) {
+  emit(
+    "client",
+    clientName,
+    clientNameContact,
+    email,
+    address,
+    city,
+    phone,
+    notes
+  );
+}
+function emitProject(
+  title,
+  landSurface,
+  indicativeSurface,
+  city,
+  address,
+  startDate,
+  endDate,
+  description,
+  mission_id,
+  designation_id,
+  client_id
+) {
+  emit(
+    "project",
+    title,
+    landSurface,
+    indicativeSurface,
+    city,
+    address,
+    startDate,
+    endDate,
+    description,
+    mission_id,
+    designation_id,
+    client_id
+  );
 }
 </script>
 

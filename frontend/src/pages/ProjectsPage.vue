@@ -34,7 +34,14 @@
       </q-tab-panel>
 
       <q-tab-panel name="projects" class="q-pa-none q-mt-md">
-        <TabProjects :projects="projects" :tags="tags" @edit="updateProjects" />
+        <TabProjects
+          :projects="projects"
+          :clients="clients"
+          :tags="tags"
+          @edit="updateProjects"
+          @client="addClient"
+          @project="addProject"
+        />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -45,11 +52,16 @@ import TabSummaryProjects from "../components/tabs/TabSummaryProjects.vue";
 import TabProjects from "../components/tabs/TabProjects.vue";
 import { ref, onMounted } from "vue";
 import { useProjectsStore } from "../stores/projects";
+import { useClientsStore } from "../stores/clients";
 import { useTagsStore } from "../stores/tags";
 
 // stores
+const clientsStore = useClientsStore();
 const tagsStore = useTagsStore();
 const projectsStore = useProjectsStore();
+
+// clients store
+const clients = ref([]);
 
 // projects store
 const totalFees = ref(0);
@@ -66,6 +78,9 @@ const tags = ref();
 // page
 const tab = ref("summary");
 
+async function loadClients() {
+  clients.value = (await clientsStore.getAllClients()) || [];
+}
 async function loadProjects() {
   projectInPogress.value = 0;
   projectCompleted.value = 0;
@@ -107,8 +122,59 @@ const updateProjects = async (projects_id, obj) => {
   await loadProjects();
 };
 
+const addClient = async (
+  clientName,
+  clientNameContact,
+  email,
+  address,
+  city,
+  phone,
+  notes
+) => {
+  await clientsStore.createClient(
+    clientName,
+    clientNameContact,
+    email,
+    address,
+    city,
+    phone,
+    notes
+  );
+  await loadClients();
+};
+
+const addProject = async (
+  title,
+  landSurface,
+  indicativeSurface,
+  city,
+  address,
+  startDate,
+  endDate,
+  description,
+  mission_id,
+  designation_id,
+  client_id
+) => {
+  await projectsStore.createProject(
+    title,
+    landSurface,
+    indicativeSurface,
+    city,
+    address,
+    startDate,
+    endDate,
+    description,
+    mission_id,
+    designation_id,
+    client_id
+  );
+  await loadProjects();
+};
+
 onMounted(async () => {
   await loadProjects();
+  await loadClients();
 });
 </script>
 

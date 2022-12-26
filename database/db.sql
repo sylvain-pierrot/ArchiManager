@@ -17,6 +17,18 @@ CREATE TABLE statuts (
   label VARCHAR(255) NOT NULL
 );
 
+-- Créer la table des missions
+CREATE TABLE missions (
+  id INTEGER PRIMARY KEY,
+  label VARCHAR(255) NOT NULL
+);
+
+-- Créer la table des désignations
+CREATE TABLE designations (
+  id INTEGER PRIMARY KEY,
+  label VARCHAR(255) NOT NULL
+);
+
 -- Créer la table des architectes
 CREATE TABLE architectes (
   id serial PRIMARY KEY,
@@ -67,6 +79,8 @@ CREATE TABLE projets (
   description TEXT,
   statut_id INTEGER REFERENCES statuts(id),
   client_id INTEGER REFERENCES clients(id),
+  mission_id INTEGER REFERENCES missions(id),
+  designation_id INTEGER REFERENCES designations(id),
   architecte_id INTEGER REFERENCES architectes(id)
 );
 

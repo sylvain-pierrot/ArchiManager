@@ -47,7 +47,7 @@ const email = ref("");
 const password = ref("");
 </script>
 
-<style>
+<style scoped>
 .q-field__native {
   color: white !important;
 }

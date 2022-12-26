@@ -4,29 +4,58 @@ import { Notify } from "quasar";
 
 export const useProjectsStore = defineStore("projects", () => {
   const createProject = async (
-    email,
-    password,
-    number,
-    name,
-    firstname,
-    tel
+    title,
+    landSurface,
+    indicativeSurface,
+    city,
+    address,
+    startDate,
+    endDate,
+    description,
+    mission_id,
+    designation_id,
+    client_id
   ) => {
     try {
-      const response = await api.post("/api/architects", {
-        email: email,
-        mot_de_passe: password,
-        numero_national: number,
-        nom: name,
-        prenom: firstname,
-        telephone: tel,
+      console.log(
+        title,
+        landSurface,
+        indicativeSurface,
+        city,
+        address,
+        startDate,
+        endDate,
+        description,
+        mission_id,
+        designation_id,
+        client_id
+      );
+      const response = await api.post("/api/projects", {
+        titre: title,
+        surface_fonciere: landSurface,
+        surface_indicative: indicativeSurface,
+        ville: city,
+        adresse: address,
+        date_debut: startDate,
+        date_fin: endDate,
+        description: description,
+        statut_id: 1,
+        mission_id: mission_id,
+        designation_id: designation_id,
+        client_id: client_id,
       });
       Notify.create({
         type: "positive",
         position: "top-right",
-        message: "Compte créé avec succés",
+        message: "Projet créé avec succés",
       });
       console.log(response.data);
     } catch (error) {
+      Notify.create({
+        type: "negative",
+        position: "top-right",
+        message: "Erreur: la création a échoué",
+      });
       console.error(error);
     }
   };
