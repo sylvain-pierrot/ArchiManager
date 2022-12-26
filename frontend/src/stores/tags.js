@@ -2,8 +2,8 @@ import { defineStore } from "pinia";
 import { api } from "../boot/axios";
 import { Notify } from "quasar";
 
-export const useStagesStore = defineStore("stages", () => {
-  const createStage = async (email, password, number, name, firstname, tel) => {
+export const useTagsStore = defineStore("tags", () => {
+  const createTag = async (email, password, number, name, firstname, tel) => {
     try {
       const response = await api.post("/api/architects", {
         email: email,
@@ -24,17 +24,18 @@ export const useStagesStore = defineStore("stages", () => {
     }
   };
 
-  const getAllStages = async (id) => {
+  const getAllTags = async () => {
     try {
-      const response = await api.get(`/api/projects/${id}/stages`);
+      const response = await api.get("/api/tags");
       console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);
     }
   };
+
   return {
-    createStage,
-    getAllStages,
+    createTag,
+    getAllTags,
   };
 });

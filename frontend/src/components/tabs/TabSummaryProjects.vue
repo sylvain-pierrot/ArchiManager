@@ -55,9 +55,10 @@
             size="10px"
             :value="progress1"
             color="warning"
+            instant-feedback
           />
           <div class="text-caption text-grey-7 q-mt-sm">
-            Honoraires totaux des projets en attentes/terminés
+            Honoraires totaux des projets "en cours"/"terminé"
           </div>
         </q-card-section>
       </q-card>
@@ -95,6 +96,7 @@
             type="donut"
             :options="options"
             :series="series"
+            v-if="options"
           ></apexchart>
         </q-card-section>
       </q-card>
@@ -104,10 +106,14 @@
 
 <script setup>
 import { getCssVar } from "quasar";
-import { ref, defineProps, toRefs } from "vue";
+import { ref, defineProps, toRefs, computed } from "vue";
 
 const props = defineProps({
   totalFees: {
+    type: Number,
+    required: true,
+  },
+  totalFeesCollected: {
     type: Number,
     required: true,
   },
@@ -124,13 +130,19 @@ const props = defineProps({
     required: true,
   },
 });
-const { totalFees, projectInPogress, projectCompleted, cities } = toRefs(props);
-const progress1 = ref("0.6");
+const {
+  totalFees,
+  totalFeesCollected,
+  projectInPogress,
+  projectCompleted,
+  cities,
+} = toRefs(props);
+const progress1 = computed(() => totalFeesCollected.value / totalFees.value);
 const columns = ref([
   {
     name: "name",
     required: true,
-    label: "Nom",
+    label: "Tag",
     align: "left",
     field: "name",
     sortable: true,
@@ -167,26 +179,26 @@ const rows = ref([
   },
 ]);
 
-const labels = cities.value.map((elem) => elem.city);
-const series = ref(cities.value.map((elem) => elem.serie));
-const options = ref({
-  title: {
-    text: "PROJETS",
-    align: "left",
-  },
-  chart: {
-    id: "apex-donut",
-  },
-  colors: [getCssVar("negative"), getCssVar("primary"), getCssVar("accent")],
-  markers: {
-    size: 4,
-    hover: {
-      sizeOffset: 6,
+const series = computed(() => cities.value.map((elem) => elem.serie));
+const options = computed(() => {
+  return {
+    title: {
+      text: "PROJETS",
+      align: "left",
     },
-  },
-  labels: labels,
+    chart: {
+      id: "apex-donut",
+    },
+    colors: [getCssVar("negative"), getCssVar("primary"), getCssVar("accent")],
+    markers: {
+      size: 4,
+      hover: {
+        sizeOffset: 6,
+      },
+    },
+    labels: cities.value.map((elem) => elem.city),
+  };
 });
-// const series = ref([3, 1, 6, 5]);
 </script>
 
 <style></style>

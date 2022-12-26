@@ -47,6 +47,12 @@ router.put(
   body("architecte_id").not().exists(),
   projectController.update.bind(projectController)
 );
+router.put(
+  "/projects/:id/status",
+  body("statut_id").isInt(),
+  authorization.authenticate,
+  projectController.updateStatusId.bind(projectController)
+);
 router.delete(
   "/projects/:id",
   authorization.authenticate,
@@ -56,6 +62,11 @@ router.get(
   "/projects/fees",
   authorization.authenticate,
   projectController.getTotalFees.bind(projectController)
+);
+router.get(
+  "/projects/feesCollected",
+  authorization.authenticate,
+  projectController.totalFeesCollected.bind(projectController)
 );
 
 module.exports = router;

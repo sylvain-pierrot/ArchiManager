@@ -12,7 +12,6 @@ import { useRouter } from "vue-router";
 
 export default store((/* { ssrContext } */) => {
   const pinia = createPinia();
-  pinia.router = useRouter();
   // You can add Pinia plugins here
   // pinia.use(SomePiniaPlugin)
 

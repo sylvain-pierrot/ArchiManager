@@ -12,12 +12,30 @@
             label="Nouveau Projet"
             icon="add"
             unelevated
-            class="q-mb-md"
+            class="q-mb-md q-mr-md"
             @click="dialog_project = true"
           />
 
+          <q-btn
+            outline
+            color="black"
+            label="ACTIONS"
+            icon-right="edit"
+            class="q-mb-md"
+            @click="dialog_project_edit = true"
+            v-if="selected.length > 0"
+          >
+            <q-badge color="warning" floating rounded>{{
+              selected.length
+            }}</q-badge>
+          </q-btn>
+
           <q-dialog v-model="dialog_project">
             <FormAddProject />
+          </q-dialog>
+
+          <q-dialog v-model="dialog_project_edit">
+            <FormEditProjects :tags="tags" @edit="emitEdit" />
           </q-dialog>
 
           <q-table
@@ -39,19 +57,25 @@
 
 <script setup>
 import FormAddProject from "../forms/FormAddProject.vue";
-import { ref, defineProps, toRefs } from "vue";
+import FormEditProjects from "../forms/FormEditProjects.vue";
+import { ref, defineProps, toRefs, defineEmits, computed } from "vue";
 import { useRouter } from "vue-router";
 
+const emit = defineEmits(["edit"]);
 const props = defineProps({
   projects: {
     type: Array,
     required: true,
   },
+  tags: {
+    type: Array,
+    required: true,
+  },
 });
-const { projects } = toRefs(props);
+const { projects, tags } = toRefs(props);
 const router = useRouter();
 const dialog_project = ref(false);
-const cancelEnabled = ref(false);
+const dialog_project_edit = ref(false);
 const selected = ref([]);
 const columns = ref([
   {
@@ -90,7 +114,7 @@ const columns = ref([
     field: "files",
   },
 ]);
-const rows = ref(
+const rows = computed(() =>
   projects.value.map((project) => {
     return {
       id: project.id,
@@ -115,6 +139,10 @@ function getSelectedString() {
     : `${selected.value.length} record${
         selected.value.length > 1 ? "s" : ""
       } selected of ${rows.value.length}`;
+}
+function emitEdit(obj) {
+  const projects_id = selected.value.map((project) => project.id);
+  emit("edit", projects_id, obj);
 }
 </script>
 

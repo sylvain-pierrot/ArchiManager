@@ -24,7 +24,7 @@ app.use(express.json({ limit: "100mb" }));
 app.use(
   cors({
     origin: "http://localhost:8080",
-    methods: "*",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
 );

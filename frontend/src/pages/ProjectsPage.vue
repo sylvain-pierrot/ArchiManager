@@ -25,6 +25,7 @@
       <q-tab-panel name="summary" class="q-pa-none q-mt-md">
         <TabSummaryProjects
           :totalFees="totalFees"
+          :totalFeesCollected="totalFeesCollected"
           :projectInPogress="projectInPogress"
           :projectCompleted="projectCompleted"
           :cities="cities"
@@ -33,7 +34,12 @@
       </q-tab-panel>
 
       <q-tab-panel name="projects" class="q-pa-none q-mt-md">
-        <TabProjects :projects="projects" v-if="projects" />
+        <TabProjects
+          :projects="projects"
+          :tags="tags"
+          @edit="updateProjects"
+          v-if="projects"
+        />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -44,18 +50,45 @@ import TabSummaryProjects from "../components/tabs/TabSummaryProjects.vue";
 import TabProjects from "../components/tabs/TabProjects.vue";
 import { ref, onMounted } from "vue";
 import { useProjectsStore } from "../stores/projects";
+import { useTagsStore } from "../stores/tags";
 
+// stores
+const tagsStore = useTagsStore();
 const projectsStore = useProjectsStore();
+
+// projects store
 const totalFees = ref();
+const totalFeesCollected = ref();
 const projects = ref();
 const projectInPogress = ref(0);
 const projectCompleted = ref(0);
 const cities = ref([]);
+
+// tags store
+const tags = ref();
+
+// page
 const tab = ref("summary");
 
+async function loadProjects() {
+  return await projectsStore.getAllProjects();
+}
+const updateProjects = async (projects_id, obj) => {
+  for (const id of projects_id) {
+    if (obj.attribut === "Statut") {
+      await projectsStore.updateStatusId(id, obj.value);
+    }
+  }
+  projects.value = await loadProjects();
+};
+
 onMounted(async () => {
-  projects.value = await projectsStore.getAllProjects();
+  // projects store
+  projects.value = await loadProjects();
   totalFees.value = (await projectsStore.getTotalFees())[0].sum;
+  totalFeesCollected.value = (
+    await projectsStore.getTotalFeesCollected()
+  )[0].sum;
   projects.value.forEach((project) => {
     // cities
     const index = cities.value.findIndex((elem) => elem.city === project.ville);
@@ -71,6 +104,9 @@ onMounted(async () => {
       projectCompleted.value += 1;
     }
   });
+
+  // tags store
+  tags.value = await tagsStore.getAllTags();
 });
 </script>
 
