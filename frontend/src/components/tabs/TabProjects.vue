@@ -56,7 +56,24 @@
             bordered
             @row-click="onRowClick"
             v-model:pagination="pagination"
-          />
+          >
+            <template v-slot:body-cell-project="props">
+              <q-td key="name" :props="props">
+                <div class="text-subtitle1">
+                  {{
+                    `${props.row.project.titre} | ${props.row.project.ville}`
+                  }}
+                </div>
+                <q-badge
+                  v-for="(tag, index) in props.row.project.tags"
+                  :key="index"
+                  :style="{ background: tag.color }"
+                >
+                  {{ tag.label }}
+                </q-badge>
+              </q-td>
+            </template>
+          </q-table>
         </q-card-section>
       </q-card>
     </div>
@@ -132,15 +149,26 @@ const rows = computed(() =>
   projects.value.map((project) => {
     return {
       id: project.id,
-      project: `${project.titre} | ${project.ville}`,
+      project: project,
       status: getStatus(project.statut_id),
       fee: "test",
       files: 0,
     };
   })
 );
-
+// `${project.project.titre} | ${
+//         project.project.ville
+//       }\n ${showTags(project.tags)}`
 // functions
+// function showTags(tags) {
+//   return tags.map((tag) => {
+//     return `
+//               <q-badge style="{ background: ${tag.color}}">
+//                 ${tag.label}
+//               </q-badge>
+//             `;
+//   });
+// }
 function getStatus(id) {
   return id === 1 ? "En cours" : id === 2 ? "Terminé" : "Annulé";
 }

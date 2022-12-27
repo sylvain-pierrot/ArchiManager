@@ -19,9 +19,9 @@ export const useTagsProjectsStore = defineStore("tagsProjects", () => {
     }
   };
 
-  const getAllTags = async () => {
+  const getAllTagsProject = async (project_id) => {
     try {
-      const response = await api.get("/api/tags");
+      const response = await api.get(`/api/projects/${project_id}/tags`);
       console.log(response.data);
       return response.data;
     } catch (error) {
@@ -31,6 +31,6 @@ export const useTagsProjectsStore = defineStore("tagsProjects", () => {
 
   return {
     addTagProject,
-    getAllTags,
+    getAllTagsProject,
   };
 });

@@ -40,13 +40,16 @@ class Tag_projectController extends Controller {
     }
 
     // data
-    const foreignKey = {
-      key: "projet_id",
-      value: parseInt(req.params.idP),
-    };
+    const projet_id = req.params.idP;
+
+    // query
+    const { rows } = await db.query(
+      "SELECT * FROM tags_projets INNER JOIN tags ON tag_id=id WHERE projet_id = $1",
+      [projet_id]
+    );
 
     // success
-    super.getAll(req, res, foreignKey);
+    res.status(200).send(rows);
   }
 
   async getOne(req, res) {

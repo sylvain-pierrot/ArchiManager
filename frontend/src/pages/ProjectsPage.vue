@@ -99,14 +99,20 @@ async function loadProjects() {
   cities.value = [];
 
   // projects
-  projects.value = await projectsStore.getAllProjects();
+  const projectList = await projectsStore.getAllProjects();
+  projects.value = await Promise.all(
+    projectList.map(async (project) => {
+      project.tags = await tagsProjectsStore.getAllTagsProject(project.id);
+      return project;
+    })
+  );
 
   // sum
   totalFees.value = (await projectsStore.getTotalFees())[0].sum || 0;
   totalFeesCollected.value =
     (await projectsStore.getTotalFeesCollected())[0].sum || 0;
 
-  projects.value.forEach((project) => {
+  projectList.forEach((project) => {
     // cities
     const index = cities.value.findIndex((elem) => elem.city === project.ville);
     if (index === -1) {
