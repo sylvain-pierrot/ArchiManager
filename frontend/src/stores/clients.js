@@ -11,7 +11,6 @@ export const useClientsStore = defineStore("clients", () => {
         position: "top-right",
         message: "Client créé avec succés",
       });
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -20,7 +19,6 @@ export const useClientsStore = defineStore("clients", () => {
   const getAllClients = async () => {
     try {
       const response = await api.get("/api/clients");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);

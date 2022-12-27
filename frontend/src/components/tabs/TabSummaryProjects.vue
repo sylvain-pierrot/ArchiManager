@@ -194,7 +194,7 @@ const rows = computed(() => {
   return tags.value.map((tag) => {
     return {
       name: tag.label,
-      projects: 0,
+      projects: tag.occ,
     };
   });
 });

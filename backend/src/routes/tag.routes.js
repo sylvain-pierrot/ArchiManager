@@ -22,6 +22,11 @@ router.get(
   authorization.authenticate,
   tagController.getOne.bind(tagController)
 );
+router.get(
+  "/tags/:id/sumProjects",
+  authorization.authenticate,
+  tagController.totalProjectsByTag.bind(tagController)
+);
 router.put(
   "/tags/:id",
   authorization.authenticate,

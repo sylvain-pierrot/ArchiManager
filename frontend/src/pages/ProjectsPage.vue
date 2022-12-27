@@ -83,10 +83,15 @@ const cities = ref([]);
 // tags store
 const tags = ref([]);
 
-// functions
+// functions loads
 async function loadTags() {
-  tags.value = await tagsStore.getAllTags();
-  console.log(tags.value);
+  const listTag = await tagsStore.getAllTags();
+  tags.value = await Promise.all(
+    listTag.map(async (tag) => {
+      tag.occ = await tagsStore.totalProjectsByTag(tag.id);
+      return tag;
+    })
+  );
 }
 async function loadClients() {
   clients.value = await clientsStore.getAllClients();
@@ -133,11 +138,9 @@ async function loadProjects() {
         projectCancelled.value += 1;
     }
   });
-
-  // tags store
-  await loadTags();
 }
 
+// functions
 // update: 1 => statut, 2 => tag
 const updateProjects = async (projects_id, obj) => {
   for (const id of projects_id) {
@@ -146,12 +149,13 @@ const updateProjects = async (projects_id, obj) => {
     } else if (obj.attribut === 2) {
       await tagsProjectsStore.deleteAllTagsProject(id);
       console.log(obj.value);
-      obj.value.forEach(async (tag_id) => {
+      for (const tag_id of obj.value) {
         await tagsProjectsStore.addTagProject(id, tag_id);
-      });
+      }
     }
   }
   await loadProjects();
+  await loadTags();
 };
 const updateTag = async (tag) => {
   await tagsStore.updateLabelTag(tag);
@@ -168,6 +172,7 @@ const addProject = async (project, tags_projects) => {
     await tagsProjectsStore.addTagProject(project_id, tag_id);
   });
   await loadProjects();
+  await loadTags();
 };
 const addTag = async (tag) => {
   await tagsStore.createTag(tag);

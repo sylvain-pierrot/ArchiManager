@@ -11,7 +11,6 @@ export const useTagsStore = defineStore("tags", () => {
         position: "top-right",
         message: "Tag créé avec succés",
       });
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -20,7 +19,6 @@ export const useTagsStore = defineStore("tags", () => {
   const getAllTags = async () => {
     try {
       const response = await api.get("/api/tags");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -37,8 +35,16 @@ export const useTagsStore = defineStore("tags", () => {
         position: "top-right",
         message: "Label tag modifié avec succés",
       });
-      console.log(response.data);
       return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const totalProjectsByTag = async (tag_id) => {
+    try {
+      const response = await api.get(`/api/tags/${tag_id}/sumProjects`);
+      return response.data[0].count;
     } catch (error) {
       console.error(error);
     }
@@ -48,5 +54,6 @@ export const useTagsStore = defineStore("tags", () => {
     createTag,
     getAllTags,
     updateLabelTag,
+    totalProjectsByTag,
   };
 });

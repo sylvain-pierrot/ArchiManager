@@ -13,7 +13,6 @@ export const useTagsProjectsStore = defineStore("tagsProjects", () => {
         position: "top-right",
         message: `Tag ajouté au projet ${project_id} avec succés`,
       });
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
@@ -22,7 +21,6 @@ export const useTagsProjectsStore = defineStore("tagsProjects", () => {
   const getAllTagsProject = async (project_id) => {
     try {
       const response = await api.get(`/api/projects/${project_id}/tags`);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -32,7 +30,6 @@ export const useTagsProjectsStore = defineStore("tagsProjects", () => {
   const deleteAllTagsProject = async (project_id) => {
     try {
       const response = await api.delete(`/api/projects/${project_id}/tags`);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);

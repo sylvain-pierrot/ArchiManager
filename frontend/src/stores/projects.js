@@ -11,7 +11,6 @@ export const useProjectsStore = defineStore("projects", () => {
         position: "top-right",
         message: "Projet créé avec succés",
       });
-      console.log(response.data);
       return response.data.id;
     } catch (error) {
       console.error(error);
@@ -21,7 +20,6 @@ export const useProjectsStore = defineStore("projects", () => {
   const getAllProjects = async () => {
     try {
       const response = await api.get("/api/projects");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -31,7 +29,6 @@ export const useProjectsStore = defineStore("projects", () => {
   const getTotalFees = async () => {
     try {
       const response = await api.get("/api/projects/fees");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -41,7 +38,6 @@ export const useProjectsStore = defineStore("projects", () => {
   const getTotalFeesCollected = async () => {
     try {
       const response = await api.get("/api/projects/feesCollected");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -56,7 +52,6 @@ export const useProjectsStore = defineStore("projects", () => {
         position: "top-right",
         message: "Projet modifié avec succés",
       });
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);

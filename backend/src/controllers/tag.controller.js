@@ -110,6 +110,24 @@ class TagController extends Controller {
       res.status(500).json({ message: "Server error" });
     }
   };
+
+  async totalProjectsByTag(req, res) {
+    // datas
+    const architecte_id = jwt.verify(
+      req.cookies.token,
+      process.env.JWT_SECRET
+    ).id;
+    const id = parseInt(req.params.id);
+
+    // query
+    const { rows } = await db.query(
+      "SELECT COUNT(projet_id) FROM tags_projets INNER JOIN tags ON tag_id=id WHERE architecte_id = $1 AND id = $2",
+      [architecte_id, id]
+    );
+
+    // success
+    res.status(200).send(rows);
+  }
 }
 
 module.exports = new TagController();
