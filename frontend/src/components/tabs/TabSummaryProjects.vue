@@ -98,6 +98,7 @@
             bordered
             dense
             hide-bottom
+            v-model:pagination="pagination"
           />
         </q-card-section>
       </q-card>
@@ -169,6 +170,9 @@ const {
 const progress1 = computed(
   () => totalFeesCollected.value / totalFees.value || 0
 );
+const pagination = ref({
+  rowsPerPage: 0,
+});
 const columns = ref([
   {
     name: "name",

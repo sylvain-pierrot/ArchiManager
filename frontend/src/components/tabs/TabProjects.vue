@@ -55,6 +55,7 @@
             flat
             bordered
             @row-click="onRowClick"
+            v-model:pagination="pagination"
           />
         </q-card-section>
       </q-card>
@@ -87,6 +88,9 @@ const { projects, tags, clients } = toRefs(props);
 const dialog_project = ref(false);
 const dialog_project_edit = ref(false);
 const selected = ref([]);
+const pagination = ref({
+  rowsPerPage: 0,
+});
 const columns = ref([
   {
     name: "id",
