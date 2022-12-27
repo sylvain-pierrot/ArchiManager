@@ -186,19 +186,39 @@
           lazy-rules
         />
 
-        <!-- <q-select
+        <q-select
           outlined
           color="black"
           bg-color="primary"
-          v-model="tag"
-          :options="tagsLabels"
+          v-model="tags_projects"
+          multiple
+          :options="tags_"
+          stack-label
           label="Tags"
           placeholder="Tags"
           flat
           class="col-6"
-          :rules="[(val) => !!val || 'Ce champs est requis']"
+          :rules="[
+            (val) => (!!val && val.length > 0) || 'Ce champs est requis',
+          ]"
           lazy-rules
-        /> -->
+          emit-value
+          map-options
+        >
+          <template v-slot:selected-item="scope">
+            <q-chip
+              removable
+              dense
+              @remove="scope.removeAtIndex(scope.index)"
+              :tabindex="scope.tabindex"
+              text-color="black"
+              class="q-ma-none"
+              :style="{ background: scope.opt.color }"
+            >
+              {{ scope.opt.label }}
+            </q-chip>
+          </template>
+        </q-select>
 
         <div class="row items-start q-mt-sm col-6">
           <q-btn
@@ -262,6 +282,15 @@ const dialog_client = ref(false);
 const dialog_tags = ref(false);
 
 // options inputs select
+const tags_ = computed(() =>
+  tags.value.map((tag) => {
+    return {
+      label: tag.label,
+      value: tag.id,
+      color: tag.color,
+    };
+  })
+);
 const clients_ = computed(() =>
   clients.value.map((client) => {
     return {
@@ -291,6 +320,9 @@ const designations = ref([
   },
 ]);
 
+// tags_projects
+const tags_projects = ref([]);
+
 // project
 const project = ref({
   titre: "",
@@ -313,7 +345,7 @@ function emitClient(client) {
   dialog_client.value = false;
   emit("client", client);
 }
-function emitTag(label, color) {
-  emit("tag", label, color);
+function emitTag(tag) {
+  emit("tag", tag);
 }
 </script>

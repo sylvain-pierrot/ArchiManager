@@ -165,8 +165,8 @@ function emitProject(project) {
   dialog_project.value = false;
   emit("project", project);
 }
-function emitTag(label, color) {
-  emit("tag", label, color);
+function emitTag(tag) {
+  emit("tag", tag);
 }
 </script>
 

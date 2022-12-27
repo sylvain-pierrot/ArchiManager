@@ -8,13 +8,13 @@
       <q-btn icon="close" flat round dense v-close-popup color="white" />
     </q-card-section>
     <q-card-section>
-      <q-form @submit="$emit('tag', label, color)" class="row q-col-gutter-sm">
+      <q-form @submit="$emit('tag', tag)" class="row q-col-gutter-sm">
         <q-input
           outlined
           type="text"
           color="black"
           bg-color="primary"
-          v-model="label"
+          v-model="tag.label"
           label="Label"
           placeholder="Label"
           flat
@@ -25,7 +25,7 @@
 
         <q-input
           outlined
-          v-model="color"
+          v-model="tag.color"
           type="text"
           color="black"
           label="Couleur"
@@ -35,7 +35,17 @@
           readonly
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
           lazy-rules
+          :style="{ color: tag.color }"
         >
+          <template v-slot:label>
+            <q-chip
+              text-color="black"
+              class="q-ma-none"
+              :style="{ background: tag.color }"
+            >
+              Couleur
+            </q-chip>
+          </template>
           <template v-slot:append>
             <q-icon name="colorize" class="cursor-pointer">
               <q-popup-proxy
@@ -43,7 +53,7 @@
                 transition-show="scale"
                 transition-hide="scale"
               >
-                <q-color v-model="color" no-header />
+                <q-color v-model="tag.color" no-header />
               </q-popup-proxy>
             </q-icon>
           </template>
@@ -66,6 +76,8 @@
 <script setup>
 import { ref } from "vue";
 
-const label = ref("");
-const color = ref("");
+const tag = ref({
+  label: "",
+  color: "",
+});
 </script>

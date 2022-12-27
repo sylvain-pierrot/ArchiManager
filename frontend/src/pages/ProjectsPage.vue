@@ -148,8 +148,8 @@ const addProject = async (project) => {
   await projectsStore.createProject(project);
   await loadProjects();
 };
-const addTag = async (label, color) => {
-  await tagsStore.createTag(label, color);
+const addTag = async (tag) => {
+  await tagsStore.createTag(tag);
   await loadTags();
 };
 

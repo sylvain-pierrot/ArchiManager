@@ -70,9 +70,9 @@ const { tags } = toRefs(props);
 const dialog_tag = ref(false);
 const emit = defineEmits(["tag"]);
 
-function emitTag(label, color) {
+function emitTag(tag) {
   dialog_tag.value = false;
-  emit("tag", label, color);
+  emit("tag", tag);
 }
 
 const columns = ref([

@@ -3,12 +3,9 @@ import { api } from "../boot/axios";
 import { Notify } from "quasar";
 
 export const useTagsStore = defineStore("tags", () => {
-  const createTag = async (label, color) => {
+  const createTag = async (tag) => {
     try {
-      const response = await api.post("/api/tags", {
-        label: label,
-        color: color,
-      });
+      const response = await api.post("/api/tags", tag);
       Notify.create({
         type: "positive",
         position: "top-right",
