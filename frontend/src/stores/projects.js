@@ -3,47 +3,9 @@ import { api } from "../boot/axios";
 import { Notify } from "quasar";
 
 export const useProjectsStore = defineStore("projects", () => {
-  const createProject = async (
-    title,
-    landSurface,
-    indicativeSurface,
-    city,
-    address,
-    startDate,
-    endDate,
-    description,
-    mission_id,
-    designation_id,
-    client_id
-  ) => {
+  const createProject = async (project) => {
     try {
-      console.log(
-        title,
-        landSurface,
-        indicativeSurface,
-        city,
-        address,
-        startDate,
-        endDate,
-        description,
-        mission_id,
-        designation_id,
-        client_id
-      );
-      const response = await api.post("/api/projects", {
-        titre: title,
-        surface_fonciere: landSurface,
-        surface_indicative: indicativeSurface,
-        ville: city,
-        adresse: address,
-        date_debut: startDate,
-        date_fin: endDate,
-        description: description,
-        statut_id: 1,
-        mission_id: mission_id,
-        designation_id: designation_id,
-        client_id: client_id,
-      });
+      const response = await api.post("/api/projects", project);
       Notify.create({
         type: "positive",
         position: "top-right",
@@ -51,11 +13,6 @@ export const useProjectsStore = defineStore("projects", () => {
       });
       console.log(response.data);
     } catch (error) {
-      Notify.create({
-        type: "negative",
-        position: "top-right",
-        message: "Erreur: la création a échoué",
-      });
       console.error(error);
     }
   };
@@ -90,11 +47,9 @@ export const useProjectsStore = defineStore("projects", () => {
     }
   };
 
-  const updateStatusId = async (id, value) => {
+  const updateStatusId = async (id, status) => {
     try {
-      const response = await api.put(`/api/projects/${id}/status`, {
-        statut_id: value,
-      });
+      const response = await api.put(`/api/projects/${id}/status`, status);
       Notify.create({
         type: "positive",
         position: "top-right",

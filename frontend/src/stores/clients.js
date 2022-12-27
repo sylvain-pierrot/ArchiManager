@@ -3,25 +3,9 @@ import { api } from "../boot/axios";
 import { Notify } from "quasar";
 
 export const useClientsStore = defineStore("clients", () => {
-  const createClient = async (
-    clientName,
-    clientNameContact,
-    email,
-    address,
-    city,
-    phone,
-    notes
-  ) => {
+  const createClient = async (client) => {
     try {
-      const response = await api.post("/api/clients", {
-        nom: clientName,
-        nom_contact: clientNameContact,
-        email: email,
-        adresse: address,
-        ville: city,
-        telephone: phone,
-        notes: notes,
-      });
+      const response = await api.post("/api/clients", client);
       Notify.create({
         type: "positive",
         position: "top-right",

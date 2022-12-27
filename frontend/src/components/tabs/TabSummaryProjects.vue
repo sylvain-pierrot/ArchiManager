@@ -10,7 +10,7 @@
           <q-card-section class="col-4" align="top">
             <div class="row items-center justify-center">
               <div class="text-h6 text-blue q-mr-md">
-                {{ projectInPogress }}
+                {{ projectInProgress }}
               </div>
               <q-btn flat round color="warning" icon="arrow_forward_ios" />
             </div>
@@ -115,7 +115,6 @@
             type="donut"
             :options="options"
             :series="series"
-            v-if="options"
           ></apexchart>
         </q-card-section>
       </q-card>
@@ -136,7 +135,7 @@ const props = defineProps({
     type: Number,
     required: true,
   },
-  projectInPogress: {
+  projectInProgress: {
     type: Number,
     required: true,
   },
@@ -160,7 +159,7 @@ const props = defineProps({
 const {
   totalFees,
   totalFeesCollected,
-  projectInPogress,
+  projectInProgress,
   projectCompleted,
   projectCancelled,
   cities,
@@ -187,7 +186,6 @@ const columns = ref([
     sortable: true,
   },
 ]);
-
 const rows = computed(() => {
   return tags.value.map((tag) => {
     return {
@@ -196,7 +194,7 @@ const rows = computed(() => {
     };
   });
 });
-const series = computed(() => cities.value.map((elem) => elem.serie) || []);
+const series = computed(() => cities.value.map((elem) => elem.serie));
 const options = computed(() => {
   return {
     title: {
@@ -213,7 +211,7 @@ const options = computed(() => {
         sizeOffset: 6,
       },
     },
-    labels: cities.value.map((elem) => elem.city) || [],
+    labels: cities.value.map((elem) => elem.city),
   };
 });
 </script>

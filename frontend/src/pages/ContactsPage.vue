@@ -43,31 +43,16 @@ const tab = ref("clients");
 const clientsStore = useClientsStore();
 const clients = ref([]);
 
-const addClient = async (
-  clientName,
-  clientNameContact,
-  email,
-  address,
-  city,
-  phone,
-  notes
-) => {
-  await clientsStore.createClient(
-    clientName,
-    clientNameContact,
-    email,
-    address,
-    city,
-    phone,
-    notes
-  );
+// functions
+async function loadClients() {
+  clients.value = await clientsStore.getAllClients();
+}
+const addClient = async (client) => {
+  await clientsStore.createClient(client);
   await loadClients();
 };
 
-async function loadClients() {
-  clients.value = (await clientsStore.getAllClients()) || [];
-}
-
+// onMounted
 onMounted(async () => {
   await loadClients();
 });

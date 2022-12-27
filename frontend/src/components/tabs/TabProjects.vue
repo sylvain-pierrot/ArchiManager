@@ -67,7 +67,7 @@ import FormEditProjects from "../forms/FormEditProjects.vue";
 import { ref, defineProps, toRefs, defineEmits, computed } from "vue";
 import { useRouter } from "vue-router";
 
-const emit = defineEmits(["edit", "client", "project", "tag"]);
+const router = useRouter();
 const props = defineProps({
   projects: {
     type: Array,
@@ -83,7 +83,6 @@ const props = defineProps({
   },
 });
 const { projects, tags, clients } = toRefs(props);
-const router = useRouter();
 const dialog_project = ref(false);
 const dialog_project_edit = ref(false);
 const selected = ref([]);
@@ -136,13 +135,13 @@ const rows = computed(() =>
   })
 );
 
+// functions
 function getStatus(id) {
   return id === 1 ? "En cours" : id === 2 ? "Terminé" : "Annulé";
 }
 function onRowClick(evt, row) {
   router.push(`/projects/${row.id}`);
 }
-
 function getSelectedString() {
   return selected.value.length === 0
     ? ""
@@ -150,59 +149,21 @@ function getSelectedString() {
         selected.value.length > 1 ? "s" : ""
       } selected of ${rows.value.length}`;
 }
+
+// emits
+const emit = defineEmits(["edit", "client", "project", "tag"]);
+
 function emitEdit(obj) {
+  dialog_project_edit.value = false;
   const projects_id = selected.value.map((project) => project.id);
   emit("edit", projects_id, obj);
 }
-
-function emitClient(
-  clientName,
-  clientNameContact,
-  email,
-  address,
-  city,
-  phone,
-  notes
-) {
-  emit(
-    "client",
-    clientName,
-    clientNameContact,
-    email,
-    address,
-    city,
-    phone,
-    notes
-  );
+function emitClient(client) {
+  emit("client", client);
 }
-function emitProject(
-  title,
-  landSurface,
-  indicativeSurface,
-  city,
-  address,
-  startDate,
-  endDate,
-  description,
-  mission_id,
-  designation_id,
-  client_id
-) {
+function emitProject(project) {
   dialog_project.value = false;
-  emit(
-    "project",
-    title,
-    landSurface,
-    indicativeSurface,
-    city,
-    address,
-    startDate,
-    endDate,
-    description,
-    mission_id,
-    designation_id,
-    client_id
-  );
+  emit("project", project);
 }
 function emitTag(label, color) {
   emit("tag", label, color);

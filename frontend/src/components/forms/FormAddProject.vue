@@ -8,31 +8,13 @@
       <q-btn icon="close" flat round dense v-close-popup color="white" />
     </q-card-section>
     <q-card-section>
-      <q-form
-        @submit="
-          $emit(
-            'project',
-            title,
-            landSurface,
-            indicativeSurface,
-            city,
-            address,
-            startDate,
-            endDate,
-            description,
-            mission_id,
-            designation_id,
-            client_id
-          )
-        "
-        class="row q-col-gutter-sm"
-      >
+      <q-form @submit="$emit('project', project)" class="row q-col-gutter-sm">
         <q-input
           outlined
           type="text"
           color="black"
           bg-color="primary"
-          v-model="title"
+          v-model="project.titre"
           label="Titre"
           placeholder="Titre"
           flat
@@ -58,42 +40,48 @@
           outlined
           color="black"
           bg-color="primary"
-          v-model="mission"
+          v-model="project.mission_id"
           :options="missions"
           label="Mission"
           placeholder="Mission"
           flat
           class="col-6"
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          :rules="[(val) => !!val || 'Ce champs est requis']"
           lazy-rules
+          emit-value
+          map-options
         />
 
         <q-select
           outlined
           color="black"
           bg-color="primary"
-          v-model="designation"
+          v-model="project.designation_id"
           :options="designations"
           label="Désignation"
           placeholder="Désignation"
           flat
           class="col-6"
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          :rules="[(val) => !!val || 'Ce champs est requis']"
           lazy-rules
+          emit-value
+          map-options
         />
 
         <q-select
           outlined
           color="black"
           bg-color="primary"
-          v-model="clientName"
-          :options="clientsNames"
+          v-model="project.client_id"
+          :options="clients_"
           label="Client"
           placeholder="Client"
           flat
           class="col-6"
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          :rules="[(val) => !!val || 'Ce champs est requis']"
           lazy-rules
+          emit-value
+          map-options
         />
 
         <div class="row items-start q-mt-sm col-6">
@@ -118,12 +106,12 @@
           min="0"
           color="black"
           bg-color="primary"
-          v-model="landSurface"
+          v-model="project.surface_fonciere"
           label="Surface foncière"
           placeholder="Surface foncière"
           flat
           class="col-6"
-          :rules="[(val) => (val && val > 0) || 'Ce champs est requis']"
+          :rules="[(val) => (!!val && val > 0) || 'Ce champs est requis']"
           lazy-rules
         />
 
@@ -133,12 +121,12 @@
           min="0"
           color="black"
           bg-color="primary"
-          v-model="indicativeSurface"
+          v-model="project.surface_indicative"
           label="Surface indicative"
           placeholder="Surface indicative"
           flat
           class="col-6"
-          :rules="[(val) => (val && val > 0) || 'Ce champs est requis']"
+          :rules="[(val) => (!!val && val > 0) || 'Ce champs est requis']"
           lazy-rules
         />
 
@@ -147,12 +135,12 @@
           type="text"
           color="black"
           bg-color="primary"
-          v-model="address"
+          v-model="project.adresse"
           label="Adresse"
           placeholder="Adresse"
           flat
           class="col-8"
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          :rules="[(val) => !!val || 'Ce champs est requis']"
           lazy-rules
         />
 
@@ -161,12 +149,12 @@
           type="text"
           color="black"
           bg-color="primary"
-          v-model="city"
+          v-model="project.ville"
           label="Ville"
           placeholder="Ville"
           flat
           class="col-4"
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          :rules="[(val) => !!val || 'Ce champs est requis']"
           lazy-rules
         />
 
@@ -175,12 +163,12 @@
           type="date"
           color="black"
           bg-color="primary"
-          v-model="startDate"
+          v-model="project.date_debut"
           label="Date début"
           stack-label
           flat
           class="col-6"
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          :rules="[(val) => !!val || 'Ce champs est requis']"
           lazy-rules
         />
 
@@ -189,16 +177,16 @@
           type="date"
           color="black"
           bg-color="primary"
-          v-model="endDate"
+          v-model="project.date_fin"
           label="Date fin"
           stack-label
           flat
           class="col-6"
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          :rules="[(val) => !!val || 'Ce champs est requis']"
           lazy-rules
         />
 
-        <q-select
+        <!-- <q-select
           outlined
           color="black"
           bg-color="primary"
@@ -208,9 +196,9 @@
           placeholder="Tags"
           flat
           class="col-6"
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          :rules="[(val) => !!val || 'Ce champs est requis']"
           lazy-rules
-        />
+        /> -->
 
         <div class="row items-start q-mt-sm col-6">
           <q-btn
@@ -233,7 +221,7 @@
           type="textarea"
           color="black"
           bg-color="primary"
-          v-model="description"
+          v-model="project.description"
           label="Description"
           placeholder="Description"
           flat
@@ -270,55 +258,60 @@ const props = defineProps({
   },
 });
 const { clients, tags } = toRefs(props);
-const tagsLabels = computed(() => {
-  return tags.value.map((tag) => tag.label);
-});
-const clientsNames = computed(() => clients.value.map((client) => client.nom));
 const dialog_client = ref(false);
 const dialog_tags = ref(false);
 
-const title = ref("");
-const clientName = ref(null);
-const client_id = computed(
-  () => clients.value.find((client) => client.nom === clientName.value).id
+// options inputs select
+const clients_ = computed(() =>
+  clients.value.map((client) => {
+    return {
+      label: client.nom,
+      value: client.id,
+    };
+  })
 );
-const mission = ref(null);
-const mission_id = computed(() => (mission.value === "Partielle" ? 2 : 1));
-const missions = ref(["Complète", "Partielle"]);
-const designation = ref(null);
-const designation_id = computed(() =>
-  description.value === "Usage personnel" ? 1 : 2
-);
-const designations = ref(["Usage personnel", "Autre usage"]);
-const landSurface = ref(null);
-const indicativeSurface = ref(null);
-const city = ref("");
-const address = ref("");
-const startDate = ref(null);
-const endDate = ref(null);
-const tag = ref();
-const description = ref("");
+const missions = ref([
+  {
+    label: "Complète",
+    value: 1,
+  },
+  {
+    label: "Partielle",
+    value: 2,
+  },
+]);
+const designations = ref([
+  {
+    label: "Usage personnel",
+    value: 1,
+  },
+  {
+    label: "Autre usage",
+    value: 2,
+  },
+]);
 
+// project
+const project = ref({
+  titre: "",
+  surface_fonciere: "",
+  surface_indicative: "",
+  ville: "",
+  adresse: "",
+  date_debut: "",
+  date_fin: "",
+  description: "",
+  mission_id: null,
+  designation_id: null,
+  statut_id: 1,
+  client_id: null,
+});
+
+// emits
 const emit = defineEmits(["client", "tag"]);
-function emitClient(
-  clientName,
-  clientNameContact,
-  email,
-  address,
-  city,
-  phone,
-  notes
-) {
-  emit(
-    "client",
-    clientName,
-    clientNameContact,
-    email,
-    address,
-    city,
-    phone,
-    notes
-  );
+function emitClient(client) {
+  dialog_client.value = false;
+  emit("client", client);
 }
 function emitTag(label, color) {
   emit("tag", label, color);

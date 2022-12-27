@@ -11,7 +11,7 @@ class Controller {
       // query
       const values = [];
       let query = `SELECT * FROM ${this.tableName}`;
-      if (foreignKey != null) {
+      if (foreignKey) {
         query += ` WHERE ${foreignKey.key} = $1`;
         values.push(foreignKey.value);
       }
@@ -35,16 +35,16 @@ class Controller {
       // query
       const values = [primaryKey.value];
       let query = `SELECT * FROM ${this.tableName} WHERE ${primaryKey.key} = $1`;
-      if (foreignKey != null) {
+      if (foreignKey) {
         query += ` AND ${foreignKey.key} = $2`;
         values.push(foreignKey.value);
       }
       const { rows } = await db.query(query, values);
 
       // failed query
-      if (rows.length < 1) {
-        return res.status(401).json({ message: `Not found or error` });
-      }
+      // if (rows.length < 1) {
+      //   return res.status(401).json({ message: `Not found or error` });
+      // }
       // success
       res.status(200).send(rows);
     } catch (error) {

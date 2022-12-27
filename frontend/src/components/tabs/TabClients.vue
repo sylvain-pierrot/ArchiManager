@@ -22,15 +22,7 @@
             <FormAddClient @client="emitClient" />
           </q-dialog>
 
-          <q-table
-            :rows="rows"
-            :columns="columns"
-            row-key="id"
-            :selected-rows-label="getSelectedString"
-            v-model:selected="selected"
-            flat
-            bordered
-          />
+          <q-table :rows="rows" :columns="columns" row-key="id" flat bordered />
         </q-card-section>
       </q-card>
     </div>
@@ -41,6 +33,7 @@
 import FormAddClient from "../forms/FormAddClient.vue";
 import { ref, defineEmits, computed, defineProps, toRefs } from "vue";
 
+const emit = defineEmits(["client"]);
 const props = defineProps({
   clients: {
     type: Array,
@@ -48,30 +41,7 @@ const props = defineProps({
   },
 });
 const { clients } = toRefs(props);
-const emit = defineEmits(["client"]);
 const dialog_client = ref(false);
-
-function emitClient(
-  clientName,
-  clientNameContact,
-  email,
-  address,
-  city,
-  phone,
-  notes
-) {
-  emit(
-    "client",
-    clientName,
-    clientNameContact,
-    email,
-    address,
-    city,
-    phone,
-    notes
-  );
-}
-const selected = ref([]);
 const columns = ref([
   {
     name: "name",
@@ -92,27 +62,22 @@ const columns = ref([
   { name: "phone", label: "Téléphone", field: "phone", sortable: true },
   { name: "city", label: "Ville", field: "city", sortable: true },
 ]);
-const rows = computed(() => {
-  if (clients.value.length > 0) {
-    return clients.value.map((client) => {
-      return {
-        name: client.nom,
-        contactName: client.nom_contact,
-        email: client.email,
-        phone: client.telephone,
-        city: client.ville,
-      };
-    });
-  }
-  return [];
-});
+const rows = computed(() =>
+  clients.value.map((client) => {
+    return {
+      name: client.nom,
+      contactName: client.nom_contact,
+      email: client.email,
+      phone: client.telephone,
+      city: client.ville,
+    };
+  })
+);
 
-function getSelectedString() {
-  return selected.value.length === 0
-    ? ""
-    : `${selected.value.length} record${
-        selected.value.length > 1 ? "s" : ""
-      } selected of ${rows.value.length}`;
+// functions
+function emitClient(client) {
+  dialog_client.value = false;
+  emit("client", client);
 }
 </script>
 

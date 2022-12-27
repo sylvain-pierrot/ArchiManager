@@ -8,27 +8,13 @@
       <q-btn icon="close" flat round dense v-close-popup color="white" />
     </q-card-section>
     <q-card-section>
-      <q-form
-        @submit="
-          $emit(
-            'client',
-            clientName,
-            clientNameContact,
-            email,
-            address,
-            city,
-            phone,
-            notes
-          )
-        "
-        class="row q-col-gutter-sm"
-      >
+      <q-form @submit="$emit('client', client)" class="row q-col-gutter-sm">
         <q-input
           outlined
           type="text"
           color="black"
           bg-color="primary"
-          v-model="clientName"
+          v-model="client.nom"
           label="Nom du client *"
           placeholder="Nom du client"
           flat
@@ -42,7 +28,7 @@
           type="text"
           color="black"
           bg-color="primary"
-          v-model="clientNameContact"
+          v-model="client.nom_contact"
           label="Nom du contact *"
           placeholder="Nom du contact"
           flat
@@ -56,7 +42,7 @@
           type="email"
           color="black"
           bg-color="primary"
-          v-model="email"
+          v-model="client.email"
           label="Email *"
           placeholder="Email"
           flat
@@ -70,7 +56,7 @@
           type="tel"
           color="black"
           bg-color="primary"
-          v-model="phone"
+          v-model="client.telephone"
           label="Téléphone *"
           placeholder="Téléphone"
           flat
@@ -84,7 +70,7 @@
           type="text"
           color="black"
           bg-color="primary"
-          v-model="address"
+          v-model="client.adresse"
           label="Adresse *"
           placeholder="Adresse"
           flat
@@ -98,7 +84,7 @@
           type="text"
           color="black"
           bg-color="primary"
-          v-model="city"
+          v-model="client.ville"
           label="Ville *"
           placeholder="Ville"
           flat
@@ -112,7 +98,7 @@
           type="textarea"
           color="black"
           bg-color="primary"
-          v-model="notes"
+          v-model="client.notes"
           label="Notes"
           placeholder="Notes"
           flat
@@ -126,7 +112,6 @@
             label="SAUVEGARDER"
             size="12px"
             unelevated
-            v-close-popup
           />
         </div>
       </q-form>
@@ -137,11 +122,13 @@
 <script setup>
 import { ref } from "vue";
 
-const clientName = ref("");
-const clientNameContact = ref("");
-const email = ref("");
-const address = ref("");
-const city = ref("");
-const phone = ref();
-const notes = ref("");
+const client = ref({
+  nom: "",
+  nom_contact: "",
+  email: "",
+  adresse: "",
+  ville: "",
+  telephone: "",
+  notes: "",
+});
 </script>

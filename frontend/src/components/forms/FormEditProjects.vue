@@ -23,34 +23,40 @@
           class="col-12"
           :rules="[(val) => !!val || 'Ce champs est requis']"
           lazy-rules
+          emit-value
+          map-options
         />
 
         <q-select
           outlined
           color="black"
           bg-color="primary"
-          v-model="status_selected"
-          :options="statusLabels"
+          v-model="status.statut_id"
+          :options="status_"
           label="Statut"
           flat
           class="col-12"
           :rules="[(val) => !!val || 'Ce champs est requis']"
           lazy-rules
-          v-if="field === 'Statut'"
+          emit-value
+          map-options
+          v-if="field === 1"
         />
 
         <q-select
           outlined
           color="black"
           bg-color="primary"
-          v-model="tag_selected"
-          :options="tagsLabels"
+          v-model="tag.tag_id"
+          :options="tags_"
           label="Tag"
           flat
           class="col-12"
           :rules="[(val) => !!val || 'Ce champs est requis']"
           lazy-rules
-          v-if="field === 'Tags'"
+          emit-value
+          map-options
+          v-if="field === 2"
         />
 
         <div class="col-12 row justify-end">
@@ -60,7 +66,6 @@
             label="SAUVEGARDER"
             size="12px"
             unelevated
-            v-close-popup
           />
         </div>
       </q-form>
@@ -78,27 +83,34 @@ const props = defineProps({
   },
 });
 const { tags } = toRefs(props);
+
+// choice
 const field = ref(null);
-const fields = ref(["Statut", "Tags"]);
-// tags
-const tag_selected = ref("");
-const tagsLabels = computed(() => tags.value.map((tag) => tag.label));
-// status
-const status_selected = ref("");
-const status = ref([
-  { id: 1, label: "En cours" },
-  { id: 2, label: "Terminé" },
-  { id: 3, label: "Annulé" },
+const fields = ref([
+  { label: "Statut", value: 1 },
+  { label: "Tags", value: 2 },
 ]);
-const statusLabels = status.value.map((elem) => elem.label);
-// value to return
-const value = computed(() => {
-  if (field.value === "Statut") {
-    return status.value.find((elem) => status_selected.value === elem.label).id;
-  } else {
-    return tags.value.find((elem) => tag_selected.value === elem.label).id;
-  }
+// tags
+const tag = ref({
+  tag_id: null,
 });
+const tags_ = computed(() =>
+  tags.value.map((tag) => {
+    return { label: tag.label, value: tag.id };
+  })
+);
+// status
+const status = ref({
+  statut_id: null,
+});
+const status_ = ref([
+  { label: "En cours", value: 1 },
+  { label: "Terminé", value: 2 },
+  { label: "Annulé", value: 3 },
+]);
+
+// emit value
+const value = computed(() => (field.value === 1 ? status.value : tag.value));
 </script>
 <style scoped>
 .q-field__native {
