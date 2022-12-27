@@ -143,6 +143,12 @@ const updateProjects = async (projects_id, obj) => {
   for (const id of projects_id) {
     if (obj.attribut === 1) {
       await projectsStore.updateStatusId(id, obj.value);
+    } else if (obj.attribut === 2) {
+      await tagsProjectsStore.deleteAllTagsProject(id);
+      console.log(obj.value);
+      obj.value.forEach(async (tag_id) => {
+        await tagsProjectsStore.addTagProject(id, tag_id);
+      });
     }
   }
   await loadProjects();

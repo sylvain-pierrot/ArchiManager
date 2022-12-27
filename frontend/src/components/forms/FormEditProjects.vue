@@ -47,17 +47,36 @@
           outlined
           color="black"
           bg-color="primary"
-          v-model="tag.tag_id"
+          v-model="tags_projects"
+          multiple
           :options="tags_"
-          label="Tag"
+          stack-label
+          label="Tags"
+          placeholder="Tags"
           flat
-          class="col-12"
-          :rules="[(val) => !!val || 'Ce champs est requis']"
+          class="col-6"
+          :rules="[
+            (val) => (!!val && val.length > 0) || 'Ce champs est requis',
+          ]"
           lazy-rules
           emit-value
           map-options
           v-if="field === 2"
-        />
+        >
+          <template v-slot:selected-item="scope">
+            <q-chip
+              removable
+              dense
+              @remove="scope.removeAtIndex(scope.index)"
+              :tabindex="scope.tabindex"
+              text-color="black"
+              class="q-ma-none"
+              :style="{ background: scope.opt.color }"
+            >
+              {{ scope.opt.label }}
+            </q-chip>
+          </template>
+        </q-select>
 
         <div class="col-12 row justify-end">
           <q-btn
@@ -91,12 +110,14 @@ const fields = ref([
   { label: "Tags", value: 2 },
 ]);
 // tags
-const tag = ref({
-  tag_id: null,
-});
+const tags_projects = ref([]);
 const tags_ = computed(() =>
   tags.value.map((tag) => {
-    return { label: tag.label, value: tag.id };
+    return {
+      label: tag.label,
+      value: tag.id,
+      color: tag.color,
+    };
   })
 );
 // status
@@ -110,7 +131,9 @@ const status_ = ref([
 ]);
 
 // emit value
-const value = computed(() => (field.value === 1 ? status.value : tag.value));
+const value = computed(() =>
+  field.value === 1 ? status.value : tags_projects.value
+);
 </script>
 <style scoped>
 .q-field__native {

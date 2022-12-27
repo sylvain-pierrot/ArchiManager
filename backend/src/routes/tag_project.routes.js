@@ -32,5 +32,10 @@ router.delete(
   authorization.authenticate,
   tag_projectController.delete.bind(tag_projectController)
 );
+router.delete(
+  "/projects/:idP/tags",
+  authorization.authenticate,
+  tag_projectController.deleteAll.bind(tag_projectController)
+);
 
 module.exports = router;

@@ -111,6 +111,26 @@ class Tag_projectController extends Controller {
     super.delete(req, res, primaryKey, foreignKey);
   }
 
+  async deleteAll(req, res) {
+    // queryValidator
+    const result = await this.queryValidator(req, res);
+    if (result) {
+      return;
+    }
+
+    // datas
+    const projet_id = parseInt(req.params.idP);
+
+    // query
+    const { rows } = await db.query(
+      "DELETE FROM tags_projets WHERE projet_id = $1 RETURNING *",
+      [projet_id]
+    );
+
+    // success
+    res.status(200).send(rows);
+  }
+
   async update(req, res) {
     // queryValidator
     const result = await this.queryValidator(req, res);

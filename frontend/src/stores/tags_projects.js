@@ -29,8 +29,19 @@ export const useTagsProjectsStore = defineStore("tagsProjects", () => {
     }
   };
 
+  const deleteAllTagsProject = async (project_id) => {
+    try {
+      const response = await api.delete(`/api/projects/${project_id}/tags`);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
     addTagProject,
     getAllTagsProject,
+    deleteAllTagsProject,
   };
 });
