@@ -84,7 +84,6 @@ class ProjectController extends Controller {
       }
 
       // datas
-      // datas
       const { statut_id } = req.body;
       const id = parseInt(req.params.id);
       const architecte_id = jwt.verify(

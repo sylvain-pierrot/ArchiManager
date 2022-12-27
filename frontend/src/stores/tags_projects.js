@@ -3,20 +3,15 @@ import { api } from "../boot/axios";
 import { Notify } from "quasar";
 
 export const useTagsProjectsStore = defineStore("tagsProjects", () => {
-  const createTag = async (email, password, number, name, firstname, tel) => {
+  const addTagProject = async (project_id, tag_id) => {
     try {
-      const response = await api.post("/api/architects", {
-        email: email,
-        mot_de_passe: password,
-        numero_national: number,
-        nom: name,
-        prenom: firstname,
-        telephone: tel,
+      const response = await api.post(`/api/projects/${project_id}/tags`, {
+        tag_id: tag_id,
       });
       Notify.create({
         type: "positive",
         position: "top-right",
-        message: "Compte créé avec succés",
+        message: `Tag ajouté au projet ${project_id} avec succés`,
       });
       console.log(response.data);
     } catch (error) {
@@ -35,7 +30,7 @@ export const useTagsProjectsStore = defineStore("tagsProjects", () => {
   };
 
   return {
-    createTag,
+    addTagProject,
     getAllTags,
   };
 });

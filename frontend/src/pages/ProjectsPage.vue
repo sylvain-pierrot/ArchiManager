@@ -42,7 +42,8 @@
           @edit="updateProjects"
           @client="addClient"
           @project="addProject"
-          @tag="addTag"
+          @addTag="addTag"
+          @updateTag="updateTag"
         />
       </q-tab-panel>
     </q-tab-panels>
@@ -56,11 +57,13 @@ import { ref, onBeforeMount } from "vue";
 import { useProjectsStore } from "../stores/projects";
 import { useClientsStore } from "../stores/clients";
 import { useTagsStore } from "../stores/tags";
+import { useTagsProjectsStore } from "../stores/tags_projects";
 
 // tabs
 const tab = ref("summary");
 
 // stores
+const tagsProjectsStore = useTagsProjectsStore();
 const clientsStore = useClientsStore();
 const tagsStore = useTagsStore();
 const projectsStore = useProjectsStore();
@@ -138,14 +141,20 @@ const updateProjects = async (projects_id, obj) => {
   }
   await loadProjects();
 };
+const updateTag = async (tag) => {
+  await tagsStore.updateLabelTag(tag);
+};
 
 // create
 const addClient = async (client) => {
   await clientsStore.createClient(client);
   await loadClients();
 };
-const addProject = async (project) => {
-  await projectsStore.createProject(project);
+const addProject = async (project, tags_projects) => {
+  const project_id = await projectsStore.createProject(project);
+  tags_projects.forEach(async (tag_id) => {
+    await tagsProjectsStore.addTagProject(project_id, tag_id);
+  });
   await loadProjects();
 };
 const addTag = async (tag) => {

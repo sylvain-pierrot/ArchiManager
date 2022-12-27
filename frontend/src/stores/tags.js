@@ -27,8 +27,26 @@ export const useTagsStore = defineStore("tags", () => {
     }
   };
 
+  const updateLabelTag = async (tag) => {
+    try {
+      const response = await api.put(`/api/tags/${tag.id}/label`, {
+        label: tag.label,
+      });
+      Notify.create({
+        type: "positive",
+        position: "top-right",
+        message: "Label tag modifié avec succés",
+      });
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
     createTag,
     getAllTags,
+    updateLabelTag,
   };
 });

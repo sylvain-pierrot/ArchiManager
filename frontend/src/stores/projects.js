@@ -12,6 +12,7 @@ export const useProjectsStore = defineStore("projects", () => {
         message: "Projet créé avec succés",
       });
       console.log(response.data);
+      return response.data.id;
     } catch (error) {
       console.error(error);
     }

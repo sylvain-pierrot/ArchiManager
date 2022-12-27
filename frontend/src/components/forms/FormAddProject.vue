@@ -8,7 +8,10 @@
       <q-btn icon="close" flat round dense v-close-popup color="white" />
     </q-card-section>
     <q-card-section>
-      <q-form @submit="$emit('project', project)" class="row q-col-gutter-sm">
+      <q-form
+        @submit="$emit('project', project, tags_projects)"
+        class="row q-col-gutter-sm"
+      >
         <q-input
           outlined
           type="text"
@@ -232,7 +235,11 @@
           />
 
           <q-dialog v-model="dialog_tags">
-            <TagsManager :tags="tags" @tag="emitTag" />
+            <TagsManager
+              :tags="tags"
+              @addTag="emitAddTag"
+              @updateTag="emitUpdateTag"
+            />
           </q-dialog>
         </div>
 
@@ -340,12 +347,15 @@ const project = ref({
 });
 
 // emits
-const emit = defineEmits(["client", "tag"]);
+const emit = defineEmits(["client", "addTag"]);
 function emitClient(client) {
   dialog_client.value = false;
   emit("client", client);
 }
-function emitTag(tag) {
-  emit("tag", tag);
+function emitAddTag(tag) {
+  emit("addTag", tag);
+}
+function emitUpdateTag(tag) {
+  emit("updateTag", tag);
 }
 </script>

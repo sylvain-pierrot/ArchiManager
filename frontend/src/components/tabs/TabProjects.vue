@@ -36,7 +36,8 @@
               :tags="tags"
               @project="emitProject"
               @client="emitClient"
-              @tag="emitTag"
+              @addTag="emitAddTag"
+              @updateTag="emitUpdateTag"
             />
           </q-dialog>
 
@@ -151,7 +152,7 @@ function getSelectedString() {
 }
 
 // emits
-const emit = defineEmits(["edit", "client", "project", "tag"]);
+const emit = defineEmits(["edit", "client", "project", "addTag"]);
 
 function emitEdit(obj) {
   dialog_project_edit.value = false;
@@ -161,12 +162,15 @@ function emitEdit(obj) {
 function emitClient(client) {
   emit("client", client);
 }
-function emitProject(project) {
+function emitProject(project, tags_projects) {
   dialog_project.value = false;
-  emit("project", project);
+  emit("project", project, tags_projects);
 }
-function emitTag(tag) {
-  emit("tag", tag);
+function emitAddTag(tag) {
+  emit("addTag", tag);
+}
+function emitUpdateTag(tag) {
+  emit("updateTag", tag);
 }
 </script>
 
