@@ -36,7 +36,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="stages" class="q-pa-none q-mt-md">
-        <TabStages />
+        <TabStages @mop="addMop" :stages="stages" />
       </q-tab-panel>
 
       <q-tab-panel name="parcels" class="q-pa-none q-mt-md"> </q-tab-panel>
@@ -52,10 +52,12 @@ import TabStages from "src/components/tabs/TabStages.vue";
 import { useProjectsStore } from "../stores/projects";
 import { useClientsStore } from "../stores/clients";
 import { useUserStore } from "../stores/user";
+import { useStagesStore } from "../stores/stages";
 import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 
 const moment = require("moment");
+const stagesStore = useStagesStore();
 const userStore = useUserStore();
 const clientsStore = useClientsStore();
 const projectsStore = useProjectsStore();
@@ -65,7 +67,9 @@ const project = ref();
 const client = ref();
 const userCookie = decodeURIComponent(userStore.getCookie("user"));
 const user = ref(JSON.parse(userCookie.substring(2)));
+const stages = ref();
 
+// loads
 async function loadProject() {
   project.value = await projectsStore.getOneProject(route.params.id);
   client.value = await clientsStore.getOneClient(project.value.client_id);
@@ -110,8 +114,26 @@ async function loadProject() {
     delete client.value.notes;
   }
 }
+
+async function loadStages() {
+  stages.value = await stagesStore.getAllStages(route.params.id);
+  console.log(stages.value);
+}
+
+// create
+const addMop = async (stages) => {
+  for (const stage of stages) {
+    await addStage(stage);
+  }
+  await loadStages();
+};
+const addStage = async (stage) => {
+  await stagesStore.createStage(route.params.id, stage);
+};
+
 onBeforeMount(async () => {
   await loadProject();
+  await loadStages();
 });
 </script>
 

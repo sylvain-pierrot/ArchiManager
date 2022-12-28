@@ -96,7 +96,10 @@
                 class="row justify-between full-width"
               >
                 <div class="text-body1 text-dark">
-                  {{ key.charAt(0).toUpperCase() + key.slice(1).toLowerCase() }}
+                  {{
+                    key.charAt(0).toUpperCase() +
+                    key.slice(1).toLowerCase().replace("_", " ")
+                  }}
                 </div>
                 <div class="text-body2 text-grey-7">{{ value }}</div>
               </div>
@@ -109,7 +112,10 @@
                 class="row justify-between full-width"
               >
                 <div class="text-body1 text-dark">
-                  {{ key.charAt(0).toUpperCase() + key.slice(1).toLowerCase() }}
+                  {{
+                    key.charAt(0).toUpperCase() +
+                    key.slice(1).toLowerCase().replace("_", " ")
+                  }}
                 </div>
                 <div class="text-body2 text-grey-7">{{ value }}</div>
               </div>

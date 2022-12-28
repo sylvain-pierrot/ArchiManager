@@ -3,20 +3,14 @@ import { api } from "../boot/axios";
 import { Notify } from "quasar";
 
 export const useStagesStore = defineStore("stages", () => {
-  const createStage = async (email, password, number, name, firstname, tel) => {
+  const createStage = async (id, stage) => {
     try {
-      const response = await api.post("/api/architects", {
-        email: email,
-        mot_de_passe: password,
-        numero_national: number,
-        nom: name,
-        prenom: firstname,
-        telephone: tel,
-      });
+      console.log(id, stage);
+      const response = await api.post(`/api/projects/${id}/stages`, stage);
       Notify.create({
         type: "positive",
         position: "top-right",
-        message: "Compte créé avec succés",
+        message: "Phase créée avec succés",
       });
       console.log(response.data);
     } catch (error) {
@@ -27,7 +21,6 @@ export const useStagesStore = defineStore("stages", () => {
   const getAllStages = async (id) => {
     try {
       const response = await api.get(`/api/projects/${id}/stages`);
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);

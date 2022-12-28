@@ -10,7 +10,7 @@ router.post(
   body("code").isLength({ min: 1 }),
   body("label").isLength({ min: 1 }),
   body("honoraires").isInt(),
-  body("description").isLength({ min: 1 }),
+  body("description").optional(),
   body("projet_id").not().exists(),
   stageController.create.bind(stageController)
 );
@@ -31,7 +31,7 @@ router.put(
   body("code").isLength({ min: 1 }),
   body("label").isLength({ min: 1 }),
   body("honoraires").isInt(),
-  body("description").isLength({ min: 1 }),
+  body("description").optional(),
   body("projet_id").not().exists(),
   stageController.update.bind(stageController)
 );
