@@ -32,11 +32,20 @@
 
     <q-tab-panels v-model="tab">
       <q-tab-panel name="summary" class="q-pa-none q-mt-md">
-        <TabSummaryProjectDetail :project="project" :client="client" />
+        <TabSummaryProjectDetail
+          :project="project"
+          :client="client"
+          v-if="project && client"
+        />
       </q-tab-panel>
 
       <q-tab-panel name="stages" class="q-pa-none q-mt-md">
-        <TabStages @mop="addMop" :stages="stages" />
+        <TabStages
+          @mop="addMop"
+          @stage="addOneStage"
+          @deleteStage="deleteStage"
+          :stages="stages"
+        />
       </q-tab-panel>
 
       <q-tab-panel name="parcels" class="q-pa-none q-mt-md"> </q-tab-panel>
@@ -127,8 +136,18 @@ const addMop = async (stages) => {
   }
   await loadStages();
 };
+const addOneStage = async (stage) => {
+  await stagesStore.createStage(route.params.id, stage);
+  await loadStages();
+};
 const addStage = async (stage) => {
   await stagesStore.createStage(route.params.id, stage);
+};
+
+// delete
+const deleteStage = async (stage_id) => {
+  await stagesStore.deleteStage(route.params.id, stage_id);
+  await loadStages();
 };
 
 onBeforeMount(async () => {

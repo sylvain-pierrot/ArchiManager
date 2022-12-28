@@ -38,7 +38,7 @@ export const useProjectsStore = defineStore("projects", () => {
   const getTotalFees = async () => {
     try {
       const response = await api.get("/api/projects/fees");
-      return response.data;
+      return parseInt(response.data[0].sum);
     } catch (error) {
       console.error(error);
     }
@@ -47,7 +47,7 @@ export const useProjectsStore = defineStore("projects", () => {
   const getTotalFeesCollected = async () => {
     try {
       const response = await api.get("/api/projects/feesCollected");
-      return response.data;
+      return parseInt(response.data[0].sum);
     } catch (error) {
       console.error(error);
     }

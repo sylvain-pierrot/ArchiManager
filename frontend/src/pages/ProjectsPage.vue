@@ -113,9 +113,8 @@ async function loadProjects() {
   );
 
   // sum
-  totalFees.value = (await projectsStore.getTotalFees())[0].sum || 0;
-  totalFeesCollected.value =
-    (await projectsStore.getTotalFeesCollected())[0].sum || 0;
+  totalFees.value = (await projectsStore.getTotalFees()) || 0;
+  totalFeesCollected.value = (await projectsStore.getTotalFeesCollected()) || 0;
 
   projectList.forEach((project) => {
     // cities

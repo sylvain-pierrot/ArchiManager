@@ -5,7 +5,6 @@ import { Notify } from "quasar";
 export const useStagesStore = defineStore("stages", () => {
   const createStage = async (id, stage) => {
     try {
-      console.log(id, stage);
       const response = await api.post(`/api/projects/${id}/stages`, stage);
       Notify.create({
         type: "positive",
@@ -18,6 +17,22 @@ export const useStagesStore = defineStore("stages", () => {
     }
   };
 
+  const deleteStage = async (project_id, stage_id) => {
+    try {
+      const response = await api.delete(
+        `/api/projects/${project_id}/stages/${stage_id}`
+      );
+      Notify.create({
+        type: "positive",
+        position: "top-right",
+        message: "Phase supprimée avec succés",
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  deleteStage;
   const getAllStages = async (id) => {
     try {
       const response = await api.get(`/api/projects/${id}/stages`);
@@ -29,5 +44,6 @@ export const useStagesStore = defineStore("stages", () => {
   return {
     createStage,
     getAllStages,
+    deleteStage,
   };
 });

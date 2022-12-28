@@ -1,6 +1,6 @@
 <template>
   <div class="row q-col-gutter-md">
-    <div class="col-7">
+    <div class="col-12">
       <q-card class="no-shadow full-height">
         <q-card-section>
           <div class="text-h6 text-dark">Phases</div>
@@ -31,24 +31,7 @@
             />
 
             <q-dialog v-model="dialog_confirm">
-              <q-card>
-                <q-card-section class="column items-center">
-                  <q-icon
-                    name="warning"
-                    color="yellow-9"
-                    size="4rem"
-                    class="q-mb-md"
-                  />
-                  <div class="text-h6 text-center">
-                    Êtes-vous sûr de vouloir utiliser la bibliothèque de phases
-                    MOP ?
-                  </div>
-                  <div class="row q-mt-md q-gutter-md">
-                    <q-btn label="Annuler" color="grey" v-close-popup />
-                    <q-btn label="OK" color="red" @click="emitMop" />
-                  </div>
-                </q-card-section>
-              </q-card>
+              <PopupConfirm :text="text_use_mop" @confirm="emitMop" />
             </q-dialog>
           </div>
 
@@ -70,7 +53,31 @@
                   color="warning"
                   unelevated
                   outline
+                  @click="dialog_stage = true"
                 />
+              </q-td>
+
+              <q-dialog v-model="dialog_stage">
+                <FormAddStage @stage="emitStage" />
+              </q-dialog>
+            </template>
+
+            <template v-slot:body-cell-btn="props">
+              <q-td class="row justify-end">
+                <q-btn icon="more_vert" color="warning" flat rounded dense>
+                  <q-menu>
+                    <q-list style="min-width: 100px">
+                      <q-item clickable @click="emitDeleteStage(props.row.id)">
+                        <q-item-section avatar>
+                          <q-avatar text-color="red" icon="delete" />
+                        </q-item-section>
+                        <q-item-section>
+                          {{ `Supprimer ${props.row.id}` }}
+                        </q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-menu>
+                </q-btn>
               </q-td>
             </template>
           </q-table>
@@ -82,6 +89,8 @@
 
 <script setup>
 import { ref, defineEmits, defineProps, toRefs } from "vue";
+import FormAddStage from "../forms/FormAddStage.vue";
+import PopupConfirm from "../popups/PopupConfirm.vue";
 
 const props = defineProps({
   stages: {
@@ -89,9 +98,12 @@ const props = defineProps({
     required: true,
   },
 });
+const text_use_mop = ref(
+  "Êtes-vous sûr de vouloir utiliser la bibliothèque de phases MOP ?"
+);
 const { stages } = toRefs(props);
 const dialog_confirm = ref(false);
-const selected = ref([]);
+const dialog_stage = ref(false);
 const pagination = ref({
   rowsPerPage: 0,
 });
@@ -121,18 +133,31 @@ const columns = ref([
     format: (val) => `${val}`,
     sortable: true,
   },
+  {
+    name: "btn",
+    label: "",
+    align: "right",
+  },
 ]);
+
 const options = ref(["MOP", "Ajouter des phases manuellement"]);
 const model = ref("MOP");
 
 // emit MOP
-const emit = defineEmits(["mop"]);
+const emit = defineEmits(["mop", "stage", "deleteStage"]);
 function emitMop() {
   dialog_confirm.value = false;
   const stages = createStageList();
   emit("mop", stages);
 }
-
+function emitStage(stage) {
+  dialog_stage.value = false;
+  emit("stage", stage);
+}
+function emitDeleteStage(id) {
+  console.log(id);
+  emit("deleteStage", id);
+}
 // function
 function createStageList() {
   return [
