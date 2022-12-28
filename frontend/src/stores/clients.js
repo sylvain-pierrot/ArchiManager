@@ -24,8 +24,18 @@ export const useClientsStore = defineStore("clients", () => {
       console.error(error);
     }
   };
+
+  const getOneClient = async (id) => {
+    try {
+      const response = await api.get(`/api/clients/${id}`);
+      return response.data[0];
+    } catch (error) {
+      console.error(error);
+    }
+  };
   return {
     createClient,
     getAllClients,
+    getOneClient,
   };
 });

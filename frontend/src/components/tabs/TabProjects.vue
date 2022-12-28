@@ -85,6 +85,12 @@ import FormAddProject from "../forms/FormAddProject.vue";
 import FormEditProjects from "../forms/FormEditProjects.vue";
 import { ref, defineProps, toRefs, defineEmits, computed } from "vue";
 import { useRouter } from "vue-router";
+import { useUserStore } from "src/stores/user";
+
+const userStore = useUserStore();
+const userCookie = decodeURIComponent(userStore.getCookie("user"));
+const user = ref(JSON.parse(userCookie.substring(2)));
+const moment = require("moment");
 
 const router = useRouter();
 const props = defineProps({
@@ -114,7 +120,7 @@ const columns = ref([
     required: true,
     label: "ID",
     align: "left",
-    field: (row) => row.id,
+    field: (row) => row.idShow,
     format: (val) => `${val}`,
     sortable: true,
   },
@@ -145,10 +151,16 @@ const columns = ref([
     field: "files",
   },
 ]);
+
 const rows = computed(() =>
   projects.value.map((project) => {
     return {
       id: project.id,
+      idShow: `${user.value.prenom.charAt(0).toUpperCase()}${user.value.nom
+        .charAt(0)
+        .toUpperCase()}-${moment(new Date(project.date_debut)).format(
+        "YYYY"
+      )}-${project.id}`,
       project: project,
       status: getStatus(project.statut_id),
       fee: "test",
@@ -156,19 +168,8 @@ const rows = computed(() =>
     };
   })
 );
-// `${project.project.titre} | ${
-//         project.project.ville
-//       }\n ${showTags(project.tags)}`
+
 // functions
-// function showTags(tags) {
-//   return tags.map((tag) => {
-//     return `
-//               <q-badge style="{ background: ${tag.color}}">
-//                 ${tag.label}
-//               </q-badge>
-//             `;
-//   });
-// }
 function getStatus(id) {
   return id === 1 ? "En cours" : id === 2 ? "Terminé" : "Annulé";
 }

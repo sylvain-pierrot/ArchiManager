@@ -37,22 +37,26 @@
           <q-tab-panels v-model="tab">
             <q-tab-panel name="project" class="q-pa-none q-mt-md">
               <div
-                v-for="(value, key) in project"
+                v-for="(value, key) of project"
                 :key="key"
                 class="row justify-between full-width"
               >
-                <div class="text-body1 text-dark">{{ key }}</div>
+                <div class="text-body1 text-dark">
+                  {{ key.charAt(0).toUpperCase() + key.slice(1).toLowerCase() }}
+                </div>
                 <div class="text-body2 text-grey-7">{{ value }}</div>
               </div>
             </q-tab-panel>
 
             <q-tab-panel name="client" class="q-pa-none q-mt-md">
               <div
-                v-for="(value, key) in client"
+                v-for="(value, key) of client"
                 :key="key"
                 class="row justify-between full-width"
               >
-                <div class="text-body1 text-dark">{{ key }}</div>
+                <div class="text-body1 text-dark">
+                  {{ key.charAt(0).toUpperCase() + key.slice(1).toLowerCase() }}
+                </div>
                 <div class="text-body2 text-grey-7">{{ value }}</div>
               </div>
             </q-tab-panel>
@@ -88,28 +92,20 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, defineProps, toRefs } from "vue";
 
 const tab = ref("project");
-
-const project = ref({
-  "ID projet": "LP-2022-1",
-  Mission: "Complète",
-  Désignation: "Usage personnel",
-  Ville: "Narbonne",
-  Adresse: "37 rue Françoise Dolto",
-  "Date de début": "16 mars 2022",
-  "Date de fin": "1 décembre 2022",
-  Tags: ["Expension", "Résidentiel", "Privé"],
+const props = defineProps({
+  project: {
+    type: Object,
+    required: true,
+  },
+  client: {
+    type: Object,
+    required: true,
+  },
 });
-
-const client = ref({
-  Nom: "MARRILLAT",
-  Contact: "MARRILLAT",
-  Email: "marrillat@gmail.com",
-  Téléphone: "07 78 55 61 36",
-  Adresse: "2 rue des Tilleuls, Armissan",
-});
+const { project, client } = toRefs(props);
 
 const columns = ref([
   {

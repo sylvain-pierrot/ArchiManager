@@ -58,15 +58,22 @@ import { useProjectsStore } from "../stores/projects";
 import { useClientsStore } from "../stores/clients";
 import { useTagsStore } from "../stores/tags";
 import { useTagsProjectsStore } from "../stores/tags_projects";
+import { useUserStore } from "../stores/user";
 
 // tabs
 const tab = ref("summary");
+const moment = require("moment");
 
 // stores
+const userStore = useUserStore();
 const tagsProjectsStore = useTagsProjectsStore();
 const clientsStore = useClientsStore();
 const tagsStore = useTagsStore();
 const projectsStore = useProjectsStore();
+
+// user store
+const userCookie = decodeURIComponent(userStore.getCookie("user"));
+const user = ref(JSON.parse(userCookie.substring(2)));
 
 // clients store
 const clients = ref([]);

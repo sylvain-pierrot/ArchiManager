@@ -26,6 +26,15 @@ export const useProjectsStore = defineStore("projects", () => {
     }
   };
 
+  const getOneProject = async (id) => {
+    try {
+      const response = await api.get(`/api/projects/${id}`);
+      return response.data[0];
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   const getTotalFees = async () => {
     try {
       const response = await api.get("/api/projects/fees");
@@ -61,6 +70,7 @@ export const useProjectsStore = defineStore("projects", () => {
   return {
     createProject,
     getAllProjects,
+    getOneProject,
     getTotalFees,
     getTotalFeesCollected,
     updateStatusId,
