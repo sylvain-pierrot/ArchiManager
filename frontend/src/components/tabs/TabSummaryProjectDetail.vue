@@ -150,8 +150,6 @@
             :rows="rows"
             :columns="columns"
             row-key="name"
-            :selected-rows-label="getSelectedString"
-            v-model:selected="selected"
             flat
             bordered
             hide-bottom

@@ -1,5 +1,5 @@
 <template>
-  <q-page padding>
+  <q-page padding v-if="projects && clients">
     <q-card class="no-shadow">
       <q-card-section>
         <div class="text-overline text-warning">GÉNÉRAL</div>
@@ -58,30 +58,23 @@ import { useProjectsStore } from "../stores/projects";
 import { useClientsStore } from "../stores/clients";
 import { useTagsStore } from "../stores/tags";
 import { useTagsProjectsStore } from "../stores/tags_projects";
-import { useUserStore } from "../stores/user";
 
 // tabs
 const tab = ref("summary");
-const moment = require("moment");
 
 // stores
-const userStore = useUserStore();
 const tagsProjectsStore = useTagsProjectsStore();
 const clientsStore = useClientsStore();
 const tagsStore = useTagsStore();
 const projectsStore = useProjectsStore();
 
-// user store
-const userCookie = decodeURIComponent(userStore.getCookie("user"));
-const user = ref(JSON.parse(userCookie.substring(2)));
-
 // clients store
-const clients = ref([]);
+const clients = ref(null);
 
 // projects store
 const totalFees = ref(0);
 const totalFeesCollected = ref(0);
-const projects = ref([]);
+const projects = ref(null);
 const projectInProgress = ref(0);
 const projectCompleted = ref(0);
 const projectCancelled = ref(0);

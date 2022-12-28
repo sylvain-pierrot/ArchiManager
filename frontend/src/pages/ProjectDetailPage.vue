@@ -24,7 +24,7 @@
         align="justify"
       >
         <q-tab name="summary" label="RÉSUMÉ" />
-        <q-tab name="phases" label="PHASES" />
+        <q-tab name="stages" label="PHASES" />
         <q-tab name="parcels" label="PARCELLES" />
         <q-tab name="files" label="FICHIERS" />
       </q-tabs>
@@ -35,7 +35,9 @@
         <TabSummaryProjectDetail :project="project" :client="client" />
       </q-tab-panel>
 
-      <q-tab-panel name="phases" class="q-pa-none q-mt-md"> </q-tab-panel>
+      <q-tab-panel name="stages" class="q-pa-none q-mt-md">
+        <TabStages />
+      </q-tab-panel>
 
       <q-tab-panel name="parcels" class="q-pa-none q-mt-md"> </q-tab-panel>
 
@@ -46,6 +48,7 @@
 
 <script setup>
 import TabSummaryProjectDetail from "../components/tabs/TabSummaryProjectDetail.vue";
+import TabStages from "src/components/tabs/TabStages.vue";
 import { useProjectsStore } from "../stores/projects";
 import { useClientsStore } from "../stores/clients";
 import { useUserStore } from "../stores/user";

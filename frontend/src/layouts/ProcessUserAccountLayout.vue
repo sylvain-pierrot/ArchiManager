@@ -10,7 +10,7 @@
       />
     </q-header>
     <q-page-container>
-      <router-view class="bg-img bg-dark" />
+      <router-view class="bg-img bg-layout" />
     </q-page-container>
   </q-layout>
 </template>
@@ -22,5 +22,8 @@
   background-position: bottom !important;
   background-repeat: no-repeat !important;
   background-size: cover !important;
+}
+.bg-layout {
+  background-color: #031924 !important;
 }
 </style>
