@@ -73,6 +73,25 @@
                 </q-badge>
               </q-td>
             </template>
+
+            <template v-slot:body-cell-status="props">
+              <q-td key="name" :props="props">
+                <div class="row items-center">
+                  <q-icon
+                    size="xs"
+                    :color="props.row.status.color"
+                    :name="props.row.status.icon"
+                  />
+
+                  <div
+                    class="text-subtitle1 q-ml-sm"
+                    :style="{ color: props.row.status.color }"
+                  >
+                    {{ props.row.status.label }}
+                  </div>
+                </div>
+              </q-td>
+            </template>
           </q-table>
         </q-card-section>
       </q-card>
@@ -134,7 +153,7 @@ const columns = ref([
   {
     name: "status",
     label: "Statut",
-    align: "right",
+    align: "left",
     field: "status",
     sortable: true,
   },
@@ -171,7 +190,25 @@ const rows = computed(() =>
 
 // functions
 function getStatus(id) {
-  return id === 1 ? "En cours" : id === 2 ? "Terminé" : "Annulé";
+  const status = {
+    label: "",
+    icon: "",
+    color: "",
+  };
+  if (id === 1) {
+    status.label = "En cours";
+    status.icon = "pending";
+    status.color = "green";
+  } else if (id === 2) {
+    status.label = "Terminé";
+    status.icon = "check_circle";
+    status.color = "blue";
+  } else {
+    status.label = "Annulé";
+    status.icon = "cancel";
+    status.color = "red";
+  }
+  return status;
 }
 function onRowClick(evt, row) {
   router.push(`/projects/${row.id}`);

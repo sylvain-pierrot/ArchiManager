@@ -1,5 +1,59 @@
 <template>
   <div class="row q-col-gutter-md">
+    <div class="col-xs-12 col-md-4">
+      <q-card class="no-shadow full-height">
+        <q-card-section class="col-8">
+          <div class="row justify-between">
+            <div class="text-h6 text-dark q-mb-sm">Progression</div>
+            <div class="text-h6 text-warning q-mb-sm">
+              {{ `90 %` }}
+            </div>
+          </div>
+
+          <q-linear-progress
+            stripe
+            size="10px"
+            :value="progress1"
+            color="warning"
+            instant-feedback
+            rounded
+          />
+        </q-card-section>
+      </q-card>
+    </div>
+
+    <div class="col-xs-12 col-md-4">
+      <q-card class="no-shadow full-height">
+        <q-card-section horizontal class="justify-between items-center">
+          <q-card-section>
+            <div class="text-h6 text-dark">Facturable</div>
+          </q-card-section>
+          <q-card-section align="top">
+            <div class="row items-center justify-center">
+              <div class="text-h6 text-blue q-mr-md">100000</div>
+              <q-btn flat round color="warning" icon="arrow_forward_ios" />
+            </div>
+          </q-card-section>
+        </q-card-section>
+      </q-card>
+    </div>
+
+    <div class="col-xs-12 col-md-4">
+      <q-card class="no-shadow full-height">
+        <q-card-section horizontal class="justify-between items-center">
+          <q-card-section>
+            <div class="text-h6 text-dark">Impayé</div>
+          </q-card-section>
+          <q-card-section align="top">
+            <div class="row items-center justify-center">
+              <div class="text-h6 text-green q-mr-md">100000</div>
+              <q-btn flat round color="warning" icon="arrow_forward_ios" />
+            </div>
+          </q-card-section>
+        </q-card-section>
+      </q-card>
+    </div>
+
     <div class="col-xs-12 col-md-5">
       <q-card class="no-shadow">
         <q-card-section>
@@ -65,12 +119,30 @@
       </q-card>
     </div>
 
+    <div class="col-xs-12 col-md-7">
+      <q-card class="no-shadow">
+        <q-card-section>
+          <div class="text-h6 text-dark">Honoraires</div>
+          <div class="text-caption text-grey-7">
+            Honoraires des phases du projet
+          </div>
+        </q-card-section>
+        <q-card-section>
+          <apexchart
+            height="300"
+            type="bar"
+            :options="options"
+            :series="series"
+          ></apexchart>
+        </q-card-section>
+      </q-card>
+    </div>
     <div class="col-xs-12 col-md-3">
       <q-card class="no-shadow">
         <q-card-section>
-          <div class="text-h6 text-dark">Honoraire</div>
+          <div class="text-h6 text-dark">Honoraires</div>
           <div class="text-caption text-grey-7">
-            Résumé du projet d'honoraires
+            Honoraires des phases du projet
           </div>
         </q-card-section>
         <q-card-section>
@@ -106,12 +178,11 @@ const props = defineProps({
   },
 });
 const { project, client } = toRefs(props);
-
 const columns = ref([
   {
     name: "name",
     required: true,
-    label: "Valide",
+    label: "Projet",
     align: "left",
     field: (row) => row.name,
     format: (val) => `${val}`,
@@ -124,25 +195,108 @@ const columns = ref([
     field: "amount",
   },
 ]);
-
 const rows = ref([
   {
-    name: "Projet",
-    amount: "1 000 EUR",
-  },
-  {
     name: "Total (HT)",
-    amount: "1 000 EUR",
+    amount: "17 100 €",
   },
   {
     name: "TVA (20%)",
-    amount: "200 EUR",
+    amount: "0 €",
   },
   {
     name: "Total (TTC)",
-    amount: "1 200 EUR",
+    amount: "17 100 €",
   },
 ]);
+const progress1 = ref(0.9);
+const series = ref([
+  {
+    color: "#C23829",
+    name: "Payé",
+    data: [
+      {
+        x: "Payé",
+        y: 2000,
+        goals: [
+          {
+            name: "Montant total",
+            value: 4400,
+            strokeColor: "#3E8CF5 ",
+          },
+        ],
+      },
+      {
+        x: "category B",
+        y: 1500,
+        goals: [
+          {
+            name: "Montant total",
+            value: 5500,
+            strokeColor: "#3E8CF5",
+          },
+        ],
+      },
+      {
+        x: "category C",
+        y: 3500,
+        goals: [
+          {
+            name: "Montant total",
+            value: 4100,
+            strokeColor: "#3E8CF5",
+          },
+        ],
+      },
+      {
+        x: "category D",
+        y: 3700,
+        goals: [
+          {
+            name: "Montant total",
+            value: 3700,
+            strokeColor: "#3E8CF5",
+          },
+        ],
+      },
+    ],
+  },
+]);
+const options = ref({
+  chart: {
+    type: "bar",
+    height: 350,
+    stacked: false,
+    stackType: "100%",
+  },
+  plotOptions: {
+    bar: {
+      horizontal: true,
+    },
+  },
+  stroke: {
+    width: 1,
+    colors: ["#fff"],
+  },
+  xaxis: {
+    categories: ["PH1", "PH2", "PH3", "PH4"],
+  },
+  tooltip: {
+    y: {
+      formatter: function (val) {
+        return val + "€";
+      },
+    },
+  },
+  fill: {
+    opacity: 1,
+  },
+  legend: {
+    position: "top",
+    horizontalAlign: "left",
+    offsetX: 40,
+  },
+});
 </script>
 
 <style lang="scss">

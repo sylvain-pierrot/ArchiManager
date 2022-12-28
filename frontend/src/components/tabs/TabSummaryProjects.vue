@@ -9,7 +9,7 @@
           </q-card-section>
           <q-card-section class="col-4" align="top">
             <div class="row items-center justify-center">
-              <div class="text-h6 text-blue q-mr-md">
+              <div class="text-h6 text-green q-mr-md">
                 {{ projectInProgress }}
               </div>
               <q-btn flat round color="warning" icon="arrow_forward_ios" />
@@ -30,7 +30,7 @@
           </q-card-section>
           <q-card-section class="col-4" align="top">
             <div class="row items-center justify-center">
-              <div class="text-h6 text-green q-mr-md">
+              <div class="text-h6 text-blue q-mr-md">
                 {{ projectCompleted }}
               </div>
               <q-btn flat round color="warning" icon="arrow_forward_ios" />
@@ -67,7 +67,7 @@
           <div class="row justify-between">
             <div class="text-h6 text-dark q-mb-md">Honoraires</div>
             <div class="text-h6 text-warning q-mb-md">
-              {{ `${totalFees} EUR` }}
+              {{ `${totalFees} €` }}
             </div>
           </div>
 
@@ -77,6 +77,7 @@
             :value="progress1"
             color="warning"
             instant-feedback
+            rounded
           />
           <div class="text-caption text-grey-7 q-mt-sm">
             Honoraires totaux des projets "en cours"/"terminé"

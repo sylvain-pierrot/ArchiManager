@@ -28,7 +28,7 @@ const props = defineProps({
 
 <style lang="scss" scoped>
 .bg-warning-light {
-  background-color: #f2c03728;
+  background-color: #5892ad23;
 }
 .link {
   position: relative;

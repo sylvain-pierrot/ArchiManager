@@ -5,7 +5,7 @@
       v-model="leftDrawerOpen"
       show-if-above
       :width="250"
-      class="bg-dark"
+      class="bg-drawer"
     >
       <q-item class="q-mb-md q-mt-lg row justify-center">
         <img
@@ -112,6 +112,9 @@ const logout = async () => {
 .dark-chip {
   color: #dddddd;
   background-color: #4d4d4d;
+}
+.bg-drawer {
+  background-color: #031924 !important;
 }
 
 @media screen and (min-width: 1025px) {
