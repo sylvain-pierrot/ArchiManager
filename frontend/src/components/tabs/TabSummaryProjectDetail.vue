@@ -30,7 +30,7 @@
           </q-card-section>
           <q-card-section align="top">
             <div class="row items-center justify-center">
-              <div class="text-h6 text-blue q-mr-md">100000</div>
+              <div class="text-h6 text-green q-mr-md">5400 €</div>
               <q-btn flat round color="warning" icon="arrow_forward_ios" />
             </div>
           </q-card-section>
@@ -46,7 +46,7 @@
           </q-card-section>
           <q-card-section align="top">
             <div class="row items-center justify-center">
-              <div class="text-h6 text-green q-mr-md">100000</div>
+              <div class="text-h6 text-red q-mr-md">10540 €</div>
               <q-btn flat round color="warning" icon="arrow_forward_ios" />
             </div>
           </q-card-section>

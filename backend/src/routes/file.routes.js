@@ -2,17 +2,22 @@ const router = require("express-promise-router")();
 const fileController = require("../controllers/file.controller");
 const authorization = require("../middlewares/authorization");
 const { body } = require("express-validator");
+const multer = require("multer");
+// Multer storage configuration
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 router.post(
-  "/projects/:id/files",
+  "/projects/:idP/files",
   authorization.authenticate,
-  body("nom").isLength({ min: 1 }),
-  body("type").isLength({ min: 1 }),
+  upload.single("file"),
+  // body("nom").isLength({ min: 1 }),
+  // body("type").isLength({ min: 1 }),
   //   body("fichier").isMimeType(["fichier|pdf"]),
   fileController.create.bind(fileController)
 );
 router.get(
-  "/projects/:id/files",
+  "/projects/:idP/files",
   authorization.authenticate,
   fileController.getAll.bind(fileController)
 );

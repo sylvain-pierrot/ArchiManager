@@ -9,7 +9,11 @@
           </div>
         </q-card-section>
         <q-card-section>
-          <q-badge color="green-9" size="md" :label="project.statut" />
+          <q-badge
+            v-if="project.statut"
+            :color="project.statut.color"
+            :label="project.statut.label"
+          />
         </q-card-section>
       </q-card-section>
 
@@ -50,7 +54,9 @@
 
       <q-tab-panel name="parcels" class="q-pa-none q-mt-md"> </q-tab-panel>
 
-      <q-tab-panel name="files" class="q-pa-none q-mt-md"> </q-tab-panel>
+      <q-tab-panel name="files" class="q-pa-none q-mt-md">
+        <TabFiles @file="addFile" :files="files" />
+      </q-tab-panel>
     </q-tab-panels>
   </q-page>
 </template>
@@ -58,14 +64,17 @@
 <script setup>
 import TabSummaryProjectDetail from "../components/tabs/TabSummaryProjectDetail.vue";
 import TabStages from "src/components/tabs/TabStages.vue";
+import TabFiles from "src/components/tabs/TabFiles.vue";
 import { useProjectsStore } from "../stores/projects";
 import { useClientsStore } from "../stores/clients";
 import { useUserStore } from "../stores/user";
 import { useStagesStore } from "../stores/stages";
+import { useFilesStore } from "src/stores/files";
 import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
 
 const moment = require("moment");
+const filesStore = useFilesStore();
 const stagesStore = useStagesStore();
 const userStore = useUserStore();
 const clientsStore = useClientsStore();
@@ -77,20 +86,40 @@ const client = ref();
 const userCookie = decodeURIComponent(userStore.getCookie("user"));
 const user = ref(JSON.parse(userCookie.substring(2)));
 const stages = ref();
+const files = ref([]);
+
+// function
+function getStatus(id) {
+  const status = {
+    label: "",
+    icon: "",
+    color: "",
+  };
+  if (id === 1) {
+    status.label = "En cours";
+    status.color = "green";
+  } else if (id === 2) {
+    status.label = "Terminé";
+    status.color = "blue";
+  } else {
+    status.label = "Annulé";
+    status.color = "red";
+  }
+  return status;
+}
 
 // loads
+async function loadFiles() {
+  files.value = await filesStore.getAllFiles(route.params.id);
+}
+
 async function loadProject() {
   project.value = await projectsStore.getOneProject(route.params.id);
   client.value = await clientsStore.getOneClient(project.value.client_id);
 
   // project
   // edit value
-  project.value.statut =
-    project.value.statut_id === 1
-      ? "En cours"
-      : project.value.statut_id === 2
-      ? "Terminé"
-      : "Annulé";
+  project.value.statut = getStatus(project.value.statut_id);
   project.value.mission =
     project.value.mission_id === 1 ? "Complète" : "Partielle";
   project.value.designation =
@@ -126,10 +155,12 @@ async function loadProject() {
 
 async function loadStages() {
   stages.value = await stagesStore.getAllStages(route.params.id);
-  console.log(stages.value);
 }
 
 // create
+const addFile = async (file) => {
+  await filesStore.upload(route.params.id, file);
+};
 const addMop = async (stages) => {
   for (const stage of stages) {
     await addStage(stage);
@@ -153,6 +184,7 @@ const deleteStage = async (stage_id) => {
 onBeforeMount(async () => {
   await loadProject();
   await loadStages();
+  await loadFiles();
 });
 </script>
 
