@@ -22,12 +22,15 @@
               label="Ensembles de phases prédéfinis"
               flat
               class="col-4"
+              map-options
+              emit-value
             />
             <q-btn
               color="warning"
               label="Appliquer phases"
               unelevated
-              @click="dialog_confirm = true"
+              :disable="!model"
+              @click="validate(model)"
             />
 
             <q-dialog v-model="dialog_confirm">
@@ -42,10 +45,9 @@
             flat
             bordered
             hide-pagination
-            @row-click="onRowClick"
             v-model:pagination="pagination"
           >
-            <template v-slot:bottom-row>
+            <template v-slot:bottom-row v-if="stages.length > 0">
               <q-td>
                 <q-btn
                   label="Ajouter une phase"
@@ -56,10 +58,6 @@
                   @click="dialog_stage = true"
                 />
               </q-td>
-
-              <q-dialog v-model="dialog_stage">
-                <FormAddStage @stage="emitStage" />
-              </q-dialog>
             </template>
 
             <template v-slot:body-cell-btn="props">
@@ -71,9 +69,7 @@
                         <q-item-section avatar>
                           <q-avatar text-color="red" icon="delete" />
                         </q-item-section>
-                        <q-item-section>
-                          {{ `Supprimer ${props.row.id}` }}
-                        </q-item-section>
+                        <q-item-section>Supprimer</q-item-section>
                       </q-item>
                     </q-list>
                   </q-menu>
@@ -81,6 +77,10 @@
               </q-td>
             </template>
           </q-table>
+
+          <q-dialog v-model="dialog_stage">
+            <FormAddStage @stage="emitStage" />
+          </q-dialog>
         </q-card-section>
       </q-card>
     </div>
@@ -140,8 +140,11 @@ const columns = ref([
   },
 ]);
 
-const options = ref(["MOP", "Ajouter des phases manuellement"]);
-const model = ref("MOP");
+const options = ref([
+  { label: "MOP", value: 1 },
+  { label: "Ajouter des phases manuellement", value: 2 },
+]);
+const model = ref();
 
 // emit MOP
 const emit = defineEmits(["mop", "stage", "deleteStage"]);
@@ -159,6 +162,13 @@ function emitDeleteStage(id) {
   emit("deleteStage", id);
 }
 // function
+function validate(val) {
+  if (val === 1) {
+    dialog_confirm.value = true;
+  } else {
+    dialog_stage.value = true;
+  }
+}
 function createStageList() {
   return [
     {
