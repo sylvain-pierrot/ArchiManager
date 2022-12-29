@@ -167,9 +167,9 @@ const addClient = async (client) => {
 };
 const addProject = async (project, tags_projects) => {
   const project_id = await projectsStore.createProject(project);
-  tags_projects.forEach(async (tag_id) => {
+  for (const tag_id of tags_projects) {
     await tagsProjectsStore.addTagProject(project_id, tag_id);
-  });
+  }
   await loadProjects();
   await loadTags();
 };
