@@ -27,9 +27,9 @@
           bg-color="primary"
           v-model="file.data"
           outlined
-          label="Max file size (200k)"
+          label="Max file size (5Mb)"
           multiple
-          max-file-size="200000"
+          max-file-size="5000000"
           class="col-12"
           @rejected="onRejected"
         />

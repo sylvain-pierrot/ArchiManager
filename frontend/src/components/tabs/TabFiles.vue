@@ -22,7 +22,7 @@
             <FormAddFile @file="emitFile" />
           </q-dialog>
 
-          <q-list bordered padding class="rounded-borders">
+          <q-list bordered padding separator class="rounded-borders">
             <q-item
               v-for="file in files"
               :key="file.id"
@@ -112,6 +112,7 @@ function emitFile(file) {
 </script>
 
 <style lang="scss">
+.card-viewer,
 .q-pdfviewer {
   max-width: 80% !important;
 }
