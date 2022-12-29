@@ -160,6 +160,7 @@ async function loadStages() {
 // create
 const addFile = async (file) => {
   await filesStore.upload(route.params.id, file);
+  await loadFiles();
 };
 const addMop = async (stages) => {
   for (const stage of stages) {

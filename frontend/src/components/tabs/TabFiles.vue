@@ -35,7 +35,7 @@
               </q-item-section>
 
               <q-item-section>
-                <q-item-label lines="1">Expenses spreadsheet</q-item-label>
+                <q-item-label lines="1">{{ file.nom }}</q-item-label>
                 <q-item-label caption>March 2nd, 2019</q-item-label>
               </q-item-section>
 
@@ -47,6 +47,14 @@
         </q-card-section>
       </q-card>
     </div>
+    <q-dialog v-model="dialog_viewer">
+      <q-pdfviewer
+        v-model="visible"
+        :src="pdfSrc"
+        type="pdfjs"
+        class="full-width"
+      />
+    </q-dialog>
   </div>
 </template>
 
@@ -54,6 +62,7 @@
 import { ref, defineEmits, defineProps, toRefs } from "vue";
 import FormAddFile from "../forms/FormAddFile.vue";
 
+const pdfSrc = ref();
 const props = defineProps({
   files: {
     type: Array,
@@ -61,30 +70,36 @@ const props = defineProps({
   },
 });
 const { files } = toRefs(props);
+const dialog_viewer = ref(false);
+const dialog_file = ref(false);
 
 function downloadFile(file) {
   const Buffer = require("buffer/").Buffer;
-  const buffer = Buffer.from(file.fichier.data);
-  console.log(buffer);
 
   // Create a new Blob object containing the file data
+  const buffer = Buffer.from(file.fichier.data);
   const blob = new Blob([buffer], {
     type: file.type,
   });
   console.log(blob);
-  // Create a new URL object pointing to the Blob
-  const url = URL.createObjectURL(blob);
-  // Create a new a element
-  const a = document.createElement("a");
-  // Set the href and download attributes
-  a.href = url;
-  a.download = "monFichier";
-  // Append the a element to the document
-  document.body.appendChild(a);
-  // Trigger a click event on the a element
-  a.click();
-  // Remove the a element from the document
-  document.body.removeChild(a);
+
+  const url = window.URL.createObjectURL(blob);
+  pdfSrc.value = url; // where pdfSrc is used in the :src parameter of the qpdfviewer
+
+  dialog_viewer.value = true;
+  // // Create a new URL object pointing to the Blob
+  // const url = URL.createObjectURL(blob);
+  // // Create a new a element
+  // const a = document.createElement("a");
+  // // Set the href and download attributes
+  // a.href = url;
+  // a.download = "monFichier";
+  // // Append the a element to the document
+  // document.body.appendChild(a);
+  // // Trigger a click event on the a element
+  // a.click();
+  // // Remove the a element from the document
+  // document.body.removeChild(a);
 }
 
 // emit
@@ -94,7 +109,10 @@ function emitFile(file) {
   dialog_file.value = false;
   emit("file", file);
 }
-const dialog_file = ref(false);
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.q-pdfviewer {
+  max-width: 80% !important;
+}
+</style>
