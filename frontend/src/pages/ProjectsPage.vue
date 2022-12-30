@@ -1,52 +1,57 @@
 <template>
-  <q-page padding v-if="projects && clients">
-    <q-card class="no-shadow">
-      <q-card-section>
-        <div class="text-overline text-warning">GÉNÉRAL</div>
-        <div class="text-h4 text-dark">Projets</div>
-      </q-card-section>
+  <q-page padding>
+    <div v-if="projects && clients && tags">
+      <q-card class="no-shadow">
+        <q-card-section>
+          <div class="text-overline text-warning">GÉNÉRAL</div>
+          <div class="text-h4 text-dark">Projets</div>
+        </q-card-section>
 
-      <q-separator />
+        <q-separator />
 
-      <q-tabs
-        v-model="tab"
-        dense
-        class="text-grey-6"
-        active-color="warning"
-        indicator-color="warning"
-        align="justify"
-      >
-        <q-tab name="summary" label="RÉSUMÉ" />
-        <q-tab name="projects" label="PROJETS" />
-      </q-tabs>
-    </q-card>
+        <q-tabs
+          v-model="tab"
+          dense
+          class="text-grey-6"
+          active-color="warning"
+          indicator-color="warning"
+          align="justify"
+        >
+          <q-tab name="summary" label="RÉSUMÉ" />
+          <q-tab name="projects" label="PROJETS" />
+        </q-tabs>
+      </q-card>
 
-    <q-tab-panels v-model="tab">
-      <q-tab-panel name="summary" class="q-pa-none q-mt-md">
-        <TabSummaryProjects
-          :totalFees="totalFees"
-          :totalFeesCollected="totalFeesCollected"
-          :projectInProgress="projectInProgress"
-          :projectCompleted="projectCompleted"
-          :projectCancelled="projectCancelled"
-          :cities="cities"
-          :tags="tags"
-        />
-      </q-tab-panel>
+      <q-tab-panels v-model="tab">
+        <q-tab-panel name="summary" class="q-pa-none q-mt-md">
+          <TabSummaryProjects
+            :totalFees="totalFees"
+            :totalFeesCollected="totalFeesCollected"
+            :projectInProgress="projectInProgress"
+            :projectCompleted="projectCompleted"
+            :projectCancelled="projectCancelled"
+            :cities="cities"
+            :tags="tags"
+          />
+        </q-tab-panel>
 
-      <q-tab-panel name="projects" class="q-pa-none q-mt-md">
-        <TabProjects
-          :projects="projects"
-          :clients="clients"
-          :tags="tags"
-          @edit="updateProjects"
-          @client="addClient"
-          @project="addProject"
-          @addTag="addTag"
-          @updateTag="updateTag"
-        />
-      </q-tab-panel>
-    </q-tab-panels>
+        <q-tab-panel name="projects" class="q-pa-none q-mt-md">
+          <TabProjects
+            :projects="projects"
+            :clients="clients"
+            :tags="tags"
+            @edit="updateProjects"
+            @client="addClient"
+            @project="addProject"
+            @addTag="addTag"
+            @updateTag="updateTag"
+          />
+        </q-tab-panel>
+      </q-tab-panels>
+    </div>
+    <div v-else class="fullscreen row justify-center items-center">
+      <q-spinner-gears size="xl" color="secondary" />
+    </div>
   </q-page>
 </template>
 
@@ -81,7 +86,7 @@ const projectCancelled = ref(0);
 const cities = ref([]);
 
 // tags store
-const tags = ref([]);
+const tags = ref(null);
 
 // functions loads
 async function loadTags() {

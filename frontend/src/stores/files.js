@@ -5,9 +5,8 @@ import { Notify } from "quasar";
 export const useFilesStore = defineStore("files", () => {
   const upload = async (id, file) => {
     const formData = new FormData();
-    formData.append("file", file.data[0]);
+    formData.append("file", file);
 
-    console.log(formData);
     try {
       const response = await api.post(`/api/projects/${id}/files`, formData, {
         headers: {
@@ -33,34 +32,25 @@ export const useFilesStore = defineStore("files", () => {
       console.error(error);
     }
   };
-  // const deleteStage = async (project_id, stage_id) => {
-  //   try {
-  //     const response = await api.delete(
-  //       `/api/projects/${project_id}/stages/${stage_id}`
-  //     );
-  //     Notify.create({
-  //       type: "positive",
-  //       position: "top-right",
-  //       message: "Phase supprimée avec succés",
-  //     });
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-  // deleteStage;
-  // const getAllStages = async (id) => {
-  //   try {
-  //     const response = await api.get(`/api/projects/${id}/stages`);
-  //     return response.data;
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const deleteFile = async (project_id, file_id) => {
+    try {
+      const response = await api.delete(
+        `/api/projects/${project_id}/files/${file_id}`
+      );
+      Notify.create({
+        type: "positive",
+        position: "top-right",
+        message: "Fichier supprimé",
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
     upload,
     getAllFiles,
-    // getAllStages,
-    // deleteStage,
+    deleteFile,
   };
 });

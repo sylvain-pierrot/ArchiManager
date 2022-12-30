@@ -23,15 +23,22 @@
           </q-dialog>
 
           <q-list bordered padding separator class="rounded-borders">
-            <q-item
-              v-for="file in files"
-              :key="file.id"
-              clickable
-              v-ripple
-              @click="downloadFile(file)"
-            >
+            <q-item v-if="files.length < 1">
+              <q-item-section avatar>
+                <q-icon name="warning" color="secondary" size="32px" />
+              </q-item-section>
+
+              <q-item-section class="text-secondary">
+                Pas de fichiers
+              </q-item-section>
+            </q-item>
+            <q-item v-for="file in files" :key="file.id">
               <q-item-section avatar top>
-                <q-avatar icon="assignment" color="grey" text-color="white" />
+                <q-avatar
+                  icon="assignment"
+                  text-color="secondary"
+                  class="bg-file"
+                />
               </q-item-section>
 
               <q-item-section>
@@ -40,7 +47,33 @@
               </q-item-section>
 
               <q-item-section side>
-                <q-icon name="info" />
+                <div>
+                  <q-btn
+                    round
+                    text-color="secondary"
+                    icon="visibility"
+                    clickable
+                    v-ripple
+                    dense
+                    unelevated
+                    @click="previewFile(file)"
+                  />
+                </div>
+              </q-item-section>
+
+              <q-item-section side>
+                <q-btn icon="more_vert" color="secondary" flat rounded dense>
+                  <q-menu>
+                    <q-list style="min-width: 100px">
+                      <q-item clickable @click="emitDeleteFile(file.id)">
+                        <q-item-section avatar>
+                          <q-avatar text-color="red" icon="delete" />
+                        </q-item-section>
+                        <q-item-section>Supprimer</q-item-section>
+                      </q-item>
+                    </q-list>
+                  </q-menu>
+                </q-btn>
               </q-item-section>
             </q-item>
           </q-list>
@@ -73,7 +106,8 @@ const { files } = toRefs(props);
 const dialog_viewer = ref(false);
 const dialog_file = ref(false);
 
-function downloadFile(file) {
+// functions
+function previewFile(file) {
   const Buffer = require("buffer/").Buffer;
 
   // Create a new Blob object containing the file data
@@ -103,11 +137,14 @@ function downloadFile(file) {
 }
 
 // emit
-const emit = defineEmits(["file"]);
+const emit = defineEmits(["file", "deleteFile"]);
 
 function emitFile(file) {
   dialog_file.value = false;
   emit("file", file);
+}
+function emitDeleteFile(id) {
+  emit("deleteFile", id);
 }
 </script>
 
@@ -115,5 +152,9 @@ function emitFile(file) {
 .card-viewer,
 .q-pdfviewer {
   max-width: 80% !important;
+}
+.bg-file {
+  background-color: #f0f7ff;
+  border: solid 1px #e0e0e8;
 }
 </style>

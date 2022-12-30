@@ -9,26 +9,13 @@
     </q-card-section>
     <q-card-section>
       <q-form @submit="$emit('file', file)" class="row q-col-gutter-sm">
-        <q-input
-          outlined
-          type="text"
-          color="black"
-          bg-color="primary"
-          v-model="file.name"
-          label="Nom *"
-          flat
-          class="col-12"
-          :rules="[(val) => !!val || 'Ce champs est requis']"
-          lazy-rules
-        />
-
         <q-file
           color="black"
           bg-color="primary"
-          v-model="file.data"
+          v-model="file"
           outlined
-          label="Max file size (5Mb)"
-          multiple
+          label="Taille maximal 5Mo (.pdf)"
+          accept=".pdf"
           max-file-size="5000000"
           class="col-12"
           @rejected="onRejected"
@@ -52,16 +39,13 @@
 import { ref } from "vue";
 import { Notify } from "quasar";
 
-const file = ref({
-  name: null,
-  data: null,
-});
+const file = ref();
 
 function onRejected(rejectedEntries) {
   Notify.create({
     type: "negative",
     position: "top-right",
-    message: `${rejectedEntries.length} le(s) fichier(s) n'ont pas passé les contraintes de validation`,
+    message: `${rejectedEntries} le(s) fichier(s) n'ont pas passé les contraintes de validation`,
   });
 }
 </script>

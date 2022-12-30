@@ -158,7 +158,6 @@ function emitStage(stage) {
   emit("stage", stage);
 }
 function emitDeleteStage(id) {
-  console.log(id);
   emit("deleteStage", id);
 }
 // function

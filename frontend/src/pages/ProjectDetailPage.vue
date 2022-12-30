@@ -55,7 +55,7 @@
       <q-tab-panel name="parcels" class="q-pa-none q-mt-md"> </q-tab-panel>
 
       <q-tab-panel name="files" class="q-pa-none q-mt-md">
-        <TabFiles @file="addFile" :files="files" />
+        <TabFiles @file="addFile" @deleteFile="deleteFile" :files="files" />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -180,6 +180,10 @@ const addStage = async (stage) => {
 const deleteStage = async (stage_id) => {
   await stagesStore.deleteStage(route.params.id, stage_id);
   await loadStages();
+};
+const deleteFile = async (file_id) => {
+  await filesStore.deleteFile(route.params.id, file_id);
+  await loadFiles();
 };
 
 onBeforeMount(async () => {

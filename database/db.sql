@@ -137,6 +137,7 @@ CREATE TABLE fichiers (
   nom VARCHAR(255) NOT NULL,
   type VARCHAR(255) NOT NULL,
   fichier BYTEA NOT NULL,
+  date DATE NOT NULL,
   projet_id INTEGER REFERENCES projets(id)
 );
 

@@ -111,6 +111,19 @@ class FileController extends Controller {
     if (result) {
       return;
     }
+
+    // datas
+    const primaryKey = {
+      key: "id",
+      value: parseInt(req.params.idF),
+    };
+    const foreignKey = {
+      key: "projet_id",
+      value: parseInt(req.params.idP),
+    };
+
+    // query
+    super.delete(req, res, primaryKey, foreignKey);
   }
 
   async update(req, res) {
