@@ -51,7 +51,7 @@ router.put(
   stageController.updateFees.bind(stageController)
 );
 router.put(
-  "/projects/:idP/stages/:idS/paid",
+  "/projects/:idP/stages/:idS/progress",
   authorization.authenticate,
   body("progression").isBoolean(),
   stageController.updateProgress.bind(stageController)
