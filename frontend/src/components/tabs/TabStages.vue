@@ -60,20 +60,38 @@
               </q-td>
             </template>
 
+            <template v-slot:body-cell-progress>
+              <q-td>
+                <div class="row justify-end">
+                  <q-toggle
+                    v-model="toggle"
+                    checked-icon="check"
+                    color="green"
+                    unchecked-icon="clear"
+                  />
+                </div>
+              </q-td>
+            </template>
+
             <template v-slot:body-cell-btn="props">
-              <q-td class="row justify-end">
-                <q-btn icon="more_vert" color="warning" flat rounded dense>
-                  <q-menu>
-                    <q-list style="min-width: 100px">
-                      <q-item clickable @click="emitDeleteStage(props.row.id)">
-                        <q-item-section avatar>
-                          <q-avatar text-color="red" icon="delete" />
-                        </q-item-section>
-                        <q-item-section>Supprimer</q-item-section>
-                      </q-item>
-                    </q-list>
-                  </q-menu>
-                </q-btn>
+              <q-td>
+                <div class="row justify-end">
+                  <q-btn icon="more_vert" color="warning" flat rounded dense>
+                    <q-menu>
+                      <q-list style="min-width: 100px">
+                        <q-item
+                          clickable
+                          @click="emitDeleteStage(props.row.id)"
+                        >
+                          <q-item-section avatar>
+                            <q-avatar text-color="red" icon="delete" />
+                          </q-item-section>
+                          <q-item-section>Supprimer</q-item-section>
+                        </q-item>
+                      </q-list>
+                    </q-menu>
+                  </q-btn>
+                </div>
               </q-td>
             </template>
           </q-table>
@@ -107,6 +125,7 @@ const dialog_stage = ref(false);
 const pagination = ref({
   rowsPerPage: 0,
 });
+const toggle = ref(false);
 const columns = ref([
   {
     name: "label",
@@ -124,6 +143,11 @@ const columns = ref([
     field: (row) => row.code,
     format: (val) => `${val}`,
     sortable: true,
+  },
+  {
+    name: "progress",
+    label: "Progression",
+    align: "right",
   },
   {
     name: "fees",

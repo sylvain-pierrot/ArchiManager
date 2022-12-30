@@ -99,6 +99,8 @@ CREATE TABLE phases (
   code VARCHAR(255) NOT NULL,
   label VARCHAR(255) NOT NULL,
   honoraires INTEGER NOT NULL,
+  honoraires_paye INTEGER NOT NULL DEFAULT 0,
+  progression BOOLEAN NOT NULL DEFAULT false,
   description TEXT NOT NULL,
   projet_id INTEGER REFERENCES projets(id)
 );

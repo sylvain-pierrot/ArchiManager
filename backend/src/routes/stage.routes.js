@@ -11,6 +11,7 @@ router.post(
   body("label").isLength({ min: 1 }),
   body("honoraires").isInt(),
   body("description").optional(),
+  body("progression").not().exists(),
   body("projet_id").not().exists(),
   stageController.create.bind(stageController)
 );
@@ -32,6 +33,7 @@ router.put(
   body("label").isLength({ min: 1 }),
   body("honoraires").isInt(),
   body("description").optional(),
+  body("progression").isBoolean(),
   body("projet_id").not().exists(),
   stageController.update.bind(stageController)
 );

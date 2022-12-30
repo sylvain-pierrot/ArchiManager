@@ -80,15 +80,19 @@ class FileController extends Controller {
       const project_id = parseInt(req.params.idP);
       // Get the file from the request object
       const file = req.file;
-
-      // Read the file and get its contents as a buffer
-      // const fileBuffer = Buffer.from(file.data);
       const fileBuffer = file.buffer;
+      let now = new Date();
+      let year = now.getFullYear();
+      let month = now.getMonth() + 1;
+      let day = now.getDate();
+      month = month < 10 ? "0" + month : month;
+      day = day < 10 ? "0" + day : day;
+      let dateString = `${year}/${month}/${day}`;
 
       // query
       const { rows } = await db.query(
-        "INSERT INTO fichiers (nom, type, fichier, projet_id) VALUES ($1, $2, $3, $4)  RETURNING *",
-        [file.originalname, file.mimetype, fileBuffer, project_id]
+        "INSERT INTO fichiers (nom, type, fichier, date, projet_id) VALUES ($1, $2, $3, $4, $5)  RETURNING *",
+        [file.originalname, file.mimetype, fileBuffer, dateString, project_id]
       );
 
       // failed query
