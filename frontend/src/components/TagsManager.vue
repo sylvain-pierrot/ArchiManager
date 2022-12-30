@@ -22,54 +22,6 @@
         <FormAddTag @tag="emitAddTag" />
       </q-dialog>
 
-      <!-- <q-table
-        :rows="tags"
-        :columns="columns"
-        row-key="name"
-        :selected-rows-label="getSelectedString"
-        v-model:selected="selected"
-        flat
-        bordered
-        hide-bottom
-      >
-        <template v-slot:header="props">
-          <q-tr :props="props">
-            <q-th v-for="col in props.cols" :key="col.name" :props="props">
-              {{ col.label }}
-            </q-th>
-            <q-th auto-width />
-          </q-tr>
-        </template>
-
-        <template v-slot:body="props">
-          <q-tr :props="props">
-            <q-td v-for="col in props.cols" :key="col.name" :props="props">
-              {{ col.value }}
-              <q-popup-edit
-                v-model.number="col.value"
-                buttons
-                label-set="Save"
-                label-cancel="Close"
-                :validate="test"
-                v-slot="scope"
-                color="red"
-              >
-                <q-input
-                  type="text"
-                  color="black"
-                  v-model.number="scope.value"
-                  dense
-                  autofocus
-                  @keyup.enter="scope.set"
-                />
-              </q-popup-edit>
-            </q-td>
-            <q-td auto-width>
-              <q-btn size="sm" icon="more_vert" round dense flat />
-            </q-td>
-          </q-tr>
-        </template>
-      </q-table> -->
       <q-table
         :rows="tags"
         :columns="columns"

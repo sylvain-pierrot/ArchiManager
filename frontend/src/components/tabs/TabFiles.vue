@@ -12,7 +12,7 @@
           <q-btn
             color="warning"
             label="Ajouter un fichier"
-            icon="insert_drive_file"
+            icon="add"
             unelevated
             class="q-mb-md q-mr-md"
             @click="dialog_file = true"
@@ -35,7 +35,7 @@
             <q-item v-for="file in files" :key="file.id" class="q-pa-md">
               <q-item-section avatar top>
                 <q-avatar
-                  icon="assignment"
+                  icon="insert_drive_file"
                   text-color="secondary"
                   class="bg-file"
                 />

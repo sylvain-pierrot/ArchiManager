@@ -81,7 +81,8 @@ CREATE TABLE projets (
   client_id INTEGER REFERENCES clients(id),
   mission_id INTEGER REFERENCES missions(id),
   designation_id INTEGER REFERENCES designations(id),
-  architecte_id INTEGER REFERENCES architectes(id)
+  architecte_id INTEGER REFERENCES architectes(id),
+  CHECK (date_debut <= date_fin)
 );
 
 -- Créer la table des parcelles
@@ -89,6 +90,7 @@ CREATE TABLE parcelles (
   section VARCHAR(255),
   numero INTEGER,
   surface INTEGER NOT NULL,
+  urbanisme TEXT,
   projet_id INTEGER REFERENCES projets(id),
   PRIMARY KEY (section, numero)
 );
@@ -102,7 +104,8 @@ CREATE TABLE phases (
   honoraires_paye INTEGER NOT NULL DEFAULT 0,
   progression BOOLEAN NOT NULL DEFAULT false,
   description TEXT NOT NULL,
-  projet_id INTEGER REFERENCES projets(id)
+  projet_id INTEGER REFERENCES projets(id),
+  CHECK (honoraires_paye <= honoraires)
 );
 
 -- Créer la table des tâches

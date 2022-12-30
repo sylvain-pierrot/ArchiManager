@@ -161,6 +161,72 @@ class StageController extends Controller {
       res.status(500).json({ message: "Server error" });
     }
   }
+
+  async updatePaid(req, res) {
+    try {
+      // queryValidator
+      const result = await this.queryValidator(req, res);
+      if (result) {
+        return;
+      }
+
+      // datas
+      const { honoraires_paye } = req.body;
+      const id = parseInt(req.params.idS);
+      const projet_id = parseInt(req.params.idP);
+
+      // query
+      const { rows } = await db.query(
+        "UPDATE phases SET honoraires_paye = $1 WHERE id = $2 AND projet_id = $3  RETURNING *",
+        [honoraires_paye, id, projet_id]
+      );
+
+      // failed query
+      if (rows.length < 1) {
+        return res.status(401).json({ message: "Error update project" });
+      }
+
+      // success
+      res.status(200).json(rows[0]);
+    } catch (err) {
+      // server error
+      console.error(err);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+
+  async updateFees(req, res) {
+    try {
+      // queryValidator
+      const result = await this.queryValidator(req, res);
+      if (result) {
+        return;
+      }
+
+      // datas
+      const { honoraires } = req.body;
+      const id = parseInt(req.params.idS);
+      const projet_id = parseInt(req.params.idP);
+
+      // query
+      const { rows } = await db.query(
+        "UPDATE phases SET honoraires = $1 WHERE id = $2 AND projet_id = $3  RETURNING *",
+        [honoraires, id, projet_id]
+      );
+
+      // failed query
+      if (rows.length < 1) {
+        return res.status(401).json({ message: "Error update project" });
+      }
+
+      // success
+      res.status(200).json(rows[0]);
+    } catch (err) {
+      // server error
+      console.error(err);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
 }
 
 module.exports = new StageController();

@@ -76,10 +76,71 @@
               </q-td>
             </template>
 
+            <template v-slot:body-cell-fees="props">
+              <q-td>
+                <div class="row justify-end">
+                  {{ props.row.honoraires }}
+                  <q-popup-edit
+                    v-model="props.row.honoraires"
+                    buttons
+                    title="Honoraires"
+                    label-set="Valider"
+                    label-cancel="Annuler"
+                    @save="(newVal) => emitUpdateFees(props.row.id, newVal)"
+                    v-slot="scope"
+                    color="warning"
+                  >
+                    <q-input
+                      type="text"
+                      v-model.number="scope.value"
+                      dense
+                      autofocus
+                      @keyup.enter="scope.set"
+                      color="black"
+                    />
+                  </q-popup-edit>
+                </div>
+              </q-td>
+            </template>
+
+            <template v-slot:body-cell-paid="props">
+              <q-td>
+                <div class="row justify-end">
+                  {{ props.row.honoraires_paye }}
+                  <q-popup-edit
+                    v-model="props.row.honoraires_paye"
+                    buttons
+                    title="Honoraires payés"
+                    label-set="Valider"
+                    label-cancel="Annuler"
+                    :validate="(newVal) => newVal <= props.row.honoraires"
+                    @save="(newVal) => emitUpdatePaid(props.row.id, newVal)"
+                    v-slot="scope"
+                    color="warning"
+                  >
+                    <q-input
+                      type="text"
+                      v-model.number="scope.value"
+                      dense
+                      autofocus
+                      @keyup.enter="scope.set"
+                      color="black"
+                      :rules="[
+                        (val) =>
+                          (!!val && val <= props.row.honoraires) ||
+                          'La valeur doit être inférieure ou égale aux honoraires',
+                      ]"
+                      lazy-rules
+                    />
+                  </q-popup-edit>
+                </div>
+              </q-td>
+            </template>
+
             <template v-slot:body-cell-btn="props">
               <q-td>
                 <div class="row justify-end">
-                  <q-btn icon="more_vert" color="warning" flat rounded dense>
+                  <q-btn icon="more_vert" color="secondary" flat rounded dense>
                     <q-menu>
                       <q-list style="min-width: 100px">
                         <q-item
@@ -160,6 +221,14 @@ const columns = ref([
     sortable: true,
   },
   {
+    name: "paid",
+    label: "Payé",
+    align: "right",
+    field: (row) => row.honoraires_paye,
+    format: (val) => `${val}`,
+    sortable: true,
+  },
+  {
     name: "btn",
     label: "",
     align: "right",
@@ -173,7 +242,14 @@ const options = ref([
 const model = ref();
 
 // emit MOP
-const emit = defineEmits(["mop", "stage", "deleteStage", "updateProgress"]);
+const emit = defineEmits([
+  "mop",
+  "stage",
+  "deleteStage",
+  "updateProgress",
+  "updatePaid",
+  "updateFees",
+]);
 function emitMop() {
   dialog_confirm.value = false;
   const stages = createStageList();
@@ -189,6 +265,14 @@ function emitDeleteStage(id) {
 function emitProgress(id, newVal) {
   const progress = { progression: newVal };
   emit("updateProgress", id, progress);
+}
+function emitUpdatePaid(id, newVal) {
+  const paid = { honoraires_paye: newVal };
+  emit("updatePaid", id, paid);
+}
+function emitUpdateFees(id, newVal) {
+  const fees = { honoraires: newVal };
+  emit("updateFees", id, fees);
 }
 // function
 function validate(val) {

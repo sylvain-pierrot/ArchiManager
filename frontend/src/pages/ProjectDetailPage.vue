@@ -50,6 +50,8 @@
           @stage="addOneStage"
           @deleteStage="deleteStage"
           @updateProgress="updateProgress"
+          @updatePaid="updatePaid"
+          @updateFees="updateFees"
           :stages="stages"
         />
       </q-tab-panel>
@@ -162,6 +164,14 @@ async function loadStages() {
 // update
 const updateProgress = async (id, progress) => {
   await stagesStore.updateProgressStage(route.params.id, id, progress);
+  await loadStages();
+};
+const updatePaid = async (id, paid) => {
+  await stagesStore.updatePaidStage(route.params.id, id, paid);
+  await loadStages();
+};
+const updateFees = async (id, fees) => {
+  await stagesStore.updateFeesStage(route.params.id, id, fees);
   await loadStages();
 };
 

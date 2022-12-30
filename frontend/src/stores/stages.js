@@ -50,6 +50,40 @@ export const useStagesStore = defineStore("stages", () => {
     }
   };
 
+  const updatePaidStage = async (project_id, stage_id, paid) => {
+    try {
+      const response = await api.put(
+        `/api/projects/${project_id}/stages/${stage_id}/paid`,
+        paid
+      );
+      Notify.create({
+        type: "positive",
+        position: "top-right",
+        message: "Honoraires payés modifiées",
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const updateFeesStage = async (project_id, stage_id, fees) => {
+    try {
+      const response = await api.put(
+        `/api/projects/${project_id}/stages/${stage_id}/fees`,
+        fees
+      );
+      Notify.create({
+        type: "positive",
+        position: "top-right",
+        message: "Honoraires modifiées",
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   deleteStage;
   const getAllStages = async (id) => {
     try {
@@ -63,6 +97,8 @@ export const useStagesStore = defineStore("stages", () => {
     createStage,
     getAllStages,
     updateProgressStage,
+    updatePaidStage,
+    updateFeesStage,
     deleteStage,
   };
 });

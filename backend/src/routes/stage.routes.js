@@ -34,11 +34,24 @@ router.put(
   body("honoraires").isInt(),
   body("description").optional(),
   body("progression").isBoolean(),
+  body("honoraires_paye").not().exists(),
   body("projet_id").not().exists(),
   stageController.update.bind(stageController)
 );
 router.put(
-  "/projects/:idP/stages/:idS/progress",
+  "/projects/:idP/stages/:idS/paid",
+  authorization.authenticate,
+  body("honoraires_paye").isInt(),
+  stageController.updatePaid.bind(stageController)
+);
+router.put(
+  "/projects/:idP/stages/:idS/fees",
+  authorization.authenticate,
+  body("honoraires").isInt(),
+  stageController.updateFees.bind(stageController)
+);
+router.put(
+  "/projects/:idP/stages/:idS/paid",
   authorization.authenticate,
   body("progression").isBoolean(),
   stageController.updateProgress.bind(stageController)

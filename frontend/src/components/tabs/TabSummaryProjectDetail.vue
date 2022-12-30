@@ -15,7 +15,6 @@
             size="10px"
             :value="progress.number"
             color="warning"
-            instant-feedback
             rounded
           />
         </q-card-section>
@@ -26,7 +25,7 @@
       <q-card class="no-shadow full-height">
         <q-card-section horizontal class="justify-between items-center">
           <q-card-section>
-            <div class="text-h6 text-dark">Facturable</div>
+            <div class="text-h6 text-dark">Facturé</div>
           </q-card-section>
           <q-card-section align="top">
             <div class="row items-center justify-center">
@@ -42,7 +41,23 @@
       <q-card class="no-shadow full-height">
         <q-card-section horizontal class="justify-between items-center">
           <q-card-section>
-            <div class="text-h6 text-dark">Impayé</div>
+            <div class="text-h6 text-dark">Payé</div>
+          </q-card-section>
+          <q-card-section align="top">
+            <div class="row items-center justify-center">
+              <div class="text-h6 text-red q-mr-md">10540 €</div>
+              <q-btn flat round color="warning" icon="arrow_forward_ios" />
+            </div>
+          </q-card-section>
+        </q-card-section>
+      </q-card>
+    </div>
+
+    <div class="col-xs-12 col-md-4">
+      <q-card class="no-shadow full-height">
+        <q-card-section horizontal class="justify-between items-center">
+          <q-card-section>
+            <div class="text-h6 text-dark">Restant dû</div>
           </q-card-section>
           <q-card-section align="top">
             <div class="row items-center justify-center">
