@@ -60,14 +60,17 @@
               </q-td>
             </template>
 
-            <template v-slot:body-cell-progress>
+            <template v-slot:body-cell-progress="props">
               <q-td>
                 <div class="row justify-end">
                   <q-toggle
-                    v-model="toggle"
+                    v-model="props.row.progression"
                     checked-icon="check"
                     color="green"
                     unchecked-icon="clear"
+                    @update:model-value="
+                      (newVal, evt) => emitProgress(props.row.id, newVal)
+                    "
                   />
                 </div>
               </q-td>
@@ -125,7 +128,6 @@ const dialog_stage = ref(false);
 const pagination = ref({
   rowsPerPage: 0,
 });
-const toggle = ref(false);
 const columns = ref([
   {
     name: "label",
@@ -171,7 +173,7 @@ const options = ref([
 const model = ref();
 
 // emit MOP
-const emit = defineEmits(["mop", "stage", "deleteStage"]);
+const emit = defineEmits(["mop", "stage", "deleteStage", "updateProgress"]);
 function emitMop() {
   dialog_confirm.value = false;
   const stages = createStageList();
@@ -183,6 +185,10 @@ function emitStage(stage) {
 }
 function emitDeleteStage(id) {
   emit("deleteStage", id);
+}
+function emitProgress(id, newVal) {
+  const progress = { progression: newVal };
+  emit("updateProgress", id, progress);
 }
 // function
 function validate(val) {

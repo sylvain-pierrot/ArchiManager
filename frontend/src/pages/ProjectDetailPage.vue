@@ -39,7 +39,8 @@
         <TabSummaryProjectDetail
           :project="project"
           :client="client"
-          v-if="project && client"
+          :stages="stages"
+          v-if="project && client && stages"
         />
       </q-tab-panel>
 
@@ -48,6 +49,7 @@
           @mop="addMop"
           @stage="addOneStage"
           @deleteStage="deleteStage"
+          @updateProgress="updateProgress"
           :stages="stages"
         />
       </q-tab-panel>
@@ -81,11 +83,11 @@ const clientsStore = useClientsStore();
 const projectsStore = useProjectsStore();
 const route = useRoute();
 const tab = ref("summary");
-const project = ref();
-const client = ref();
+const project = ref(null);
+const client = ref(null);
 const userCookie = decodeURIComponent(userStore.getCookie("user"));
 const user = ref(JSON.parse(userCookie.substring(2)));
-const stages = ref();
+const stages = ref(null);
 const files = ref([]);
 
 // function
@@ -156,6 +158,12 @@ async function loadProject() {
 async function loadStages() {
   stages.value = await stagesStore.getAllStages(route.params.id);
 }
+
+// update
+const updateProgress = async (id, progress) => {
+  await stagesStore.updateProgressStage(route.params.id, id, progress);
+  await loadStages();
+};
 
 // create
 const addFile = async (file) => {

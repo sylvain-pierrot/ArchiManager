@@ -37,6 +37,12 @@ router.put(
   body("projet_id").not().exists(),
   stageController.update.bind(stageController)
 );
+router.put(
+  "/projects/:idP/stages/:idS/progress",
+  authorization.authenticate,
+  body("progression").isBoolean(),
+  stageController.updateProgress.bind(stageController)
+);
 router.delete(
   "/projects/:idP/stages/:idS",
   authorization.authenticate,

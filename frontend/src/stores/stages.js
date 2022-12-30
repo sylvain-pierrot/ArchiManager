@@ -32,6 +32,24 @@ export const useStagesStore = defineStore("stages", () => {
       console.error(error);
     }
   };
+
+  const updateProgressStage = async (project_id, stage_id, progress) => {
+    try {
+      const response = await api.put(
+        `/api/projects/${project_id}/stages/${stage_id}/progress`,
+        progress
+      );
+      Notify.create({
+        type: "positive",
+        position: "top-right",
+        message: "Progression modifiée",
+      });
+      return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   deleteStage;
   const getAllStages = async (id) => {
     try {
@@ -44,6 +62,7 @@ export const useStagesStore = defineStore("stages", () => {
   return {
     createStage,
     getAllStages,
+    updateProgressStage,
     deleteStage,
   };
 });

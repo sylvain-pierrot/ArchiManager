@@ -22,8 +22,8 @@
             <FormAddFile @file="emitFile" />
           </q-dialog>
 
-          <q-list bordered padding separator class="rounded-borders">
-            <q-item v-if="files.length < 1">
+          <q-list bordered separator class="rounded-borders">
+            <q-item v-if="files.length < 1" class="q-pa-md">
               <q-item-section avatar>
                 <q-icon name="warning" color="secondary" size="32px" />
               </q-item-section>
@@ -32,7 +32,7 @@
                 Pas de fichiers
               </q-item-section>
             </q-item>
-            <q-item v-for="file in files" :key="file.id">
+            <q-item v-for="file in files" :key="file.id" class="q-pa-md">
               <q-item-section avatar top>
                 <q-avatar
                   icon="assignment"
@@ -43,7 +43,9 @@
 
               <q-item-section>
                 <q-item-label lines="1">{{ file.nom }}</q-item-label>
-                <q-item-label caption>March 2nd, 2019</q-item-label>
+                <q-item-label caption>
+                  {{ moment(file.date).locale("fr").format("D MMM YYYY") }}
+                </q-item-label>
               </q-item-section>
 
               <q-item-section side>
@@ -95,6 +97,7 @@
 import { ref, defineEmits, defineProps, toRefs } from "vue";
 import FormAddFile from "../forms/FormAddFile.vue";
 
+const moment = require("moment");
 const pdfSrc = ref();
 const props = defineProps({
   files: {

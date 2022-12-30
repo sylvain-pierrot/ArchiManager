@@ -128,6 +128,39 @@ class StageController extends Controller {
     // success
     super.update(req, res, primaryKey, foreignKey);
   }
+
+  async updateProgress(req, res) {
+    try {
+      // queryValidator
+      const result = await this.queryValidator(req, res);
+      if (result) {
+        return;
+      }
+
+      // datas
+      const { progression } = req.body;
+      const id = parseInt(req.params.idS);
+      const projet_id = parseInt(req.params.idP);
+
+      // query
+      const { rows } = await db.query(
+        "UPDATE phases SET progression = $1 WHERE id = $2 AND projet_id = $3  RETURNING *",
+        [progression, id, projet_id]
+      );
+
+      // failed query
+      if (rows.length < 1) {
+        return res.status(401).json({ message: "Error update project" });
+      }
+
+      // success
+      res.status(200).json(rows[0]);
+    } catch (err) {
+      // server error
+      console.error(err);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
 }
 
 module.exports = new StageController();

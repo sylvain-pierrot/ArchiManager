@@ -6,14 +6,14 @@
           <div class="row justify-between">
             <div class="text-h6 text-dark q-mb-sm">Progression</div>
             <div class="text-h6 text-warning q-mb-sm">
-              {{ `90 %` }}
+              {{ `${progress.label} %` }}
             </div>
           </div>
 
           <q-linear-progress
             stripe
             size="10px"
-            :value="progress1"
+            :value="progress.number"
             color="warning"
             instant-feedback
             rounded
@@ -168,7 +168,7 @@
 </template>
 
 <script setup>
-import { ref, defineProps, toRefs } from "vue";
+import { ref, defineProps, toRefs, computed } from "vue";
 
 const tab = ref("project");
 const props = defineProps({
@@ -180,8 +180,12 @@ const props = defineProps({
     type: Object,
     required: true,
   },
+  stages: {
+    type: Object,
+    required: true,
+  },
 });
-const { project, client } = toRefs(props);
+const { project, client, stages } = toRefs(props);
 const columns = ref([
   {
     name: "name",
@@ -213,7 +217,18 @@ const rows = ref([
     amount: "17 100 €",
   },
 ]);
-const progress1 = ref(0.9);
+const progress = computed(() => {
+  let sum = 0;
+  let progress = 0;
+  stages.value.forEach((stage) => {
+    progress += stage.progression === true ? 1 : 0;
+    sum += 1;
+  });
+  return {
+    label: parseFloat((progress / sum) * 100).toFixed(0),
+    number: parseFloat(progress / sum).toFixed(2),
+  };
+});
 const series = ref([
   {
     color: "#C23829",
