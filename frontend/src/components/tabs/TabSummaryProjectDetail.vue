@@ -2,6 +2,54 @@
   <div class="row q-col-gutter-md">
     <div class="col-xs-12 col-md-4">
       <q-card class="no-shadow full-height">
+        <q-card-section horizontal class="justify-between items-center">
+          <q-card-section>
+            <div class="text-h6 text-dark">Facturé</div>
+          </q-card-section>
+          <q-card-section align="top">
+            <div class="row items-center justify-center">
+              <div class="text-h6 text-green q-mr-md">{{ `${billed} €` }}</div>
+              <q-btn flat round color="warning" icon="arrow_forward_ios" />
+            </div>
+          </q-card-section>
+        </q-card-section>
+      </q-card>
+    </div>
+
+    <div class="col-xs-12 col-md-4">
+      <q-card class="no-shadow full-height">
+        <q-card-section horizontal class="justify-between items-center">
+          <q-card-section>
+            <div class="text-h6 text-dark">Payé</div>
+          </q-card-section>
+          <q-card-section align="top">
+            <div class="row items-center justify-center">
+              <div class="text-h6 text-blue q-mr-md">{{ `${paid} €` }}</div>
+              <q-btn flat round color="warning" icon="arrow_forward_ios" />
+            </div>
+          </q-card-section>
+        </q-card-section>
+      </q-card>
+    </div>
+
+    <div class="col-xs-12 col-md-4">
+      <q-card class="no-shadow full-height">
+        <q-card-section horizontal class="justify-between items-center">
+          <q-card-section>
+            <div class="text-h6 text-dark">Restant dû</div>
+          </q-card-section>
+          <q-card-section align="top">
+            <div class="row items-center justify-center">
+              <div class="text-h6 text-red q-mr-md">{{ `${unpaid} €` }}</div>
+              <q-btn flat round color="warning" icon="arrow_forward_ios" />
+            </div>
+          </q-card-section>
+        </q-card-section>
+      </q-card>
+    </div>
+
+    <div class="col-xs-12 col-md-5">
+      <q-card class="no-shadow q-mb-md">
         <q-card-section class="col-8">
           <div class="row justify-between">
             <div class="text-h6 text-dark q-mb-sm">Progression</div>
@@ -19,58 +67,8 @@
           />
         </q-card-section>
       </q-card>
-    </div>
 
-    <div class="col-xs-12 col-md-4">
-      <q-card class="no-shadow full-height">
-        <q-card-section horizontal class="justify-between items-center">
-          <q-card-section>
-            <div class="text-h6 text-dark">Facturé</div>
-          </q-card-section>
-          <q-card-section align="top">
-            <div class="row items-center justify-center">
-              <div class="text-h6 text-green q-mr-md">5400 €</div>
-              <q-btn flat round color="warning" icon="arrow_forward_ios" />
-            </div>
-          </q-card-section>
-        </q-card-section>
-      </q-card>
-    </div>
-
-    <div class="col-xs-12 col-md-4">
-      <q-card class="no-shadow full-height">
-        <q-card-section horizontal class="justify-between items-center">
-          <q-card-section>
-            <div class="text-h6 text-dark">Payé</div>
-          </q-card-section>
-          <q-card-section align="top">
-            <div class="row items-center justify-center">
-              <div class="text-h6 text-red q-mr-md">10540 €</div>
-              <q-btn flat round color="warning" icon="arrow_forward_ios" />
-            </div>
-          </q-card-section>
-        </q-card-section>
-      </q-card>
-    </div>
-
-    <div class="col-xs-12 col-md-4">
-      <q-card class="no-shadow full-height">
-        <q-card-section horizontal class="justify-between items-center">
-          <q-card-section>
-            <div class="text-h6 text-dark">Restant dû</div>
-          </q-card-section>
-          <q-card-section align="top">
-            <div class="row items-center justify-center">
-              <div class="text-h6 text-red q-mr-md">10540 €</div>
-              <q-btn flat round color="warning" icon="arrow_forward_ios" />
-            </div>
-          </q-card-section>
-        </q-card-section>
-      </q-card>
-    </div>
-
-    <div class="col-xs-12 col-md-5">
-      <q-card class="no-shadow">
+      <q-card class="no-shadow q-mb-md">
         <q-card-section>
           <div class="text-h6 text-dark">A propos</div>
           <div class="text-caption text-grey-7">
@@ -116,7 +114,9 @@
                     key.slice(1).toLowerCase().replace("_", " ")
                   }}
                 </div>
-                <div class="text-body2 text-grey-7">{{ value }}</div>
+                <div class="text-body2 text-grey-7">
+                  {{ key === "statut" ? value.label : value }}
+                </div>
               </div>
             </q-tab-panel>
 
@@ -138,27 +138,7 @@
           </q-tab-panels>
         </q-card-section>
       </q-card>
-    </div>
 
-    <div class="col-xs-12 col-md-7">
-      <q-card class="no-shadow">
-        <q-card-section>
-          <div class="text-h6 text-dark">Honoraires</div>
-          <div class="text-caption text-grey-7">
-            Honoraires des phases du projet
-          </div>
-        </q-card-section>
-        <q-card-section>
-          <apexchart
-            height="300"
-            type="bar"
-            :options="options"
-            :series="series"
-          ></apexchart>
-        </q-card-section>
-      </q-card>
-    </div>
-    <div class="col-xs-12 col-md-3">
       <q-card class="no-shadow">
         <q-card-section>
           <div class="text-h6 text-dark">Honoraires</div>
@@ -176,6 +156,25 @@
             hide-bottom
           >
           </q-table>
+        </q-card-section>
+      </q-card>
+    </div>
+
+    <div class="col-xs-12 col-md-7">
+      <q-card class="no-shadow">
+        <q-card-section>
+          <div class="text-h6 text-dark">Honoraires</div>
+          <div class="text-caption text-grey-7">
+            Honoraires des phases du projet
+          </div>
+        </q-card-section>
+        <q-card-section>
+          <apexchart
+            :height="100 + stages.length * 50"
+            type="bar"
+            :options="options"
+            :series="series"
+          ></apexchart>
         </q-card-section>
       </q-card>
     </div>
@@ -244,76 +243,94 @@ const progress = computed(() => {
     number: parseFloat(progress / sum).toFixed(2),
   };
 });
+const paid = computed(() => {
+  let sum = 0;
+  stages.value.forEach((stage) => {
+    sum += stage.honoraires_paye;
+  });
+  return sum;
+});
+const unpaid = computed(() => {
+  let sum = 0;
+  stages.value.forEach((stage) => {
+    sum += stage.honoraires - stage.honoraires_paye;
+  });
+  return sum;
+});
+const billed = computed(() => {
+  let sum = 0;
+  stages.value.forEach((stage) => {
+    sum += stage.honoraires;
+  });
+  return sum;
+});
+
+const data = computed(() => {
+  return stages.value.map((stage) => {
+    return {
+      x: "Payé",
+      y: stage.honoraires_paye,
+      goals: [
+        {
+          name: "Montant total",
+          value: stage.honoraires,
+          strokeColor: "#008ffb",
+        },
+      ],
+    };
+  });
+});
+const categories = computed(() => {
+  return stages.value.map((stage) => stage.code);
+});
+const colors = computed(() => {
+  return stages.value.map((stage) =>
+    stage.honoraires_paye === stage.honoraires ? "#4caf50" : "#c10015"
+  );
+});
 const series = ref([
   {
-    color: "#C23829",
     name: "Payé",
-    data: [
-      {
-        x: "Payé",
-        y: 2000,
-        goals: [
-          {
-            name: "Montant total",
-            value: 4400,
-            strokeColor: "#3E8CF5 ",
-          },
-        ],
-      },
-      {
-        x: "category B",
-        y: 1500,
-        goals: [
-          {
-            name: "Montant total",
-            value: 5500,
-            strokeColor: "#3E8CF5",
-          },
-        ],
-      },
-      {
-        x: "category C",
-        y: 3500,
-        goals: [
-          {
-            name: "Montant total",
-            value: 4100,
-            strokeColor: "#3E8CF5",
-          },
-        ],
-      },
-      {
-        x: "category D",
-        y: 3700,
-        goals: [
-          {
-            name: "Montant total",
-            value: 3700,
-            strokeColor: "#3E8CF5",
-          },
-        ],
-      },
-    ],
+    data: data,
   },
 ]);
 const options = ref({
   chart: {
     type: "bar",
-    height: 350,
-    stacked: false,
-    stackType: "100%",
   },
   plotOptions: {
     bar: {
+      barHeight: "90%",
+      distributed: true,
       horizontal: true,
+      dataLabels: {
+        position: "bottom",
+      },
     },
+  },
+  colors: colors,
+  dataLabels: {
+    enabled: true,
+    textAnchor: "start",
+    style: {
+      colors: ["#fff"],
+    },
+    formatter: function (val, opt) {
+      return `${opt.w.globals.labels[opt.dataPointIndex]} : ${val} €`;
+    },
+    offsetX: 0,
   },
   stroke: {
     width: 1,
     colors: ["#fff"],
   },
+  yaxis: {
+    labels: {
+      show: false,
+    },
+  },
   xaxis: {
-    categories: ["PH1", "PH2", "PH3", "PH4"],
+    categories: categories,
   },
   tooltip: {
     y: {
@@ -326,9 +343,8 @@ const options = ref({
     opacity: 1,
   },
   legend: {
-    position: "top",
-    horizontalAlign: "left",
-    offsetX: 40,
+    position: "bottom",
+    horizontalAlign: "center",
   },
 });
 </script>
