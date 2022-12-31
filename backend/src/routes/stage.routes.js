@@ -21,9 +21,14 @@ router.get(
   stageController.getAll.bind(stageController)
 );
 router.get(
-  "/projects/:idP/stages/:idS",
+  "/projects/:idP/stages/:idS(\\d+)",
   authorization.authenticate,
   stageController.getOne.bind(stageController)
+);
+router.get(
+  "/projects/:idP/stages/fees",
+  authorization.authenticate,
+  stageController.getAllFees.bind(stageController)
 );
 router.put(
   "/projects/:idP/stages/:idS",

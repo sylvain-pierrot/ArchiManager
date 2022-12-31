@@ -65,9 +65,9 @@
       <q-card class="no-shadow q-mb-md">
         <q-card-section class="col-8">
           <div class="row justify-between">
-            <div class="text-h6 text-dark q-mb-md">Honoraires</div>
+            <div class="text-h6 text-dark q-mb-md">Honoraires payés</div>
             <div class="text-h6 text-warning q-mb-md">
-              {{ `${totalFees} €` }}
+              {{ `${totalFeesCollected}€ / ${totalFees}€` }}
             </div>
           </div>
 
@@ -80,7 +80,7 @@
             rounded
           />
           <div class="text-caption text-grey-7 q-mt-sm">
-            Honoraires totaux des projets "en cours"/"terminé"
+            Honoraires payés totaux des projets
           </div>
         </q-card-section>
       </q-card>
@@ -168,8 +168,8 @@ const {
   tags,
 } = toRefs(props);
 
-const progress1 = computed(
-  () => totalFeesCollected.value / totalFees.value || 0
+const progress1 = computed(() =>
+  parseFloat(totalFeesCollected.value / totalFees.value).toFixed(2)
 );
 const pagination = ref({
   rowsPerPage: 0,

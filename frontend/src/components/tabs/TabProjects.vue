@@ -144,6 +144,13 @@ const columns = ref([
     sortable: true,
   },
   {
+    name: "client",
+    label: "Client",
+    align: "left",
+    field: "client",
+    sortable: true,
+  },
+  {
     name: "project",
     label: "Projet",
     align: "left",
@@ -158,10 +165,11 @@ const columns = ref([
     sortable: true,
   },
   {
-    name: "fee",
-    label: "Honoraire",
-    align: "left",
-    field: "fee",
+    name: "fees",
+    label: "Honoraires",
+    align: "right",
+    field: (row) => row.fees,
+    format: (val) => `${val} €`,
     sortable: true,
   },
   {
@@ -180,9 +188,11 @@ const rows = computed(() =>
         .toUpperCase()}-${moment(new Date(project.date_debut)).format(
         "YYYY"
       )}-${project.id}`,
+      client: clients.value.find((client) => client.id === project.client_id)
+        .nom,
       project: project,
       status: getStatus(project.statut_id),
-      fee: "test",
+      fees: project.honoraires,
       files: 0,
     };
   })

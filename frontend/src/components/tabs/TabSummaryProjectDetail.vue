@@ -4,7 +4,7 @@
       <q-card class="no-shadow full-height">
         <q-card-section horizontal class="justify-between items-center">
           <q-card-section>
-            <div class="text-h6 text-dark">Facturé</div>
+            <div class="text-h6 text-dark">Honoraires</div>
           </q-card-section>
           <q-card-section align="top">
             <div class="row items-center justify-center">
@@ -68,7 +68,7 @@
         </q-card-section>
       </q-card>
 
-      <q-card class="no-shadow q-mb-md">
+      <q-card class="no-shadow">
         <q-card-section>
           <div class="text-h6 text-dark">A propos</div>
           <div class="text-caption text-grey-7">
@@ -138,26 +138,6 @@
           </q-tab-panels>
         </q-card-section>
       </q-card>
-
-      <q-card class="no-shadow">
-        <q-card-section>
-          <div class="text-h6 text-dark">Honoraires</div>
-          <div class="text-caption text-grey-7">
-            Honoraires des phases du projet
-          </div>
-        </q-card-section>
-        <q-card-section>
-          <q-table
-            :rows="rows"
-            :columns="columns"
-            row-key="name"
-            flat
-            bordered
-            hide-bottom
-          >
-          </q-table>
-        </q-card-section>
-      </q-card>
     </div>
 
     <div class="col-xs-12 col-md-7">
@@ -200,37 +180,6 @@ const props = defineProps({
   },
 });
 const { project, client, stages } = toRefs(props);
-const columns = ref([
-  {
-    name: "name",
-    required: true,
-    label: "Projet",
-    align: "left",
-    field: (row) => row.name,
-    format: (val) => `${val}`,
-  },
-  {
-    name: "amount",
-    required: true,
-    label: "",
-    align: "right",
-    field: "amount",
-  },
-]);
-const rows = ref([
-  {
-    name: "Total (HT)",
-    amount: "17 100 €",
-  },
-  {
-    name: "TVA (20%)",
-    amount: "0 €",
-  },
-  {
-    name: "Total (TTC)",
-    amount: "17 100 €",
-  },
-]);
 const progress = computed(() => {
   let sum = 0;
   let progress = 0;
@@ -316,7 +265,8 @@ const options = ref({
       colors: ["#fff"],
     },
     formatter: function (val, opt) {
-      return `${opt.w.globals.labels[opt.dataPointIndex]} : ${val} €`;
+      // return `${opt.w.globals.labels[opt.dataPointIndex]} : ${val} €`;
+      return `Payé: ${val} €`;
     },
     offsetX: 0,
   },
@@ -326,7 +276,7 @@ const options = ref({
   },
   yaxis: {
     labels: {
-      show: false,
+      show: true,
     },
   },
   xaxis: {
@@ -351,6 +301,6 @@ const options = ref({
 
 <style lang="scss">
 .bg-warning-light {
-  background-color: #f2c03736;
+  background-color: #f0f7ff;
 }
 </style>

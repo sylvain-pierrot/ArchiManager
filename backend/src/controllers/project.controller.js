@@ -148,7 +148,7 @@ class ProjectController extends Controller {
 
       // query
       const { rows } = await db.query(
-        "SELECT SUM(ph.honoraires) FROM phases ph INNER JOIN projets pr ON ph.projet_id=pr.id WHERE pr.architecte_id = $1 and pr.statut_id = 2",
+        "SELECT SUM(ph.honoraires_paye) FROM phases ph INNER JOIN projets pr ON ph.projet_id=pr.id WHERE pr.architecte_id = $1",
         [architecte_id]
       );
       // failed query

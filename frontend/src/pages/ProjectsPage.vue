@@ -63,6 +63,7 @@ import { useProjectsStore } from "../stores/projects";
 import { useClientsStore } from "../stores/clients";
 import { useTagsStore } from "../stores/tags";
 import { useTagsProjectsStore } from "../stores/tags_projects";
+import { useStagesStore } from "../stores/stages";
 
 // tabs
 const tab = ref("summary");
@@ -72,6 +73,7 @@ const tagsProjectsStore = useTagsProjectsStore();
 const clientsStore = useClientsStore();
 const tagsStore = useTagsStore();
 const projectsStore = useProjectsStore();
+const stagesStore = useStagesStore();
 
 // clients store
 const clients = ref(null);
@@ -112,6 +114,7 @@ async function loadProjects() {
   const projectList = await projectsStore.getAllProjects();
   projects.value = await Promise.all(
     projectList.map(async (project) => {
+      project.honoraires = await stagesStore.getAllFees(project.id);
       project.tags = await tagsProjectsStore.getAllTagsProject(project.id);
       return project;
     })

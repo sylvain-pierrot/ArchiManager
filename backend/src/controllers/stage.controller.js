@@ -70,6 +70,36 @@ class StageController extends Controller {
     super.getOne(req, res, primaryKey, foreignKey);
   }
 
+  async getAllFees(req, res) {
+    try {
+      // queryValidator
+      const result = await this.queryValidator(req, res);
+      if (result) {
+        return;
+      }
+
+      // datas
+      const project_id = parseInt(req.params.idP);
+      // query
+      const { rows } = await db.query(
+        "SELECT SUM(honoraires) FROM phases WHERE projet_id = $1",
+        [project_id]
+      );
+
+      // failed query
+      if (rows.length < 1) {
+        return res.status(401).json({ message: "Error update project" });
+      }
+
+      // success
+      res.status(200).json(rows[0]);
+    } catch (err) {
+      // server error
+      console.error(err);
+      res.status(500).json({ message: "Server error" });
+    }
+  }
+
   async create(req, res) {
     // queryValidator
     const result = await this.queryValidator(req, res);

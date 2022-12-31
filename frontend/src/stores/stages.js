@@ -84,7 +84,6 @@ export const useStagesStore = defineStore("stages", () => {
     }
   };
 
-  deleteStage;
   const getAllStages = async (id) => {
     try {
       const response = await api.get(`/api/projects/${id}/stages`);
@@ -93,9 +92,20 @@ export const useStagesStore = defineStore("stages", () => {
       console.error(error);
     }
   };
+
+  const getAllFees = async (id) => {
+    try {
+      const response = await api.get(`/api/projects/${id}/stages/fees`);
+      return response.data.sum;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
   return {
     createStage,
     getAllStages,
+    getAllFees,
     updateProgressStage,
     updatePaidStage,
     updateFeesStage,
