@@ -19,6 +19,8 @@
           placeholder="Label"
           flat
           class="col-7"
+          mask="A"
+          reverse-fill-mask
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
           lazy-rules
         />

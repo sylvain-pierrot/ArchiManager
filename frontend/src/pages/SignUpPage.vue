@@ -14,26 +14,12 @@ const router = useRouter();
 const userStore = useUserStore();
 const emails = ref(null);
 
-const signup = async (
-  email,
-  password,
-  nationalnumber,
-  name,
-  firstname,
-  tel
-) => {
-  name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-  firstname =
-    firstname.charAt(0).toUpperCase() + firstname.slice(1).toLowerCase();
+const signup = async (user) => {
+  // name = name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+  // firstname =
+  //   firstname.charAt(0).toUpperCase() + firstname.slice(1).toLowerCase();
 
-  await userStore.createUser(
-    email,
-    password,
-    nationalnumber,
-    name,
-    firstname,
-    tel
-  );
+  await userStore.createUser(user);
   router.push({ name: "SignIn" });
 };
 

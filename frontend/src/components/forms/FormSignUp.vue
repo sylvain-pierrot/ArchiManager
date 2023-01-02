@@ -1,53 +1,46 @@
 <template>
-  <q-stepper
-    v-model="step"
-    ref="stepper"
-    animated
-    done-color="green"
-    active-color="warning"
-    inactive-color="warning"
-  >
-    <q-step
-      :name="1"
-      title="Créez votre identifiant"
-      icon="email"
-      :done="step > 1"
+  <q-form ref="myForm" @submit="$emit('user', user)" class="q-gutter-md">
+    <q-stepper
+      v-model="step"
+      ref="stepper"
+      animated
+      done-color="green"
+      active-color="warning"
+      inactive-color="warning"
     >
-      <q-form ref="myForm" class="q-gutter-md">
+      <q-step
+        :name="1"
+        title="Créez votre identifiant"
+        icon="email"
+        :done="step > 1"
+      >
         <q-input
           outlined
           color="black"
-          v-model="email"
+          v-model="user.email"
           type="email"
           label="Email"
-          :rules="[emailValidation]"
+          class="col-12"
+          :rules="[emailValidationRules]"
           lazy-rules
         />
-      </q-form>
-    </q-step>
+      </q-step>
 
-    <q-step
-      :name="2"
-      title="Définissez un mot de passe"
-      icon="key"
-      :done="step > 2"
-      :error="myForm"
-    >
-      <q-form ref="myForm" class="q-gutter-md">
+      <q-step
+        :name="2"
+        title="Définissez un mot de passe"
+        icon="key"
+        :done="step > 2"
+        :error="myForm"
+      >
         <q-input
           outlined
           color="black"
-          v-model="password"
+          v-model="user.mot_de_passe"
           :type="isPwd ? 'password' : 'text'"
           label="Mot de passe"
           :rules="[
-            (val) =>
-              (!!val &&
-                hasLowerCase(val) &&
-                hasUpperCase(val) &&
-                hasNumber(val) &&
-                hasHeightChars(val)) ||
-              'Mot de passe invalid',
+            (val) => (!!val && mediumValidation(val)) || 'Mot de passe invalid',
           ]"
           lazy-rules
         >
@@ -59,53 +52,53 @@
             />
           </template>
         </q-input>
-      </q-form>
 
-      <q-linear-progress
-        size="5px"
-        :value="progress"
-        :color="passwordColor"
-        rounded
-        instant-feedback
-      />
+        <q-linear-progress
+          size="5px"
+          :value="progress"
+          :color="password.color"
+          rounded
+          instant-feedback
+        />
 
-      <q-badge
-        color="transparent"
-        :text-color="passwordColor"
-        :label="passwordLevel"
-      />
+        <q-badge
+          color="transparent"
+          :text-color="password.color"
+          :label="password.level"
+        />
 
-      <div class="text-subtitle2 q-mt-md text-grey-14">
-        Le mot de passe doit au moins contenir:
-      </div>
-      <q-list class="row text-grey-14">
-        <q-item
-          v-for="(validation, index) in validations"
-          :key="index"
-          class="col-6"
-        >
-          <q-item-section avatar class="items-center">
-            <q-icon
-              :name="
-                validation.function(password) ? 'check_circle' : 'highlight_off'
-              "
-              :color="validation.function(password) ? 'green' : ''"
-            />
-          </q-item-section>
+        <div class="text-subtitle2 q-mt-md text-grey-14">
+          Le mot de passe doit au moins contenir:
+        </div>
+        <q-list class="row text-grey-14">
+          <q-item
+            v-for="(validation, index) in validations"
+            :key="index"
+            class="col-6"
+          >
+            <q-item-section avatar class="items-center">
+              <q-icon
+                :name="
+                  validation.function(user.mot_de_passe)
+                    ? 'check_circle'
+                    : 'highlight_off'
+                "
+                :color="validation.function(user.mot_de_passe) ? 'green' : ''"
+              />
+            </q-item-section>
 
-          <q-item-section class="text-caption">{{
-            validation.label
-          }}</q-item-section>
-        </q-item>
-      </q-list>
-    </q-step>
+            <q-item-section class="text-caption">{{
+              validation.label
+            }}</q-item-section>
+          </q-item>
+        </q-list>
+      </q-step>
 
-    <q-step :name="3" title="Informations supplémentaires" icon="info">
-      <q-form ref="myForm" class="q-gutter-md">
+      <q-step :name="3" title="Informations supplémentaires" icon="info">
         <q-input
           outlined
           color="black"
-          v-model="nationalnumber"
+          v-model="user.numero_national"
           type="number"
           label="Numero national"
           :rules="[(val) => !!val || 'Numero invalide']"
@@ -115,9 +108,11 @@
         <q-input
           outlined
           color="black"
-          v-model="name"
+          v-model="user.nom"
           type="text"
           label="Nom"
+          mask="A"
+          reverse-fill-mask
           :rules="[(val) => !!val || 'Nom invalide']"
           lazy-rules
         />
@@ -125,9 +120,11 @@
         <q-input
           outlined
           color="black"
-          v-model="firstname"
+          v-model="user.prenom"
           type="text"
           label="Prenom"
+          mask="A"
+          reverse-fill-mask
           :rules="[(val) => !!val || 'Prénom invalide']"
           lazy-rules
         />
@@ -135,58 +132,63 @@
         <q-input
           outlined
           color="black"
-          v-model="tel"
+          v-model="user.telephone"
           type="tel"
           label="Téléphone"
-          :rules="[(val) => !!val || 'Numéro de téléphone invalide']"
+          mask="##-##-##-##-##"
+          :rules="[
+            (val) =>
+              (!!val && isValidPhoneNumber(val)) ||
+              'Numéro de téléphone invalide',
+          ]"
           lazy-rules
         />
-      </q-form>
-    </q-step>
+      </q-step>
 
-    <template v-slot:navigation>
-      <q-stepper-navigation>
-        <q-btn
-          :disable="
-            step === 2 ? !passwordValid() : step === 1 ? !emailValid() : false
-          "
-          unelevated
-          @click="
-            step < 3
-              ? $refs.stepper.next()
-              : $emit(
-                  'user',
-                  email,
-                  password,
-                  nationalnumber,
-                  name,
-                  firstname,
-                  tel
-                )
-          "
-          color="blue"
-          :label="step === 3 ? 'Terminer' : 'Continuer'"
-        />
-        <q-btn
-          v-if="step > 1"
-          unelevated
-          flat
-          color="blue"
-          @click="$refs.stepper.previous()"
-          label="Retour"
-          class="q-ml-sm"
-        />
-        <q-btn
-          :class="{ displayBtn: step != 1 }"
-          flat
-          unelevated
-          :to="{ name: 'SignIn' }"
-          color="green"
-          label="S'identifier"
-        />
-      </q-stepper-navigation>
-    </template>
-  </q-stepper>
+      <template v-slot:navigation>
+        <q-stepper-navigation>
+          <q-btn
+            v-if="step < 3"
+            :disable="
+              step === 2
+                ? !mediumValidation(user.mot_de_passe)
+                : step === 1
+                ? !emailValidation(user.email)
+                : false
+            "
+            unelevated
+            @click="$refs.stepper.next()"
+            color="blue"
+            label="Continuer"
+          />
+          <q-btn
+            v-if="step > 2"
+            unelevated
+            type="submit"
+            color="blue"
+            label="Terminer"
+          />
+          <q-btn
+            v-if="step > 1"
+            unelevated
+            flat
+            color="blue"
+            @click="$refs.stepper.previous()"
+            label="Retour"
+            class="q-ml-sm"
+          />
+          <q-btn
+            :class="{ displayBtn: step != 1 }"
+            flat
+            unelevated
+            :to="{ name: 'SignIn' }"
+            color="green"
+            label="S'identifier"
+          />
+        </q-stepper-navigation>
+      </template>
+    </q-stepper>
+  </q-form>
 </template>
 <script setup>
 import { ref, computed, defineProps, toRefs } from "vue";
@@ -198,80 +200,92 @@ const props = defineProps({
   },
 });
 const { emails } = toRefs(props);
-const nationalnumber = ref(null);
-const name = ref("");
-const firstname = ref("");
-const tel = ref(null);
+const isPwd = ref(true);
+const step = ref(1);
+const user = ref({
+  numero_national: null,
+  nom: "",
+  prenom: "",
+  email: "",
+  mot_de_passe: "",
+  telephone: "",
+});
+
+const progress = computed(() => {
+  let sum = 0;
+  sum += weakValidation(user.value.mot_de_passe) ? 0.33 : 0;
+  sum += mediumValidation(user.value.mot_de_passe) ? 0.33 : 0;
+  sum += strongValidation(user.value.mot_de_passe) ? 0.34 : 0;
+  return sum;
+});
+const password = computed(() => {
+  let level = "";
+  let color = "";
+
+  if (progress.value === 0.33) {
+    level = "Faible";
+    color = "red";
+  } else if (progress.value === 0.66) {
+    level = "Moyen";
+    color = "orange";
+  } else if (progress.value === 1) {
+    level = "Fort";
+    color = "green";
+  }
+
+  return {
+    level: level,
+    color: color,
+  };
+});
+
+// validations
 const validations = [
   { label: "Une minuscule", function: hasLowerCase },
   { label: "Une majuscule", function: hasUpperCase },
   { label: "Un nombre", function: hasNumber },
   { label: "8 caractères", function: hasHeightChars },
 ];
-const isPwd = ref(true);
-const step = ref(1);
-const email = ref("");
-const password = ref("");
-const passwordHasLowerCase = computed(() => hasLowerCase(password.value));
-const passwordHasUpperCase = computed(() => hasUpperCase(password.value));
-const passwordHasNumber = computed(() => hasNumber(password.value));
-const passwordHasHeightChars = computed(() => hasHeightChars(password.value));
-const weak = computed(
-  () =>
-    passwordHasLowerCase.value ||
-    passwordHasUpperCase.value ||
-    passwordHasNumber.value ||
-    passwordHasHeightChars.value
-);
-const medium = computed(
-  () =>
-    passwordHasLowerCase.value &&
-    passwordHasUpperCase.value &&
-    passwordHasNumber.value &&
-    passwordHasHeightChars.value
-);
-const strong = computed(() => medium.value && password.value.length >= 12);
-const progress = computed(() => {
-  let sum = 0;
-  sum += weak.value ? 0.33 : 0;
-  sum += medium.value ? 0.33 : 0;
-  sum += strong.value ? 0.34 : 0;
-  return sum;
-});
-const passwordLevel = computed(() => {
-  if (progress.value === 0) {
-    return "";
-  } else if (progress.value === 0.33) {
-    return "Faible";
-  } else if (progress.value === 0.66) {
-    return "Moyen";
-  } else {
-    return "Fort";
-  }
-});
-const passwordColor = computed(() => {
-  if (progress.value === 0) {
-    return "";
-  } else if (progress.value === 0.33) {
-    return "red";
-  } else if (progress.value === 0.66) {
-    return "orange";
-  } else {
-    return "green";
-  }
-});
 
-function emailValid() {
-  return isValidEmail(email.value);
+function emailValidationRules(email) {
+  if (!isValidEmail(email)) {
+    return "Email invalide";
+  } else if (emails.value.includes(email)) {
+    return "Cet email existe déjà";
+  } else {
+    return true;
+  }
 }
-function passwordValid() {
+function emailValidation(email) {
+  if (!isValidEmail(email)) {
+    return false;
+  } else if (emails.value.includes(email)) {
+    return false;
+  } else {
+    return true;
+  }
+}
+function weakValidation(val) {
   return (
-    passwordHasLowerCase.value &&
-    passwordHasUpperCase.value &&
-    passwordHasNumber.value &&
-    passwordHasHeightChars.value
+    hasLowerCase(val) ||
+    hasUpperCase(val) ||
+    hasNumber(val) ||
+    hasHeightChars(val)
   );
 }
+function mediumValidation(val) {
+  return (
+    hasLowerCase(val) &&
+    hasUpperCase(val) &&
+    hasNumber(val) &&
+    hasHeightChars(val)
+  );
+}
+function strongValidation(val) {
+  return mediumValidation(val) && val.length >= 12;
+}
+
+// regex
 function hasLowerCase(str) {
   return /[a-z]/.test(str);
 }
@@ -289,14 +303,9 @@ function isValidEmail(val) {
     /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
   return emailPattern.test(val);
 }
-function emailValidation(val) {
-  if (!isValidEmail(val)) {
-    return "Email invalide";
-  } else if (emails.value.includes(val)) {
-    return "Cet email existe déjà";
-  } else {
-    return true;
-  }
+function isValidPhoneNumber(phoneNumber) {
+  const regex = /^\d{2}-\d{2}-\d{2}-\d{2}-\d{2}$/;
+  return regex.test(phoneNumber);
 }
 </script>
 

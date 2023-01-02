@@ -19,6 +19,8 @@
           placeholder="Nom du client"
           flat
           class="col-6"
+          mask="A"
+          reverse-fill-mask
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
           lazy-rules
         />
@@ -33,6 +35,8 @@
           placeholder="Nom du contact"
           flat
           class="col-6"
+          mask="A"
+          reverse-fill-mask
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
           lazy-rules
         />
@@ -61,6 +65,7 @@
           placeholder="Téléphone"
           flat
           class="col-6"
+          mask="## - ## - ## - ## - ##"
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
           lazy-rules
         />
@@ -89,6 +94,8 @@
           placeholder="Ville"
           flat
           class="col-6"
+          mask="A"
+          reverse-fill-mask
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
           lazy-rules
         />

@@ -7,7 +7,7 @@
       type="text"
       v-model="email"
       label="Email"
-      class="col-8 q-mb-sm"
+      class="col-8 q-mb-sm text-white"
     />
 
     <q-input
@@ -17,7 +17,7 @@
       v-model="password"
       :type="isPwd ? 'password' : 'text'"
       label="Mot de passe"
-      class="col-8 q-mb-lg"
+      class="col-8 q-mb-lg text-white"
     >
       <template v-slot:append>
         <q-icon
@@ -47,8 +47,4 @@ const email = ref("");
 const password = ref("");
 </script>
 
-<style scoped>
-.q-field__native {
-  color: white !important;
-}
-</style>
+<style scoped></style>

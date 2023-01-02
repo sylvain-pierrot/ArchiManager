@@ -6,12 +6,12 @@ const { body } = require("express-validator");
 router.post(
   "/architects",
   body("id").not().exists(),
-  body("numero_national").isInt(),
-  body("nom").isLength({ min: 1 }),
-  body("prenom").isLength({ min: 1 }),
-  body("email").isEmail(),
-  body("mot_de_passe").isLength({ min: 5 }),
-  body("telephone").isInt(),
+  body("numero_national").isInt().withMessage("Bad national number"),
+  body("nom").isLength({ min: 1 }).withMessage("Bad name"),
+  body("prenom").isLength({ min: 1 }).withMessage("Bad firstname"),
+  body("email").isEmail().withMessage("Is not email"),
+  body("mot_de_passe").isLength({ min: 5 }).withMessage("Bad password"),
+  body("telephone").isLength({ min: 5 }).withMessage("Bad phone number"),
   architectController.create.bind(architectController)
 );
 router.get("/architects", architectController.getAll.bind(architectController));
@@ -23,12 +23,11 @@ router.get(
 router.put(
   "/architects/:id",
   authorization.authenticate,
-  body("id").not().exists(),
-  body("numero_national").isInt(),
-  body("nom").isLength({ min: 1 }),
-  body("prenom").isLength({ min: 1 }),
-  body("email").isEmail(),
-  body("telephone").isInt(),
+  body("numero_national").isInt().withMessage("Bad national number"),
+  body("nom").isLength({ min: 1 }).withMessage("Bad name"),
+  body("prenom").isLength({ min: 1 }).withMessage("Bad firstname"),
+  body("email").isEmail().withMessage("Is not email"),
+  body("telephone").isLength({ min: 5 }).withMessage("Bad phone number"),
   architectController.update.bind(architectController)
 );
 router.delete(

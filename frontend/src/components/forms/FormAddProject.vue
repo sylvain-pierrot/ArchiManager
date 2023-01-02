@@ -157,6 +157,8 @@
           placeholder="Ville"
           flat
           class="col-4"
+          mask="A"
+          reverse-fill-mask
           :rules="[(val) => !!val || 'Ce champs est requis']"
           lazy-rules
         />
@@ -171,6 +173,7 @@
           stack-label
           flat
           class="col-6"
+          format="DD-MM-YYYY"
           :rules="[(val) => !!val || 'Ce champs est requis']"
           lazy-rules
         />

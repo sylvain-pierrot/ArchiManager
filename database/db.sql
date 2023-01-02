@@ -37,7 +37,7 @@ CREATE TABLE architectes (
   prenom VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   mot_de_passe VARCHAR(255) NOT NULL,
-  telephone INTEGER NOT NULL
+  telephone VARCHAR(255) NOT NULL
 );
 
 -- Créer la table des prestataires
@@ -47,7 +47,7 @@ CREATE TABLE prestataires (
   nom VARCHAR(255) NOT NULL,
   nom_contact VARCHAR(255) NOT NULL,
   adresse VARCHAR(255) NOT NULL,
-  telephone INTEGER NOT NULL,
+  telephone VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
   siret INTEGER NOT NULL,
   architecte_id INTEGER REFERENCES architectes(id)
@@ -61,7 +61,7 @@ CREATE TABLE clients (
   email VARCHAR(255) NOT NULL,
   adresse VARCHAR(255) NOT NULL,
   ville VARCHAR(255) NOT NULL,
-  telephone INTEGER NOT NULL,
+  telephone VARCHAR(255) NOT NULL,
   notes TEXT,
   architecte_id INTEGER REFERENCES architectes(id)
 );

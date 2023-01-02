@@ -63,16 +63,9 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
-  const createUser = async (email, password, number, name, firstname, tel) => {
+  const createUser = async (user) => {
     try {
-      const response = await api.post("/api/architects", {
-        email: email,
-        mot_de_passe: password,
-        numero_national: number,
-        nom: name,
-        prenom: firstname,
-        telephone: tel,
-      });
+      const response = await api.post("/api/architects", user);
       Notify.create({
         type: "positive",
         position: "top-right",
