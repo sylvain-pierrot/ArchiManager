@@ -91,7 +91,7 @@ CREATE TABLE parcelles (
   numero INTEGER,
   surface INTEGER NOT NULL,
   urbanisme TEXT,
-  projet_id INTEGER REFERENCES projets(id),
+  projet_id INTEGER REFERENCES projets(id) ON DELETE CASCADE,
   PRIMARY KEY (section, numero)
 );
 
@@ -104,7 +104,7 @@ CREATE TABLE phases (
   honoraires_paye INTEGER NOT NULL DEFAULT 0,
   progression BOOLEAN NOT NULL DEFAULT false,
   description TEXT NOT NULL,
-  projet_id INTEGER REFERENCES projets(id),
+  projet_id INTEGER REFERENCES projets(id) ON DELETE CASCADE,
   CHECK (honoraires_paye <= honoraires)
 );
 
@@ -132,7 +132,7 @@ CREATE TABLE tags (
 -- Créer la table de relation entre tags et projets
 CREATE TABLE tags_projets (
   tag_id INTEGER REFERENCES tags(id),
-  projet_id INTEGER REFERENCES projets(id),
+  projet_id INTEGER REFERENCES projets(id) ON DELETE CASCADE,
   PRIMARY KEY (tag_id, projet_id)
 );
 
@@ -143,7 +143,7 @@ CREATE TABLE fichiers (
   type VARCHAR(255) NOT NULL,
   fichier BYTEA NOT NULL,
   date DATE NOT NULL,
-  projet_id INTEGER REFERENCES projets(id)
+  projet_id INTEGER REFERENCES projets(id) ON DELETE CASCADE
 );
 
 -- Contrainte

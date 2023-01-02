@@ -45,6 +45,7 @@
             @project="addProject"
             @addTag="addTag"
             @updateTag="updateTag"
+            @deleteProjects="deleteProjects"
           />
         </q-tab-panel>
       </q-tab-panels>
@@ -186,6 +187,14 @@ const addTag = async (tag) => {
   await loadTags();
 };
 
+// delete
+const deleteProjects = async (projects_id) => {
+  for (const project_id of projects_id) {
+    await projectsStore.deleteProject(project_id);
+  }
+  await loadProjects();
+};
+
 // onBeforeMount
 onBeforeMount(async () => {
   await loadProjects();
@@ -194,7 +203,7 @@ onBeforeMount(async () => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .q-tab-panels {
   background: none !important;
 }

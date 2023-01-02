@@ -9,7 +9,7 @@ export const useProjectsStore = defineStore("projects", () => {
       Notify.create({
         type: "positive",
         position: "top-right",
-        message: "Projet créé avec succés",
+        message: "Projet créé",
       });
       return response.data.id;
     } catch (error) {
@@ -59,9 +59,23 @@ export const useProjectsStore = defineStore("projects", () => {
       Notify.create({
         type: "positive",
         position: "top-right",
-        message: "Projet modifié avec succés",
+        message: "Projet modifié",
       });
       return response.data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deleteProject = async (id) => {
+    try {
+      const response = await api.delete(`/api/projects/${id}`);
+      Notify.create({
+        type: "positive",
+        position: "top-right",
+        message: "Projet supprimé",
+      });
+      return response.data.id;
     } catch (error) {
       console.error(error);
     }
@@ -74,5 +88,6 @@ export const useProjectsStore = defineStore("projects", () => {
     getTotalFees,
     getTotalFeesCollected,
     updateStatusId,
+    deleteProject,
   };
 });

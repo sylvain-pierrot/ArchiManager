@@ -22,12 +22,29 @@
             label="ACTIONS"
             icon-right="edit"
             class="q-mb-md"
-            @click="dialog_project_edit = true"
             v-if="selected.length > 0"
           >
             <q-badge color="warning" floating rounded>{{
               selected.length
             }}</q-badge>
+
+            <q-menu>
+              <q-list style="min-width: 100px">
+                <q-item clickable @click="dialog_project_edit = true">
+                  <q-item-section avatar>
+                    <q-avatar text-color="amber-7" icon="edit" />
+                  </q-item-section>
+                  <q-item-section>Modifier</q-item-section>
+                </q-item>
+
+                <q-item clickable @click="dialog_confirm = true">
+                  <q-item-section avatar>
+                    <q-avatar text-color="red" icon="delete" />
+                  </q-item-section>
+                  <q-item-section>Supprimer</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
           </q-btn>
 
           <q-dialog v-model="dialog_project">
@@ -38,6 +55,13 @@
               @client="emitClient"
               @addTag="emitAddTag"
               @updateTag="emitUpdateTag"
+            />
+          </q-dialog>
+
+          <q-dialog v-model="dialog_confirm">
+            <PopupConfirm
+              text="Êtes-vous sûr de vouloir supprimer le(s) projet(s) ?"
+              @confirm="emitDeleteProject"
             />
           </q-dialog>
 
@@ -102,6 +126,7 @@
 <script setup>
 import FormAddProject from "../forms/FormAddProject.vue";
 import FormEditProjects from "../forms/FormEditProjects.vue";
+import PopupConfirm from "../popups/PopupConfirm.vue";
 import { ref, defineProps, toRefs, defineEmits, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useUserStore } from "src/stores/user";
@@ -127,6 +152,7 @@ const props = defineProps({
   },
 });
 const { projects, tags, clients } = toRefs(props);
+const dialog_confirm = ref(false);
 const dialog_project = ref(false);
 const dialog_project_edit = ref(false);
 const selected = ref([]);
@@ -232,12 +258,19 @@ function getSelectedString() {
 }
 
 // emits
-const emit = defineEmits(["edit", "client", "project", "addTag"]);
+const emit = defineEmits([
+  "edit",
+  "client",
+  "project",
+  "addTag",
+  "deleteProjects",
+]);
 
 function emitEdit(obj) {
   dialog_project_edit.value = false;
   const projects_id = selected.value.map((project) => project.id);
   emit("edit", projects_id, obj);
+  selected.value = [];
 }
 function emitClient(client) {
   emit("client", client);
@@ -251,6 +284,12 @@ function emitAddTag(tag) {
 }
 function emitUpdateTag(tag) {
   emit("updateTag", tag);
+}
+function emitDeleteProject() {
+  dialog_confirm.value = false;
+  const projects_id = selected.value.map((project) => project.id);
+  emit("deleteProjects", projects_id);
+  selected.value = [];
 }
 </script>
 

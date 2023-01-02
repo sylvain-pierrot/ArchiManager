@@ -6,7 +6,7 @@ const { body } = require("express-validator");
 router.post(
   "/projects/:idP/tags",
   authorization.authenticate,
-  body("tag_id").isInt(),
+  body("tag_id").isInt().withMessage("Integer error"),
   body("projet_id").not().exists(),
   tag_projectController.create.bind(tag_projectController)
 );
@@ -23,7 +23,7 @@ router.get(
 router.put(
   "/projects/:idP/tags/:idT",
   authorization.authenticate,
-  body("tag_id").isInt(),
+  body("tag_id").isInt().withMessage("Integer error"),
   body("projet_id").not().exists(),
   tag_projectController.update.bind(tag_projectController)
 );

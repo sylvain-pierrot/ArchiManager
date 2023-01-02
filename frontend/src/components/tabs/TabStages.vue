@@ -34,7 +34,10 @@
             />
 
             <q-dialog v-model="dialog_confirm">
-              <PopupConfirm :text="text_use_mop" @confirm="emitMop" />
+              <PopupConfirm
+                text="Êtes-vous sûr de vouloir utiliser la bibliothèque de phases MOP ?"
+                @confirm="emitMop"
+              />
             </q-dialog>
           </div>
 
@@ -180,9 +183,6 @@ const props = defineProps({
     required: true,
   },
 });
-const text_use_mop = ref(
-  "Êtes-vous sûr de vouloir utiliser la bibliothèque de phases MOP ?"
-);
 const { stages } = toRefs(props);
 const dialog_confirm = ref(false);
 const dialog_stage = ref(false);

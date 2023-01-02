@@ -7,8 +7,8 @@ router.post(
   "/tags",
   authorization.authenticate,
   body("id").not().exists(),
-  body("label").isLength({ min: 1 }),
-  body("color").isLength({ min: 1 }),
+  body("label").isLength({ min: 1 }).withMessage("Length error"),
+  body("color").isLength({ min: 1 }).withMessage("Length error"),
   body("architecte_id").not().exists(),
   tagController.create.bind(tagController)
 );
@@ -31,8 +31,8 @@ router.put(
   "/tags/:id",
   authorization.authenticate,
   body("id").not().exists(),
-  body("label").isLength({ min: 1 }),
-  body("color").isLength({ min: 1 }),
+  body("label").isLength({ min: 1 }).withMessage("Length error"),
+  body("color").isLength({ min: 1 }).withMessage("Length error"),
   body("architecte_id").not().exists(),
   tagController.update.bind(tagController)
 );
