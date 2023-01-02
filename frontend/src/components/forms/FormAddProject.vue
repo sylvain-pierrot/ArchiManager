@@ -18,26 +18,12 @@
           color="black"
           bg-color="primary"
           v-model="project.titre"
-          label="Titre"
-          placeholder="Titre"
+          label="Titre *"
           flat
           class="col-12"
           :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
           lazy-rules
         />
-
-        <!-- <q-input
-          outlined
-          type="text"
-          color="black"
-          bg-color="primary"
-          v-model="id"
-          label="ID projet"
-          placeholder="ID projet"
-          flat
-          class="col-6"
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
-        /> -->
 
         <q-select
           outlined
@@ -45,8 +31,7 @@
           bg-color="primary"
           v-model="project.mission_id"
           :options="missions"
-          label="Mission"
-          placeholder="Mission"
+          label="Mission *"
           flat
           class="col-6"
           :rules="[(val) => !!val || 'Ce champs est requis']"
@@ -61,8 +46,7 @@
           bg-color="primary"
           v-model="project.designation_id"
           :options="designations"
-          label="Désignation"
-          placeholder="Désignation"
+          label="Désignation *"
           flat
           class="col-6"
           :rules="[(val) => !!val || 'Ce champs est requis']"
@@ -77,8 +61,7 @@
           bg-color="primary"
           v-model="project.client_id"
           :options="clients_"
-          label="Client"
-          placeholder="Client"
+          label="Client *"
           flat
           class="col-6"
           :rules="[(val) => !!val || 'Ce champs est requis']"
@@ -110,8 +93,7 @@
           color="black"
           bg-color="primary"
           v-model="project.surface_fonciere"
-          label="Surface foncière"
-          placeholder="Surface foncière"
+          label="Surface foncière (m²) *"
           flat
           class="col-6"
           :rules="[(val) => (!!val && val > 0) || 'Ce champs est requis']"
@@ -125,8 +107,7 @@
           color="black"
           bg-color="primary"
           v-model="project.surface_indicative"
-          label="Surface indicative"
-          placeholder="Surface indicative"
+          label="Surface indicative (m²) *"
           flat
           class="col-6"
           :rules="[(val) => (!!val && val > 0) || 'Ce champs est requis']"
@@ -139,8 +120,7 @@
           color="black"
           bg-color="primary"
           v-model="project.adresse"
-          label="Adresse"
-          placeholder="Adresse"
+          label="Adresse *"
           flat
           class="col-8"
           :rules="[(val) => !!val || 'Ce champs est requis']"
@@ -153,8 +133,7 @@
           color="black"
           bg-color="primary"
           v-model="project.ville"
-          label="Ville"
-          placeholder="Ville"
+          label="Ville *"
           flat
           class="col-4"
           mask="A"
@@ -169,7 +148,7 @@
           color="black"
           bg-color="primary"
           v-model="project.date_debut"
-          label="Date début"
+          label="Date début *"
           stack-label
           flat
           class="col-6"
@@ -184,7 +163,7 @@
           color="black"
           bg-color="primary"
           v-model="project.date_fin"
-          label="Date fin"
+          label="Date fin *"
           stack-label
           flat
           class="col-6"
@@ -200,7 +179,7 @@
           multiple
           :options="tags_"
           stack-label
-          label="Tags"
+          label="Tags *"
           placeholder="Tags"
           flat
           class="col-6"
@@ -253,7 +232,6 @@
           bg-color="primary"
           v-model="project.description"
           label="Description"
-          placeholder="Description"
           flat
           class="col-12"
         />

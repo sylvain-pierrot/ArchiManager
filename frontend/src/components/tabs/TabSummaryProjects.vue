@@ -168,9 +168,13 @@ const {
   tags,
 } = toRefs(props);
 
-const progress1 = computed(() =>
-  parseFloat(totalFeesCollected.value / totalFees.value).toFixed(2)
-);
+const progress1 = computed(() => {
+  if (totalFees.value === 0) {
+    return 0;
+  } else {
+    return parseFloat(totalFeesCollected.value / totalFees.value).toFixed(2);
+  }
+});
 const pagination = ref({
   rowsPerPage: 0,
 });

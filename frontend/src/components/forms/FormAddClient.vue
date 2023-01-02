@@ -65,8 +65,12 @@
           placeholder="Téléphone"
           flat
           class="col-6"
-          mask="## - ## - ## - ## - ##"
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          mask="##-##-##-##-##"
+          :rules="[
+            (val) =>
+              (!!val && isValidPhoneNumber(val)) ||
+              'Numéro de téléphone invalide',
+          ]"
           lazy-rules
         />
 
@@ -138,4 +142,9 @@ const client = ref({
   telephone: "",
   notes: "",
 });
+
+function isValidPhoneNumber(phoneNumber) {
+  const regex = /^\d{2}-\d{2}-\d{2}-\d{2}-\d{2}$/;
+  return regex.test(phoneNumber);
+}
 </script>

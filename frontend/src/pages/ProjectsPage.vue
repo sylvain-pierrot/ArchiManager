@@ -114,7 +114,7 @@ async function loadProjects() {
   const projectList = await projectsStore.getAllProjects();
   projects.value = await Promise.all(
     projectList.map(async (project) => {
-      project.honoraires = await stagesStore.getAllFees(project.id);
+      project.honoraires = (await stagesStore.getAllFees(project.id)) || 0;
       project.tags = await tagsProjectsStore.getAllTagsProject(project.id);
       return project;
     })
@@ -186,7 +186,7 @@ const addTag = async (tag) => {
   await loadTags();
 };
 
-// onMounted
+// onBeforeMount
 onBeforeMount(async () => {
   await loadProjects();
   await loadClients();

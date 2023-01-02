@@ -187,10 +187,17 @@ const progress = computed(() => {
     progress += stage.progression === true ? 1 : 0;
     sum += 1;
   });
-  return {
-    label: parseFloat((progress / sum) * 100).toFixed(0),
-    number: parseFloat(progress / sum).toFixed(2),
-  };
+  if (sum === 0) {
+    return {
+      label: 0,
+      number: 0,
+    };
+  } else {
+    return {
+      label: parseFloat((progress / sum) * 100).toFixed(0),
+      number: parseFloat(progress / sum).toFixed(2),
+    };
+  }
 });
 const paid = computed(() => {
   let sum = 0;
