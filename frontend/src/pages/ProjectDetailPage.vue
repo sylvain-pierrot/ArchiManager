@@ -3,7 +3,7 @@
     <q-card class="no-shadow">
       <q-card-section horizontal class="justify-between items-center">
         <q-card-section>
-          <div class="text-overline text-warning">PROJETS</div>
+          <div class="text-overline text-warning">PROJET</div>
           <div class="text-h4 text-dark">
             {{ `${project.id} | ${project.titre} ${project.ville}` }}
           </div>
@@ -56,7 +56,9 @@
         />
       </q-tab-panel>
 
-      <q-tab-panel name="parcels" class="q-pa-none q-mt-md"> </q-tab-panel>
+      <q-tab-panel name="parcels" class="q-pa-none q-mt-md">
+        <TabParcels />
+      </q-tab-panel>
 
       <q-tab-panel name="files" class="q-pa-none q-mt-md">
         <TabFiles @file="addFile" @deleteFile="deleteFile" :files="files" />
@@ -69,6 +71,7 @@
 import TabSummaryProjectDetail from "../components/tabs/TabSummaryProjectDetail.vue";
 import TabStages from "src/components/tabs/TabStages.vue";
 import TabFiles from "src/components/tabs/TabFiles.vue";
+import TabParcels from "src/components/tabs/TabParcels.vue";
 import { useProjectsStore } from "../stores/projects";
 import { useClientsStore } from "../stores/clients";
 import { useUserStore } from "../stores/user";

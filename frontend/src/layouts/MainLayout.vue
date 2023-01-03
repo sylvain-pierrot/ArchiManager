@@ -51,7 +51,7 @@
       <router-view />
     </q-page-container>
 
-    <q-footer reveal-offset class="bg-dark">
+    <q-footer reveal-offset class="bg-secondary">
       <q-tabs v-model="tab" class="text-white">
         <q-route-tab
           v-for="(nav, index) in navs"
@@ -59,7 +59,7 @@
           :to="nav.path"
           exact
           :icon="nav.icon"
-          :label="nav.title"
+          class="col-4 q-pa-md"
         />
       </q-tabs>
     </q-footer>
@@ -97,7 +97,6 @@ const navs = ref([
   },
 ]);
 const leftDrawerOpen = ref(false);
-// const image = ref(require("../assets/logo-LP.png"));
 
 const logout = async () => {
   await userStore.logout();
