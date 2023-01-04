@@ -15,6 +15,13 @@ const api = axios.create({
     "Access-Control-Allow-Methods": "POST, GET, PUT, DELETE, OPTIONS",
   },
 });
+// const api = axios.create({
+//   baseURL: "https://localhost",
+//   headers: {
+//     "Access-Control-Allow-Origin": "https://localhost",
+//     "Access-Control-Allow-Methods": "POST, GET, PUT, DELETE, OPTIONS",
+//   },
+// });
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api

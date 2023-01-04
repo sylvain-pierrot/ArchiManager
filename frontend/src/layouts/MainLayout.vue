@@ -52,14 +52,14 @@
     </q-page-container>
 
     <q-footer reveal-offset class="bg-secondary">
-      <q-tabs v-model="tab" class="text-white">
+      <q-tabs v-model="tab" class="text-white" align="justify">
         <q-route-tab
           v-for="(nav, index) in navs"
           :key="index"
           :to="nav.path"
           exact
           :icon="nav.icon"
-          class="col-4 q-pa-md"
+          class="q-pa-md"
         />
       </q-tabs>
     </q-footer>
