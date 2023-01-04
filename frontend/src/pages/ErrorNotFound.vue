@@ -8,7 +8,7 @@
       color="warning"
       text-color="white"
       unelevated
-      to="/"
+      to="/dashboard"
       label="Go Home"
       no-caps
     />

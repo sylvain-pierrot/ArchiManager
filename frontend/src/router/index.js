@@ -36,11 +36,10 @@ export default route(function (/* { store, ssrContext } */) {
     ),
   });
 
-  Router.beforeEach((to, from, next) => {
+  Router.beforeEach(async (to, from, next) => {
     const userStore = useUserStore();
-    const token = userStore.getCookie("token");
 
-    if (token === null) {
+    if (!userStore.authenticated) {
       if (to.name === "SignUp" || to.name === "SignIn") {
         next();
       } else {
@@ -48,6 +47,12 @@ export default route(function (/* { store, ssrContext } */) {
       }
     } else if (to.name === "SignUp" || to.name === "SignIn") {
       next({ name: "Dashboard" });
+    } else if (to.name === "Admin") {
+      if (userStore.user.role_id === 1) {
+        next();
+      } else {
+        next({ name: "Dashboard" });
+      }
     } else {
       next();
     }

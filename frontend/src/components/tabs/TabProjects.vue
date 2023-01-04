@@ -129,11 +129,7 @@ import FormEditProjects from "../forms/FormEditProjects.vue";
 import PopupConfirm from "../popups/PopupConfirm.vue";
 import { ref, defineProps, toRefs, defineEmits, computed } from "vue";
 import { useRouter } from "vue-router";
-import { useUserStore } from "src/stores/user";
 
-const userStore = useUserStore();
-const userCookie = decodeURIComponent(userStore.getCookie("user"));
-const user = ref(JSON.parse(userCookie.substring(2)));
 const moment = require("moment");
 
 const router = useRouter();

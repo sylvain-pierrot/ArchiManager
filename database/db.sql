@@ -1,5 +1,8 @@
 -- Supprimer les tables si elles existent
 DROP TABLE IF EXISTS statuts CASCADE;
+DROP TABLE IF EXISTS missions CASCADE;
+DROP TABLE IF EXISTS designations CASCADE;
+DROP TABLE IF EXISTS roles CASCADE;
 DROP TABLE IF EXISTS architectes CASCADE;
 DROP TABLE IF EXISTS prestataires CASCADE;
 DROP TABLE IF EXISTS clients CASCADE;
@@ -9,7 +12,7 @@ DROP TABLE IF EXISTS phases CASCADE;
 DROP TABLE IF EXISTS taches CASCADE;
 DROP TABLE IF EXISTS tags CASCADE;
 DROP TABLE IF EXISTS tags_projets CASCADE;
-DROP TABLE IF EXISTS documents CASCADE;
+DROP TABLE IF EXISTS fichiers CASCADE;
 
 -- Créer la table des statuts
 CREATE TABLE statuts (
@@ -29,6 +32,12 @@ CREATE TABLE designations (
   label VARCHAR(255) NOT NULL
 );
 
+-- Créer la table des rôles
+CREATE TABLE roles (
+  id INTEGER PRIMARY KEY,
+  label VARCHAR(255) NOT NULL
+);
+
 -- Créer la table des architectes
 CREATE TABLE architectes (
   id serial PRIMARY KEY,
@@ -37,7 +46,8 @@ CREATE TABLE architectes (
   prenom VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
   mot_de_passe VARCHAR(255) NOT NULL,
-  telephone VARCHAR(255) NOT NULL
+  telephone VARCHAR(255) NOT NULL,
+  role_id INTEGER REFERENCES roles(id) NOT NULL DEFAULT 2
 );
 
 -- Créer la table des prestataires

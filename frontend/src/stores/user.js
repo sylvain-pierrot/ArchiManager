@@ -4,8 +4,8 @@ import { api } from "../boot/axios";
 import { Notify } from "quasar";
 
 export const useUserStore = defineStore("user", () => {
-  const authenticated = ref(null);
-
+  const authenticated = ref(false);
+  const user = ref(null);
   // const checkAuthentication = async () => {
   //   try {
   //     const response = await api.get("/api/isAuthenticated");
@@ -16,6 +16,15 @@ export const useUserStore = defineStore("user", () => {
   //     console.error(error);
   //   }
   // };
+
+  const getMe = async () => {
+    try {
+      const response = await api.get("/api/architects/me");
+      user.value = response.data[0];
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   function getCookie(name) {
     let cookie = null;
@@ -38,6 +47,7 @@ export const useUserStore = defineStore("user", () => {
         position: "top-right",
         message: "Connexion réussie",
       });
+      authenticated.value = true;
       console.log(response.data);
     } catch (error) {
       Notify.create({
@@ -57,6 +67,8 @@ export const useUserStore = defineStore("user", () => {
         position: "top-right",
         message: "Déonnexion réussie",
       });
+      authenticated.value = false;
+      user.value = null;
       console.log(response.data);
     } catch (error) {
       console.error(error);
@@ -88,10 +100,12 @@ export const useUserStore = defineStore("user", () => {
   };
   return {
     authenticated,
+    user,
     getCookie,
     createUser,
     getAllUsers,
     login,
     logout,
+    getMe,
   };
 });

@@ -27,6 +27,7 @@ const router = useRouter();
 
 const login = async (email, password) => {
   await userStore.login(email, password);
+  await userStore.getMe();
   router.push({ name: "Dashboard" });
 };
 </script>

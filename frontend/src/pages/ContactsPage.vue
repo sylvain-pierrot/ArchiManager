@@ -58,7 +58,7 @@ onMounted(async () => {
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .q-tab-panels {
   background: none !important;
 }

@@ -1,4 +1,6 @@
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
+const db = require("../config/database");
 const Controller = require("./global.controller");
 
 class ArchitectController extends Controller {
@@ -25,6 +27,31 @@ class ArchitectController extends Controller {
     // query
     super.getOne(req, res, primaryKey, foreignKey);
   }
+
+  getMe = async (req, res) => {
+    try {
+      // datas
+      const id = jwt.verify(req.cookies.token, process.env.JWT_SECRET).id;
+
+      // query
+      const { rows } = await db.query(
+        `SELECT * FROM ${this.tableName} WHERE id = $1`,
+        [id]
+      );
+
+      // failed query
+      if (rows.length < 1) {
+        return res.status(401).json({ message: `Not found or error` });
+      }
+
+      // success
+      res.status(200).send(rows);
+    } catch (error) {
+      // server error
+      console.error(error);
+      res.status(500).json({ message: "Server error" });
+    }
+  };
 
   create = async (req, res) => {
     // Data

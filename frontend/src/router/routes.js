@@ -21,6 +21,11 @@ const routes = [
         path: "contacts",
         component: () => import("src/pages/ContactsPage.vue"),
       },
+      {
+        path: "admin",
+        name: "Admin",
+        component: () => import("src/pages/AdminPage.vue"),
+      },
     ],
   },
   {

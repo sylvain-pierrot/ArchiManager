@@ -39,11 +39,8 @@ exports.login = async (req, res) => {
     });
 
     // Set the JWT as a cookie and send it to the client
-    res.cookie("user", architect, {
-      httpOnly: false,
-    });
     res.cookie("token", token, {
-      httpOnly: false,
+      httpOnly: true,
     });
     res.send({ message: "Successfully logged in" });
   } catch (error) {

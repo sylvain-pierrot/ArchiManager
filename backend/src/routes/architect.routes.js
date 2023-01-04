@@ -12,13 +12,19 @@ router.post(
   body("email").isEmail().withMessage("Email error"),
   body("mot_de_passe").isLength({ min: 5 }).withMessage("Length error"),
   body("telephone").isLength({ min: 5 }).withMessage("Length error"),
+  body("role_id").not().exists(),
   architectController.create.bind(architectController)
 );
 router.get("/architects", architectController.getAll.bind(architectController));
 router.get(
-  "/architects/:id",
+  "/architects/:id(\\d+)",
   authorization.authenticate,
   architectController.getOne.bind(architectController)
+);
+router.get(
+  "/architects/me",
+  authorization.authenticate,
+  architectController.getMe.bind(architectController)
 );
 router.put(
   "/architects/:id",
@@ -28,6 +34,7 @@ router.put(
   body("prenom").isLength({ min: 1 }).withMessage("Length error"),
   body("email").isEmail().withMessage("Email error"),
   body("telephone").isLength({ min: 5 }).withMessage("Length error"),
+  body("role_id").not().exists(),
   architectController.update.bind(architectController)
 );
 router.delete(

@@ -32,17 +32,21 @@ services:
     depends_on:
       - database
 
-  # frontend:
-  #   build:
-  #     context: frontend
-  #   restart: always
-  #   ports:
-  #     - 8080:8080
-  #   networks:
-  #     - public
-  #   depends_on:
-  #     - database
-  #     - backend
+  frontend:
+    build:
+      context: frontend
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - public
+    depends_on:
+      - database
+      - backend
+    # tls:
+    #   cert_path: ./cert.pem
+    #   key_path: ./key.pem
+    #   verify: true
 
   backend:
     build:

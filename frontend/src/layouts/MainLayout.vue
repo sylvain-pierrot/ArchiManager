@@ -1,5 +1,5 @@
 <template>
-  <q-layout view="hHh Lpr lFf">
+  <q-layout view="hHh Lpr lFf" v-if="user">
     <q-drawer
       :breakpoint="1024"
       v-model="leftDrawerOpen"
@@ -19,10 +19,10 @@
 
       <div class="row justify-center q-gutter-sm">
         <q-chip>
-          <q-avatar color="blue" text-color="white">{{
-            nom.charAt(0)
-          }}</q-avatar>
-          {{ nom }}
+          <q-avatar color="blue" text-color="white">
+            {{ user.nom.charAt(0) }}
+          </q-avatar>
+          {{ `${user.nom} ${user.prenom}` }}
         </q-chip>
         <q-btn
           flat
@@ -68,16 +68,13 @@
 
 <script setup>
 import NavigationLink from "../components/NavigationLink.vue";
-import { ref } from "vue";
+import { ref, onBeforeMount } from "vue";
 import { useUserStore } from "../stores/user";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
 const userStore = useUserStore();
-
-const userCookie = decodeURIComponent(userStore.getCookie("user"));
-const user = ref(JSON.parse(userCookie.substring(2)));
-const nom = ref(`${user.value.nom} ${user.value.prenom}`);
+const user = ref(null);
 const tab = ref("");
 const navs = ref([
   {
@@ -96,12 +93,25 @@ const navs = ref([
     path: "/contacts",
   },
 ]);
+
 const leftDrawerOpen = ref(false);
 
 const logout = async () => {
   await userStore.logout();
   router.push({ name: "SignIn" });
 };
+
+onBeforeMount(async () => {
+  user.value = userStore.user;
+  console.log(user.value);
+  if (user.value.role_id === 1) {
+    navs.value.push({
+      title: "Espace admin",
+      icon: "admin_panel_settings",
+      path: "/admin",
+    });
+  }
+});
 </script>
 
 <style>
