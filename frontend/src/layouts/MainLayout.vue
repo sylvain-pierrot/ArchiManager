@@ -77,7 +77,6 @@ const router = useRouter();
 const userStore = useUserStore();
 const userCookie = Cookies.get("user");
 const user = ref({ nom: userCookie.nom, prenom: userCookie.prenom });
-const isAdmin = ref(null);
 const tab = ref("");
 const navs = ref([
   {
@@ -105,8 +104,8 @@ const logout = async () => {
 };
 
 onBeforeMount(async () => {
-  isAdmin.value = await userStore.isAdmin();
-  if (isAdmin.value.role_id === 1) {
+  await userStore.checkIsAdmin();
+  if (userStore.isAdmin) {
     navs.value.push({
       title: "Espace admin",
       icon: "admin_panel_settings",

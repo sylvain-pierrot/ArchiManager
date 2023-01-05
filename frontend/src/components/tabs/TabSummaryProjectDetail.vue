@@ -306,7 +306,7 @@ const options = ref({
 });
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 .bg-warning-light {
   background-color: #f0f7ff;
 }

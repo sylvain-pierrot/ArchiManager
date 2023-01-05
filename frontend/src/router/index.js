@@ -38,6 +38,8 @@ export default route(function (/* { store, ssrContext } */) {
   });
 
   Router.beforeEach(async (to, from, next) => {
+    const userStore = useUserStore();
+
     if (!Cookies.has("user")) {
       if (to.name === "SignUp" || to.name === "SignIn") {
         next();
@@ -47,7 +49,7 @@ export default route(function (/* { store, ssrContext } */) {
     } else if (to.name === "SignUp" || to.name === "SignIn") {
       next({ name: "Dashboard" });
     } else if (to.name === "Admin") {
-      if (userStore.user.role_id === 1) {
+      if (userStore.isAdmin) {
         next();
       } else {
         next({ name: "Dashboard" });

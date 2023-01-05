@@ -29,6 +29,13 @@
 
           <q-menu>
             <q-list style="min-width: 100px">
+              <!-- <q-item clickable @click="dialog_user_edit = true">
+                <q-item-section avatar>
+                  <q-avatar text-color="amber-7" icon="edit" />
+                </q-item-section>
+                <q-item-section>Modifier</q-item-section>
+              </q-item> -->
+
               <q-item clickable @click="dialog_confirm = true">
                 <q-item-section avatar>
                   <q-avatar text-color="red" icon="delete" />
@@ -50,17 +57,15 @@
           :rows="users"
           :columns="columns"
           row-key="id"
-          :selected-rows-label="getSelectedString"
           selection="multiple"
           v-model:selected="selected"
           flat
           bordered
-          @row-click="onRowClick"
           v-model:pagination="pagination"
         >
           <template v-slot:body-cell-role="props">
             <q-td key="role" :props="props">
-              <div class="row no-wrap items-center justify-end">
+              <div class="row no-wrap items-center">
                 <q-icon
                   size="xs"
                   :color="props.row.role.color"
@@ -106,6 +111,7 @@ import PopupConfirm from "src/components/popups/PopupConfirm.vue";
 import { useUserStore } from "src/stores/user";
 import { ref, onBeforeMount } from "vue";
 
+const dialog_user_edit = ref(false);
 const dialog_confirm = ref(false);
 const usersStore = useUserStore();
 const users = ref(null);
@@ -115,11 +121,10 @@ const pagination = ref({
 });
 const columns = ref([
   {
-    name: "id",
-    required: true,
-    label: "ID",
+    name: "role",
+    label: "Rôle",
     align: "left",
-    field: (row) => row.id,
+    field: (row) => row.role,
     format: (val) => `${val}`,
     sortable: true,
   },
@@ -163,17 +168,18 @@ const columns = ref([
     format: (val) => `${val}`,
     sortable: true,
   },
-  {
-    name: "role",
-    label: "Rôle",
-    align: "right",
-    field: (row) => row.role,
-    format: (val) => `${val}`,
-    sortable: true,
-  },
 ]);
 
-onBeforeMount(async () => {
+const deleteUsers = async () => {
+  dialog_confirm.value = false;
+  for (const user of selected.value) {
+    console.log(user.id);
+    await usersStore.deleteUser(user.id);
+  }
+  await loadUsers();
+};
+
+async function loadUsers() {
   users.value = await usersStore.getAllUsers();
   for (const user of users.value) {
     user.role =
@@ -186,6 +192,10 @@ onBeforeMount(async () => {
           };
     delete user.role_id;
   }
+}
+
+onBeforeMount(async () => {
+  await loadUsers();
 });
 </script>
 

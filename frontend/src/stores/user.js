@@ -4,10 +4,14 @@ import { api } from "../boot/axios";
 import { Notify } from "quasar";
 
 export const useUserStore = defineStore("user", () => {
-  const isAdmin = async () => {
+  const isAdmin = ref(false);
+
+  const checkIsAdmin = async () => {
     try {
       const response = await api.get("/api/architects/isAdmin");
-      return response.data[0];
+      if (response.data[0].role_id === 1) {
+        isAdmin.value = true;
+      }
     } catch (error) {
       console.error(error);
     }
@@ -37,13 +41,13 @@ export const useUserStore = defineStore("user", () => {
       Notify.create({
         type: "positive",
         position: "top-right",
-        message: "Connexion réussie",
+        message: "Connexion",
       });
     } catch (error) {
       Notify.create({
         type: "negative",
         position: "top-right",
-        message: "Connexion échouée",
+        message: "Connexion",
       });
       console.error(error);
     }
@@ -55,7 +59,7 @@ export const useUserStore = defineStore("user", () => {
       Notify.create({
         type: "positive",
         position: "top-right",
-        message: "Déonnexion réussie",
+        message: "Déonnexion",
       });
     } catch (error) {
       console.error(error);
@@ -68,7 +72,20 @@ export const useUserStore = defineStore("user", () => {
       Notify.create({
         type: "positive",
         position: "top-right",
-        message: "Compte créé avec succés",
+        message: "Compte créé",
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const deleteUser = async (id) => {
+    try {
+      const response = await api.delete(`/api/architects/${id}`);
+      Notify.create({
+        type: "positive",
+        position: "top-right",
+        message: "Utilsateur supprimé",
       });
       console.log(response.data);
     } catch (error) {
@@ -79,7 +96,6 @@ export const useUserStore = defineStore("user", () => {
   const getAllUsers = async () => {
     try {
       const response = await api.get("/api/architects");
-      console.log(response.data);
       return response.data;
     } catch (error) {
       console.error(error);
@@ -87,10 +103,12 @@ export const useUserStore = defineStore("user", () => {
   };
   return {
     createUser,
+    deleteUser,
     isUniqueEmail,
     getAllUsers,
     login,
     logout,
+    checkIsAdmin,
     isAdmin,
   };
 });

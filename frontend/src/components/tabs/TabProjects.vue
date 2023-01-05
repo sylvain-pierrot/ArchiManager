@@ -100,7 +100,7 @@
 
             <template v-slot:body-cell-status="props">
               <q-td key="name" :props="props">
-                <div class="row items-center">
+                <div class="row no-wrap items-center">
                   <q-icon
                     size="xs"
                     :color="props.row.status.color"
@@ -124,6 +124,7 @@
 </template>
 
 <script setup>
+import { Cookies } from "quasar";
 import FormAddProject from "../forms/FormAddProject.vue";
 import FormEditProjects from "../forms/FormEditProjects.vue";
 import PopupConfirm from "../popups/PopupConfirm.vue";
@@ -152,6 +153,7 @@ const dialog_confirm = ref(false);
 const dialog_project = ref(false);
 const dialog_project_edit = ref(false);
 const selected = ref([]);
+const user = Cookies.get("user");
 const pagination = ref({
   rowsPerPage: 0,
 });
@@ -205,7 +207,7 @@ const rows = computed(() =>
   projects.value.map((project) => {
     return {
       id: project.id,
-      idShow: `${user.value.prenom.charAt(0).toUpperCase()}${user.value.nom
+      idShow: `${user.prenom.charAt(0).toUpperCase()}${user.nom
         .charAt(0)
         .toUpperCase()}-${moment(new Date(project.date_debut)).format(
         "YYYY"
