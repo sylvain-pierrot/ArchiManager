@@ -38,11 +38,19 @@ exports.login = async (req, res) => {
       expiresIn: "1h",
     });
 
+    // create user object
+    delete architect.mot_de_passe;
+    delete architect.id;
+    delete architect.role_id;
+
     // Set the JWT as a cookie and send it to the client
+    res.cookie("user", JSON.stringify(architect), {
+      httpOnly: false,
+    });
     res.cookie("token", token, {
       httpOnly: true,
     });
-    res.send({ message: "Successfully logged in" });
+    res.status(200).send({ message: "Successfully logged in" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: "Server error" });

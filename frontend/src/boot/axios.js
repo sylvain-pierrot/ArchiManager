@@ -18,7 +18,7 @@ const api = axios.create({
 // const api = axios.create({
 //   baseURL: "https://localhost",
 //   headers: {
-//     "Access-Control-Allow-Origin": "https://localhost",
+//     "Access-Control-Allow-Origin": "https://cluster-2022-9.dopolytech.fr",
 //     "Access-Control-Allow-Methods": "POST, GET, PUT, DELETE, OPTIONS",
 //   },
 // });

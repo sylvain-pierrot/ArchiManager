@@ -67,6 +67,7 @@
 </template>
 
 <script setup>
+import { Cookies } from "quasar";
 import NavigationLink from "../components/NavigationLink.vue";
 import { ref, onBeforeMount } from "vue";
 import { useUserStore } from "../stores/user";
@@ -74,7 +75,9 @@ import { useRouter } from "vue-router";
 
 const router = useRouter();
 const userStore = useUserStore();
-const user = ref(null);
+const userCookie = Cookies.get("user");
+const user = ref({ nom: userCookie.nom, prenom: userCookie.prenom });
+const isAdmin = ref(null);
 const tab = ref("");
 const navs = ref([
   {
@@ -102,9 +105,8 @@ const logout = async () => {
 };
 
 onBeforeMount(async () => {
-  user.value = userStore.user;
-  console.log(user.value);
-  if (user.value.role_id === 1) {
+  isAdmin.value = await userStore.isAdmin();
+  if (isAdmin.value.role_id === 1) {
     navs.value.push({
       title: "Espace admin",
       icon: "admin_panel_settings",

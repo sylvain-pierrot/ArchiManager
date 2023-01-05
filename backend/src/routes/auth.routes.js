@@ -5,8 +5,8 @@ const { body } = require("express-validator");
 
 router.post(
   "/login",
-  body("email").isEmail(),
-  body("mot_de_passe").isLength({ min: 5 }),
+  body("email").isEmail().isLength({ min: 1, max: 255 }),
+  body("mot_de_passe").isLength({ min: 1, max: 255 }),
   authController.login
 );
 router.post("/logout", authorization.authenticate, authController.logout);

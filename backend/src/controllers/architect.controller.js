@@ -28,14 +28,39 @@ class ArchitectController extends Controller {
     super.getOne(req, res, primaryKey, foreignKey);
   }
 
-  getMe = async (req, res) => {
+  // getMe = async (req, res) => {
+  //   try {
+  //     // datas
+  //     const id = jwt.verify(req.cookies.token, process.env.JWT_SECRET).id;
+
+  //     // query
+  //     const { rows } = await db.query(
+  //       `SELECT * FROM ${this.tableName} WHERE id = $1`,
+  //       [id]
+  //     );
+
+  //     // failed query
+  //     if (rows.length < 1) {
+  //       return res.status(401).json({ message: `Not found or error` });
+  //     }
+
+  //     // success
+  //     res.status(200).send(rows);
+  //   } catch (error) {
+  //     // server error
+  //     console.error(error);
+  //     res.status(500).json({ message: "Server error" });
+  //   }
+  // };
+
+  getIsAdmin = async (req, res) => {
     try {
       // datas
       const id = jwt.verify(req.cookies.token, process.env.JWT_SECRET).id;
 
       // query
       const { rows } = await db.query(
-        `SELECT * FROM ${this.tableName} WHERE id = $1`,
+        `SELECT role_id FROM ${this.tableName} WHERE id = $1`,
         [id]
       );
 

@@ -45,7 +45,7 @@ CREATE TABLE architectes (
   nom VARCHAR(255) NOT NULL,
   prenom VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL UNIQUE,
-  mot_de_passe VARCHAR(255) NOT NULL,
+  mot_de_passe VARCHAR(500) NOT NULL,
   telephone VARCHAR(255) NOT NULL,
   role_id INTEGER REFERENCES roles(id) NOT NULL DEFAULT 2
 );

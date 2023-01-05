@@ -3,7 +3,7 @@
     <q-card class="no-shadow q-mb-md">
       <q-card-section>
         <div class="text-overline text-warning">GÉNÉRAL</div>
-        <div class="text-h4 text-dark">ESPACE ADMINISTRATEUR</div>
+        <div class="text-h4 text-dark">Espace admin</div>
       </q-card-section>
     </q-card>
 
@@ -178,7 +178,7 @@ onBeforeMount(async () => {
   for (const user of users.value) {
     user.role =
       user.role_id === 2
-        ? { label: "Utilisateur", icon: "user", color: "blue" }
+        ? { label: "Utilisateur", icon: "account_circle", color: "blue" }
         : {
             label: "Administrateur",
             icon: "admin_panel_settings",

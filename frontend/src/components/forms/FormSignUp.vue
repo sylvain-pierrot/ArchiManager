@@ -1,5 +1,5 @@
 <template>
-  <q-form ref="myForm" @submit="$emit('user', user)" class="q-gutter-md">
+  <q-form @submit="$emit('user', user)" class="q-gutter-md">
     <q-stepper
       v-model="step"
       ref="stepper"
@@ -21,7 +21,10 @@
           type="email"
           label="Email"
           class="col-12"
-          :rules="[emailValidationRules]"
+          :rules="[
+            emailValidationRules,
+            (val) => (!!val && val.length < 255) || 'Email trop long',
+          ]"
           lazy-rules
         />
       </q-step>
@@ -41,6 +44,7 @@
           label="Mot de passe"
           :rules="[
             (val) => (!!val && mediumValidation(val)) || 'Mot de passe invalid',
+            (val) => (!!val && val.length < 255) || 'Mot de passe trop long',
           ]"
           lazy-rules
         >
@@ -101,7 +105,10 @@
           v-model="user.numero_national"
           type="number"
           label="Numero national"
-          :rules="[(val) => !!val || 'Numero invalide']"
+          :rules="[
+            (val) => !!val || 'Numéro invalide',
+            (val) => (!!val && val.length < 255) || 'Numéro trop long',
+          ]"
           lazy-rules
         />
 
@@ -113,7 +120,10 @@
           label="Nom"
           mask="A"
           reverse-fill-mask
-          :rules="[(val) => !!val || 'Nom invalide']"
+          :rules="[
+            (val) => !!val || 'Nom invalide',
+            (val) => (!!val && val.length < 255) || 'Nom trop long',
+          ]"
           lazy-rules
         />
 
@@ -125,7 +135,10 @@
           label="Prenom"
           mask="A"
           reverse-fill-mask
-          :rules="[(val) => !!val || 'Prénom invalide']"
+          :rules="[
+            (val) => !!val || 'Prénom invalide',
+            (val) => (!!val && val.length < 255) || 'Prénom trop long',
+          ]"
           lazy-rules
         />
 
@@ -138,7 +151,7 @@
           mask="##-##-##-##-##"
           :rules="[
             (val) =>
-              (!!val && isValidPhoneNumber(val)) ||
+              (!!val && isValidPhoneNumber(val) && val.length < 255) ||
               'Numéro de téléphone invalide',
           ]"
           lazy-rules
@@ -162,7 +175,8 @@
             label="Continuer"
           />
           <q-btn
-            v-if="step > 2"
+            v-show="step > 2"
+            :disable="step < 3"
             unelevated
             type="submit"
             color="blue"

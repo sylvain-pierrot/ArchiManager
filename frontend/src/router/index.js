@@ -7,6 +7,7 @@ import {
 } from "vue-router";
 import routes from "./routes";
 import { useUserStore } from "../stores/user";
+import { Cookies } from "quasar";
 
 /*
  * If not building with SSR mode, you can
@@ -37,9 +38,7 @@ export default route(function (/* { store, ssrContext } */) {
   });
 
   Router.beforeEach(async (to, from, next) => {
-    const userStore = useUserStore();
-
-    if (!userStore.authenticated) {
+    if (!Cookies.has("user")) {
       if (to.name === "SignUp" || to.name === "SignIn") {
         next();
       } else {

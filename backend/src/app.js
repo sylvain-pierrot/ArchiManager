@@ -30,7 +30,7 @@ app.use(
 );
 // app.use(
 //   cors({
-//     origin: "https://localhost",
+//     origin: "https://cluster-2022-9.dopolytech.fr",
 //     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
 //     credentials: true,
 //   })
