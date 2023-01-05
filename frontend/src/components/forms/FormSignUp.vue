@@ -22,7 +22,7 @@
           label="Email"
           class="col-12"
           :rules="[
-            emailValidationRules,
+            (val) => (!!val && isValidEmail(val)) || 'Email invalide',
             (val) => (!!val && val.length < 255) || 'Email trop long',
           ]"
           lazy-rules
@@ -34,7 +34,6 @@
         title="Définissez un mot de passe"
         icon="key"
         :done="step > 2"
-        :error="myForm"
       >
         <q-input
           outlined
@@ -166,11 +165,19 @@
               step === 2
                 ? !mediumValidation(user.mot_de_passe)
                 : step === 1
-                ? !emailValidation(user.email)
+                ? !isValidEmail(user.email)
                 : false
             "
             unelevated
-            @click="$refs.stepper.next()"
+            @click="
+              async () => {
+                if (step === 1) {
+                  await checkUniqueEmail(user.email, $refs);
+                } else {
+                  $refs.stepper.next();
+                }
+              }
+            "
             color="blue"
             label="Continuer"
           />
@@ -205,15 +212,10 @@
   </q-form>
 </template>
 <script setup>
-import { ref, computed, defineProps, toRefs } from "vue";
+import { useUserStore } from "src/stores/user";
+import { ref, computed } from "vue";
 
-const props = defineProps({
-  emails: {
-    type: Array,
-    required: true,
-  },
-});
-const { emails } = toRefs(props);
+const usersStore = useUserStore();
 const isPwd = ref(true);
 const step = ref(1);
 const user = ref({
@@ -254,31 +256,19 @@ const password = computed(() => {
 });
 
 // validations
+const checkUniqueEmail = async (email, $refs) => {
+  const checkEmail = await usersStore.isUniqueEmail({ email: email });
+  if (checkEmail != undefined) {
+    $refs.stepper.next();
+  }
+};
+
 const validations = [
   { label: "Une minuscule", function: hasLowerCase },
   { label: "Une majuscule", function: hasUpperCase },
   { label: "Un nombre", function: hasNumber },
   { label: "8 caractères", function: hasHeightChars },
 ];
-
-function emailValidationRules(email) {
-  if (!isValidEmail(email)) {
-    return "Email invalide";
-  } else if (emails.value.includes(email)) {
-    return "Cet email existe déjà";
-  } else {
-    return true;
-  }
-}
-function emailValidation(email) {
-  if (!isValidEmail(email)) {
-    return false;
-  } else if (emails.value.includes(email)) {
-    return false;
-  } else {
-    return true;
-  }
-}
 function weakValidation(val) {
   return (
     hasLowerCase(val) ||

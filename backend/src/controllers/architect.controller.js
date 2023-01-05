@@ -28,30 +28,29 @@ class ArchitectController extends Controller {
     super.getOne(req, res, primaryKey, foreignKey);
   }
 
-  // getMe = async (req, res) => {
-  //   try {
-  //     // datas
-  //     const id = jwt.verify(req.cookies.token, process.env.JWT_SECRET).id;
+  isUniqueEmail = async (req, res) => {
+    try {
+      // data
+      const email = req.body.email;
 
-  //     // query
-  //     const { rows } = await db.query(
-  //       `SELECT * FROM ${this.tableName} WHERE id = $1`,
-  //       [id]
-  //     );
+      // query
+      const { rows } = await db.query(
+        `SELECT * FROM ${this.tableName} WHERE email = $1`,
+        [email]
+      );
 
-  //     // failed query
-  //     if (rows.length < 1) {
-  //       return res.status(401).json({ message: `Not found or error` });
-  //     }
+      if (rows.length > 0) {
+        return res.status(400).send("Email already in use");
+      }
 
-  //     // success
-  //     res.status(200).send(rows);
-  //   } catch (error) {
-  //     // server error
-  //     console.error(error);
-  //     res.status(500).json({ message: "Server error" });
-  //   }
-  // };
+      // success
+      return res.status(200).send({ message: "Email is unique" });
+    } catch (error) {
+      // server error
+      console.error(error);
+      return res.status(500).json({ message: "Server error" });
+    }
+  };
 
   getIsAdmin = async (req, res) => {
     try {

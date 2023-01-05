@@ -22,6 +22,14 @@ router.post(
   body("role_id").not().exists(),
   architectController.create.bind(architectController)
 );
+router.post(
+  "/architects/emailIsUnique",
+  body("email")
+    .isEmail()
+    .isLength({ min: 1, max: 255 })
+    .withMessage("Email error"),
+  architectController.isUniqueEmail.bind(architectController)
+);
 router.get("/architects", architectController.getAll.bind(architectController));
 router.get(
   "/architects/:id(\\d+)",

@@ -13,6 +13,21 @@ export const useUserStore = defineStore("user", () => {
     }
   };
 
+  const isUniqueEmail = async (email) => {
+    try {
+      const response = await api.post("/api/architects/emailIsUnique", email);
+      console.log(response.data);
+      return response.data;
+    } catch (error) {
+      Notify.create({
+        type: "negative",
+        position: "top-right",
+        message: "Email déjà utilisé",
+      });
+      console.error(error);
+    }
+  };
+
   const login = async (email, password) => {
     try {
       await api.post("/api/login", {
@@ -72,6 +87,7 @@ export const useUserStore = defineStore("user", () => {
   };
   return {
     createUser,
+    isUniqueEmail,
     getAllUsers,
     login,
     logout,
