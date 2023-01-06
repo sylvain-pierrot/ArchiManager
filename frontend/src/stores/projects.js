@@ -55,7 +55,7 @@ export const useProjectsStore = defineStore("projects", () => {
 
   const updateStatusId = async (id, status) => {
     try {
-      const response = await api.put(`/api/projects/${id}/status`, status);
+      const response = await api.patch(`/api/projects/${id}/status`, status);
       Notify.create({
         type: "positive",
         position: "top-right",

@@ -51,9 +51,9 @@ router.put(
   body("architecte_id").not().exists(),
   projectController.update.bind(projectController)
 );
-router.put(
+router.patch(
   "/projects/:id/status",
-  body("statut_id").isInt(),
+  body("statut_id").isInt().withMessage("Status error"),
   authorization.authenticate,
   projectController.updateStatusId.bind(projectController)
 );

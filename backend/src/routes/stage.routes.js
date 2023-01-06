@@ -35,31 +35,31 @@ router.put(
   "/projects/:idP/stages/:idS",
   authorization.authenticate,
   body("id").not().exists(),
-  body("code").isLength({ min: 1 }).withMessage("Length error"),
-  body("label").isLength({ min: 1 }).withMessage("Length error"),
-  body("honoraires").isInt().withMessage("Integer error"),
+  body("code").isLength({ min: 1, max: 255 }).withMessage("Code error"),
+  body("label").isLength({ min: 1, max: 255 }).withMessage("Label error"),
+  body("honoraires").isInt().withMessage("Fees error"),
   body("description").optional(),
-  body("progression").isBoolean(),
+  body("progression").not().exists(),
   body("honoraires_paye").not().exists(),
   body("projet_id").not().exists(),
   stageController.update.bind(stageController)
 );
-router.put(
+router.patch(
   "/projects/:idP/stages/:idS/paid",
   authorization.authenticate,
-  body("honoraires_paye").isInt(),
+  body("honoraires_paye").isInt().withMessage("Fees paid error"),
   stageController.updatePaid.bind(stageController)
 );
-router.put(
+router.patch(
   "/projects/:idP/stages/:idS/fees",
   authorization.authenticate,
-  body("honoraires").isInt(),
+  body("honoraires").isInt().withMessage("Fees error"),
   stageController.updateFees.bind(stageController)
 );
-router.put(
+router.patch(
   "/projects/:idP/stages/:idS/progress",
   authorization.authenticate,
-  body("progression").isBoolean(),
+  body("progression").isBoolean().withMessage("Progression error"),
   stageController.updateProgress.bind(stageController)
 );
 router.delete(

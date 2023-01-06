@@ -36,10 +36,10 @@ router.put(
   body("architecte_id").not().exists(),
   tagController.update.bind(tagController)
 );
-router.put(
+router.patch(
   "/tags/:id/label",
   authorization.authenticate,
-  body("label").isLength({ min: 1 }),
+  body("label").isLength({ min: 1, max: 255 }),
   tagController.updateLabel.bind(tagController)
 );
 router.delete(

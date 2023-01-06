@@ -35,7 +35,7 @@ export const useStagesStore = defineStore("stages", () => {
 
   const updateProgressStage = async (project_id, stage_id, progress) => {
     try {
-      const response = await api.put(
+      const response = await api.patch(
         `/api/projects/${project_id}/stages/${stage_id}/progress`,
         progress
       );
@@ -52,7 +52,7 @@ export const useStagesStore = defineStore("stages", () => {
 
   const updatePaidStage = async (project_id, stage_id, paid) => {
     try {
-      const response = await api.put(
+      const response = await api.patch(
         `/api/projects/${project_id}/stages/${stage_id}/paid`,
         paid
       );
@@ -69,7 +69,7 @@ export const useStagesStore = defineStore("stages", () => {
 
   const updateFeesStage = async (project_id, stage_id, fees) => {
     try {
-      const response = await api.put(
+      const response = await api.patch(
         `/api/projects/${project_id}/stages/${stage_id}/fees`,
         fees
       );

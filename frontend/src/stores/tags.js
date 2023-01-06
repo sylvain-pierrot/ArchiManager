@@ -27,7 +27,7 @@ export const useTagsStore = defineStore("tags", () => {
 
   const updateLabelTag = async (tag) => {
     try {
-      const response = await api.put(`/api/tags/${tag.id}/label`, {
+      const response = await api.patch(`/api/tags/${tag.id}/label`, {
         label: tag.label,
       });
       Notify.create({

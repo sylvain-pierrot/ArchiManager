@@ -100,6 +100,12 @@
                       autofocus
                       @keyup.enter="scope.set"
                       color="black"
+                      :rules="[
+                        (val) =>
+                          (!!val && val >= props.row.honoraires_paye) ||
+                          'La valeur doit être supérieur ou égale aux honoraires payés',
+                      ]"
+                      lazy-rules
                     />
                   </q-popup-edit>
                 </div>
