@@ -27,7 +27,7 @@ app.use(
       process.env.NODE_ENV === "developpemnt"
         ? process.env.ORIGIN_DEV
         : process.env.ORIGIN_PROD,
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
     credentials: true,
   })
 );

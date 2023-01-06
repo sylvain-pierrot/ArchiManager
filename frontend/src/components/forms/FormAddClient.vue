@@ -21,7 +21,10 @@
           class="col-6"
           mask="A"
           reverse-fill-mask
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          :rules="[
+            (val) => (val && val.length > 0) || 'Ce champs est requis',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
+          ]"
           lazy-rules
         />
 
@@ -37,7 +40,10 @@
           class="col-6"
           mask="A"
           reverse-fill-mask
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          :rules="[
+            (val) => (val && val.length > 0) || 'Ce champs est requis',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
+          ]"
           lazy-rules
         />
 
@@ -53,6 +59,7 @@
           class="col-6"
           :rules="[
             (val) => (val && isValidEmail(val)) || 'Ce champs est requis',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
           ]"
           lazy-rules
         />
@@ -72,6 +79,7 @@
             (val) =>
               (!!val && isValidPhoneNumber(val)) ||
               'Numéro de téléphone invalide',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
           ]"
           lazy-rules
         />
@@ -86,7 +94,10 @@
           placeholder="Adresse"
           flat
           class="col-6"
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          :rules="[
+            (val) => (val && val.length > 0) || 'Ce champs est requis',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
+          ]"
           lazy-rules
         />
 
@@ -102,7 +113,10 @@
           class="col-6"
           mask="A"
           reverse-fill-mask
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          :rules="[
+            (val) => (val && val.length > 0) || 'Ce champs est requis',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
+          ]"
           lazy-rules
         />
 

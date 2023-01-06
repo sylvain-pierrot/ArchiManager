@@ -2,7 +2,6 @@ const router = require("express-promise-router")();
 const fileController = require("../controllers/file.controller");
 const authorization = require("../middlewares/authorization");
 const multer = require("../middlewares/upload");
-const { body } = require("express-validator");
 
 router.post(
   "/projects/:idP/files",

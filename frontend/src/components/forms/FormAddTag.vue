@@ -21,7 +21,10 @@
           class="col-7"
           mask="A"
           reverse-fill-mask
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          :rules="[
+            (val) => (val && val.length > 0) || 'Ce champs est requis',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
+          ]"
           lazy-rules
         />
 
@@ -35,7 +38,10 @@
           bg-color="primary"
           class="col-5"
           readonly
-          :rules="[(val) => (val && val.length > 0) || 'Ce champs est requis']"
+          :rules="[
+            (val) => (val && val.length > 0) || 'Ce champs est requis',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
+          ]"
           lazy-rules
           :style="{ color: tag.color }"
         >

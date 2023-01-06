@@ -26,32 +26,41 @@
         :rows="tags"
         :columns="columns"
         :rows-per-page-options="[]"
-        row-key="name"
+        row-key="label"
         flat
         bordered
       >
         <template v-slot:body="props">
           <q-tr :props="props">
-            <q-td key="name" :props="props">
-              {{ props.row.label }}
-              <q-popup-edit
-                v-model="props.row.label"
-                buttons
-                label-set="Save"
-                label-cancel="Close"
-                :validate="(newVal) => emitUpdateTag(props.row.id, newVal)"
-                v-slot="scope"
-                color="red"
-              >
-                <q-input
-                  type="text"
-                  v-model.number="scope.value"
-                  dense
-                  autofocus
-                  @keyup.enter="scope.set"
-                  color="black"
-                />
-              </q-popup-edit>
+            <q-td key="label" :props="props">
+              <div class="row">
+                {{ props.row.label }}
+                <q-popup-edit
+                  v-model="props.row.label"
+                  buttons
+                  title="Label"
+                  label-set="Valider"
+                  label-cancel="Annuler"
+                  @save="(newVal) => emitUpdateTag(props.row.id, newVal)"
+                  v-slot="scope"
+                  color="warning"
+                >
+                  <q-input
+                    type="text"
+                    v-model="scope.value"
+                    dense
+                    autofocus
+                    @keyup.enter="scope.set"
+                    color="black"
+                    :rules="[
+                      (val) =>
+                        (val && val.length > 0) || 'Ce champs est requis',
+                      (val) =>
+                        (!!val && val.length < 255) || 'Trop de charactères',
+                    ]"
+                  />
+                </q-popup-edit>
+              </div>
             </q-td>
           </q-tr>
         </template>
@@ -62,7 +71,7 @@
 
 <script setup>
 import FormAddTag from "./forms/FormAddTag.vue";
-import { ref, defineEmits, defineProps, toRefs, computed } from "vue";
+import { ref, defineEmits, defineProps, toRefs } from "vue";
 
 const props = defineProps({
   tags: {
@@ -75,9 +84,9 @@ const dialog_tag = ref(false);
 
 const columns = ref([
   {
-    name: "name",
+    name: "label",
     required: true,
-    label: "Nom",
+    label: "Label",
     align: "left",
     field: (row) => row.label,
     format: (val) => `${val}`,

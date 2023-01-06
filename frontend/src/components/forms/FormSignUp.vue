@@ -23,7 +23,7 @@
           class="col-12"
           :rules="[
             (val) => (!!val && isValidEmail(val)) || 'Email invalide',
-            (val) => (!!val && val.length < 255) || 'Email trop long',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
           ]"
           lazy-rules
         />
@@ -43,7 +43,7 @@
           label="Mot de passe"
           :rules="[
             (val) => (!!val && mediumValidation(val)) || 'Mot de passe invalid',
-            (val) => (!!val && val.length < 255) || 'Mot de passe trop long',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
           ]"
           lazy-rules
         >
@@ -106,7 +106,7 @@
           label="Numero national"
           :rules="[
             (val) => !!val || 'Numéro invalide',
-            (val) => (!!val && val.length < 255) || 'Numéro trop long',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
           ]"
           lazy-rules
         />
@@ -121,7 +121,7 @@
           reverse-fill-mask
           :rules="[
             (val) => !!val || 'Nom invalide',
-            (val) => (!!val && val.length < 255) || 'Nom trop long',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
           ]"
           lazy-rules
         />
@@ -136,7 +136,7 @@
           reverse-fill-mask
           :rules="[
             (val) => !!val || 'Prénom invalide',
-            (val) => (!!val && val.length < 255) || 'Prénom trop long',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
           ]"
           lazy-rules
         />
@@ -151,7 +151,7 @@
           :rules="[
             (val) =>
               (!!val && isValidPhoneNumber(val) && val.length < 255) ||
-              'Numéro de téléphone invalide',
+              'Trop de charactères',
           ]"
           lazy-rules
         />

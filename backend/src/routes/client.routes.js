@@ -7,12 +7,19 @@ router.post(
   "/clients",
   authorization.authenticate,
   body("id").not().exists(),
-  body("nom").isLength({ min: 1 }).withMessage("Length error"),
-  body("nom_contact").isLength({ min: 1 }).withMessage("Length error"),
-  body("email").isEmail().withMessage("Email error"),
-  body("adresse").isLength({ min: 1 }).withMessage("Length error"),
-  body("ville").isLength({ min: 1 }).withMessage("Length error"),
-  body("telephone").isLength({ min: 1 }).withMessage("Length error"),
+  body("nom").isLength({ min: 1, max: 255 }).withMessage("Name error"),
+  body("nom_contact")
+    .isLength({ min: 1, max: 255 })
+    .withMessage("Contact name error"),
+  body("email")
+    .isEmail()
+    .isLength({ min: 1, max: 255 })
+    .withMessage("Email error"),
+  body("adresse").isLength({ min: 1, max: 255 }).withMessage("Address error"),
+  body("ville").isLength({ min: 1, max: 255 }).withMessage("City error"),
+  body("telephone")
+    .isLength({ min: 1, max: 255 })
+    .withMessage("Phone number error"),
   body("notes").optional(),
   body("architecte_id").not().exists(),
   clientController.create.bind(clientController)

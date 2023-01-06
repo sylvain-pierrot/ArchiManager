@@ -19,7 +19,7 @@ const api = axios.create({
       process.env.NODE_ENV === "development"
         ? process.env.ORIGIN_DEV
         : process.env.ORIGIN_PROD,
-    "Access-Control-Allow-Methods": "POST, GET, PUT, DELETE, OPTIONS",
+    "Access-Control-Allow-Methods": "POST, GET, PUT, DELETE, OPTIONS, PATCH",
   },
 });
 // const api = axios.create({

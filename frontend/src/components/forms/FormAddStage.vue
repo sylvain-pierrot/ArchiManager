@@ -18,7 +18,10 @@
           label="Code *"
           flat
           class="col-6"
-          :rules="[(val) => !!val || 'Ce champs est requis']"
+          :rules="[
+            (val) => !!val || 'Ce champs est requis',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
+          ]"
           lazy-rules
         />
 
@@ -44,7 +47,10 @@
           label="Label *"
           flat
           class="col-12"
-          :rules="[(val) => !!val || 'Ce champs est requis']"
+          :rules="[
+            (val) => !!val || 'Ce champs est requis',
+            (val) => (!!val && val.length < 255) || 'Trop de charactères',
+          ]"
           lazy-rules
         />
 

@@ -7,8 +7,8 @@ router.post(
   "/tags",
   authorization.authenticate,
   body("id").not().exists(),
-  body("label").isLength({ min: 1 }).withMessage("Length error"),
-  body("color").isLength({ min: 1 }).withMessage("Length error"),
+  body("label").isLength({ min: 1, max: 255 }).withMessage("Label error"),
+  body("color").isLength({ min: 1, max: 255 }).withMessage("Color error"),
   body("architecte_id").not().exists(),
   tagController.create.bind(tagController)
 );
