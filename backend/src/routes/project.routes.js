@@ -8,8 +8,12 @@ router.post(
   authorization.authenticate,
   body("id").not().exists(),
   body("titre").isLength({ min: 1, max: 255 }).withMessage("Title error"),
-  body("surface_fonciere").isInt().withMessage("Land surface error"),
-  body("surface_indicative").isInt().withMessage("Indicative surface error"),
+  body("surface_fonciere")
+    .isInt({ max: 99999 })
+    .withMessage("Land surface error"),
+  body("surface_indicative")
+    .isInt({ max: 99999 })
+    .withMessage("Indicative surface error"),
   body("ville").isLength({ min: 1, max: 255 }).withMessage("City error"),
   body("adresse").isLength({ min: 1, max: 255 }).withMessage("Address error"),
   body("date_debut").isDate().withMessage("Date error"),
@@ -37,8 +41,8 @@ router.put(
   authorization.authenticate,
   body("id").not().exists(),
   body("titre").isLength({ min: 1 }).withMessage("Length error"),
-  body("surface_fonciere").isInt().withMessage("Integer error"),
-  body("surface_indicative").isInt().withMessage("Integer error"),
+  body("surface_fonciere").isInt({ max: 99999 }).withMessage("Integer error"),
+  body("surface_indicative").isInt({ max: 99999 }).withMessage("Integer error"),
   body("ville").isLength({ min: 1 }).withMessage("Length error"),
   body("adresse").isLength({ min: 1 }).withMessage("Length error"),
   body("date_debut").isDate().withMessage("Date error"),

@@ -6,7 +6,9 @@ const { body } = require("express-validator");
 router.post(
   "/architects",
   body("id").not().exists(),
-  body("numero_national").isInt().withMessage("National number error"),
+  body("numero_national")
+    .isInt({ max: 99999 })
+    .withMessage("National number error"),
   body("nom").isLength({ min: 1, max: 255 }).withMessage("Name error"),
   body("prenom").isLength({ min: 1, max: 255 }).withMessage("Firstname error"),
   body("email")
