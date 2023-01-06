@@ -13,6 +13,11 @@ export const useProjectsStore = defineStore("projects", () => {
       });
       return response.data.id;
     } catch (error) {
+      Notify.create({
+        type: "negative",
+        position: "top-right",
+        message: "Projet erreur création",
+      });
       console.error(error);
     }
   };

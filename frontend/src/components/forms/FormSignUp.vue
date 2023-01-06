@@ -106,7 +106,7 @@
           label="Numero national"
           :rules="[
             (val) => !!val || 'Numéro invalide',
-            (val) => (!!val && val.length < 255) || 'Trop de charactères',
+            (val) => (!!val && val < 99999) || 'Trop de charactères',
           ]"
           lazy-rules
         />

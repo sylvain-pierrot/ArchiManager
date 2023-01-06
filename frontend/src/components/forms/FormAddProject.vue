@@ -99,7 +99,9 @@
           label="Surface foncière (m²) *"
           flat
           class="col-6"
-          :rules="[(val) => (!!val && val > 0) || 'Ce champs est requis']"
+          :rules="[
+            (val) => (!!val && val > 0 && val < 99999) || 'Numéro invalide',
+          ]"
           lazy-rules
         />
 
@@ -113,7 +115,9 @@
           label="Surface indicative (m²) *"
           flat
           class="col-6"
-          :rules="[(val) => (!!val && val > 0) || 'Ce champs est requis']"
+          :rules="[
+            (val) => (!!val && val > 0 && val < 99999) || 'Numéro invalide',
+          ]"
           lazy-rules
         />
 
@@ -161,8 +165,10 @@
           stack-label
           flat
           class="col-6"
-          format="DD-MM-YYYY"
-          :rules="[(val) => !!val || 'Ce champs est requis']"
+          :rules="[
+            (val) => !!val || 'Ce champs est requis',
+            (val) => isValidDate(val) || 'Date invalide',
+          ]"
           lazy-rules
         />
 
@@ -176,7 +182,12 @@
           stack-label
           flat
           class="col-6"
-          :rules="[(val) => !!val || 'Ce champs est requis']"
+          :rules="[
+            (val) => !!val || 'Ce champs est requis',
+            (val) =>
+              (isValidDate(val) && val >= project.date_debut) ||
+              'Date invalide',
+          ]"
           lazy-rules
         />
 
@@ -335,6 +346,12 @@ const project = ref({
   statut_id: 1,
   client_id: null,
 });
+
+// function
+function isValidDate(val) {
+  const datePattern = /^\d{4}-\d{2}-\d{2}$/;
+  return datePattern.test(val);
+}
 
 // emits
 const emit = defineEmits(["client", "addTag"]);

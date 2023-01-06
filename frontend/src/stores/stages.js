@@ -13,6 +13,11 @@ export const useStagesStore = defineStore("stages", () => {
       });
       console.log(response.data);
     } catch (error) {
+      Notify.create({
+        type: "negative",
+        position: "top-right",
+        message: "Phase erreur création",
+      });
       console.error(error);
     }
   };

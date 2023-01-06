@@ -75,6 +75,11 @@ export const useUserStore = defineStore("user", () => {
         message: "Compte créé",
       });
     } catch (error) {
+      Notify.create({
+        type: "negative",
+        position: "top-right",
+        message: "Erreur compte création",
+      });
       console.error(error);
     }
   };

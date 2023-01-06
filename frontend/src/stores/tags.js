@@ -12,6 +12,11 @@ export const useTagsStore = defineStore("tags", () => {
         message: "Tag créé avec succés",
       });
     } catch (error) {
+      Notify.create({
+        type: "negative",
+        position: "top-right",
+        message: "Tag erreur cration",
+      });
       console.error(error);
     }
   };

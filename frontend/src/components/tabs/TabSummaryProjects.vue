@@ -12,7 +12,13 @@
               <div class="text-h6 text-green q-mr-md">
                 {{ projectInProgress }}
               </div>
-              <q-btn flat round color="warning" icon="arrow_forward_ios" />
+              <q-btn
+                flat
+                round
+                color="warning"
+                icon="arrow_forward_ios"
+                @click="$emit('tab')"
+              />
             </div>
           </q-card-section>
         </q-card-section>
@@ -33,7 +39,13 @@
               <div class="text-h6 text-blue q-mr-md">
                 {{ projectCompleted }}
               </div>
-              <q-btn flat round color="warning" icon="arrow_forward_ios" />
+              <q-btn
+                flat
+                round
+                color="warning"
+                icon="arrow_forward_ios"
+                @click="$emit('tab')"
+              />
             </div>
           </q-card-section>
         </q-card-section>
@@ -54,7 +66,13 @@
               <div class="text-h6 text-red q-mr-md">
                 {{ projectCancelled }}
               </div>
-              <q-btn flat round color="warning" icon="arrow_forward_ios" />
+              <q-btn
+                flat
+                round
+                color="warning"
+                icon="arrow_forward_ios"
+                @click="$emit('tab')"
+              />
             </div>
           </q-card-section>
         </q-card-section>

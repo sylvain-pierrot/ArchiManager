@@ -34,7 +34,10 @@
           label="Honoraires *"
           flat
           class="col-6"
-          :rules="[(val) => !!val || 'Ce champs est requis']"
+          :rules="[
+            (val) => !!val || 'Ce champs est requis',
+            (val) => (!!val && val > 0 && val < 99999) || 'Numéro invalide',
+          ]"
           lazy-rules
         />
 

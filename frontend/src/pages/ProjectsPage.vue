@@ -32,6 +32,7 @@
             :projectCancelled="projectCancelled"
             :cities="cities"
             :tags="tags"
+            @tab="tab = 'projects'"
           />
         </q-tab-panel>
 
