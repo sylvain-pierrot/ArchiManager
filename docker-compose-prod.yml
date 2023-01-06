@@ -19,18 +19,23 @@ services:
     networks:
       - private
 
-  # gui:
-  #   image: dpage/pgadmin4
-  #   restart: always
-  #   environment:
-  #     - PGADMIN_DEFAULT_EMAIL=pierrot.sylvain14@gmail.com
-  #     - PGADMIN_DEFAULT_PASSWORD=admin
-  #   ports:
-  #     - 5050:80
-  #   networks:
-  #     - private
-  #   depends_on:
-  #     - database
+  gui:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pierrot.sylvain14@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - 5050:80
+    labels:
+      - "traefik.http.routers.gui.rule=Host(`cluster-2022-9.dopolytech.fr`)"
+      - "traefik.http.routers.gui.entrypoints=websecure"
+      - "traefik.http.routers.gui.tls.certresolver=myresolver"
+      - "traefik.http.services.gui.loadbalancer.server.port=5050"
+    networks:
+      - private
+    depends_on:
+      - database
 
   frontend:
     build:

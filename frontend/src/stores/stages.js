@@ -11,7 +11,6 @@ export const useStagesStore = defineStore("stages", () => {
         position: "top-right",
         message: "Phase créée avec succés",
       });
-      console.log(response.data);
     } catch (error) {
       Notify.create({
         type: "negative",
@@ -32,7 +31,6 @@ export const useStagesStore = defineStore("stages", () => {
         position: "top-right",
         message: "Phase supprimée avec succés",
       });
-      console.log(response.data);
     } catch (error) {
       console.error(error);
     }
