@@ -23,18 +23,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json({ limit: "100mb" }));
 app.use(
   cors({
-    origin: "http://localhost:8080",
+    origin:
+      process.env.NODE_ENV === "developpemnt"
+        ? process.env.ORIGIN_DEV
+        : process.env.ORIGIN_PROD,
     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
     credentials: true,
   })
 );
-// app.use(
-//   cors({
-//     origin: "https://cluster-2022-9.dopolytech.fr",
-//     methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-//     credentials: true,
-//   })
-// );
+
 app.use(cookieParser());
 
 // Routes

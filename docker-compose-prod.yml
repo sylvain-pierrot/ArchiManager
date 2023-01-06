@@ -1,0 +1,107 @@
+version: "3.8"
+
+services:
+  database:
+    build:
+      context: database
+    restart: always
+    environment:
+      - POSTGRES_USER_FILE=/run/secrets/db-user
+      - POSTGRES_PASSWORD_FILE=/run/secrets/db-password
+      - POSTGRES_DB=db-archimanager
+    ports:
+      - 5432
+    secrets:
+      - db-user
+      - db-password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+    networks:
+      - private
+
+  # gui:
+  #   image: dpage/pgadmin4
+  #   restart: always
+  #   environment:
+  #     - PGADMIN_DEFAULT_EMAIL=pierrot.sylvain14@gmail.com
+  #     - PGADMIN_DEFAULT_PASSWORD=admin
+  #   ports:
+  #     - 5050:80
+  #   networks:
+  #     - private
+  #   depends_on:
+  #     - database
+
+  frontend:
+    build:
+      context: frontend
+      target: runner
+    restart: always
+    labels:
+      - "traefik.http.routers.frontend.rule=Host(`cluster-2022-9.dopolytech.fr`)"
+      - "traefik.http.routers.frontend.entrypoints=websecure"
+      - "traefik.http.routers.frontend.tls.certresolver=myresolver"
+      - "traefik.http.services.frontend.loadbalancer.server.port=80"
+    networks:
+      - public
+    depends_on:
+      - database
+      - backend
+      - traefik
+
+  backend:
+    build:
+      context: backend
+    environment:
+      - NODE_ENV=production
+    restart: always
+    labels:
+      - "traefik.http.routers.backend.rule=Host(`cluster-2022-9.dopolytech.fr`) && PathPrefix(`/api`)"
+      - "traefik.http.routers.backend.entrypoints=websecure"
+      - "traefik.http.routers.backend.tls.certresolver=myresolver"
+      - "traefik.http.services.backend.loadbalancer.server.port=5000"
+    networks:
+      - public
+      - private
+    depends_on:
+      - database
+      - traefik
+
+  traefik:
+    image: traefik:latest
+    command:
+      - "--log.level=DEBUG"
+      - "--providers.docker=true"
+      - "--providers.docker.network=archimanager_public"
+      - "--entrypoints.web.address=:80"
+      - "--entrypoints.web.http.redirections.entrypoint.to=websecure"
+      - "--entrypoints.web.http.redirections.entrypoint.scheme=https"
+      - "--entrypoints.websecure.address=:443"
+      - "--certificatesresolvers.myresolver.acme.email=pierrot.sylvain@gmail.com"
+      - "--certificatesresolvers.myresolver.acme.storage=/letsencrypt/acme.json"
+      - "--certificatesresolvers.myresolver.acme.httpChallenge.entryPoint=web"
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./letsencrypt:/letsencrypt
+    networks:
+      - public
+
+volumes:
+  db-data:
+
+networks:
+  public:
+    name: archimanager_public
+    driver: bridge
+  private:
+    name: archimanager_private
+    driver: bridge
+
+secrets:
+  db-user:
+    file: database/user.txt
+  db-password:
+    file: database/password.txt

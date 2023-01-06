@@ -79,6 +79,7 @@ import { useStagesStore } from "../stores/stages";
 import { useFilesStore } from "src/stores/files";
 import { onBeforeMount, ref } from "vue";
 import { useRoute } from "vue-router";
+import { Cookies } from "quasar";
 
 const moment = require("moment");
 const filesStore = useFilesStore();
@@ -90,8 +91,7 @@ const route = useRoute();
 const tab = ref("summary");
 const project = ref(null);
 const client = ref(null);
-const userCookie = decodeURIComponent(userStore.getCookie("user"));
-const user = ref(JSON.parse(userCookie.substring(2)));
+const user = Cookies.get("user");
 const stages = ref(null);
 const files = ref([]);
 
@@ -136,11 +136,9 @@ async function loadProject() {
   const dateFin = new Date(project.value.date_fin);
   project.value.date_debut = moment(dateDebut).format("DD/MM/YYYY");
   project.value.date_fin = moment(dateFin).format("DD/MM/YYYY");
-  project.value.id = `${user.value.prenom
+  project.value.id = `${user.prenom.charAt(0).toUpperCase()}${user.nom
     .charAt(0)
-    .toUpperCase()}${user.value.nom.charAt(0).toUpperCase()}-${moment(
-    dateDebut
-  ).format("YYYY")}-${project.value.id}`;
+    .toUpperCase()}-${moment(dateDebut).format("YYYY")}-${project.value.id}`;
 
   // delete useless property
   if (project.value.description.length < 1) {

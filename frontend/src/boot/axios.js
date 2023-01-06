@@ -7,16 +7,23 @@ import axios from "axios";
 // good idea to move this instance creation inside of the
 // "export default () => {}" function below (which runs individually
 // for each client)
+
 axios.defaults.withCredentials = true;
 const api = axios.create({
-  baseURL: "http://localhost:5000",
+  baseURL:
+    process.env.NODE_ENV === "development"
+      ? process.env.ORIGIN_DEV
+      : process.env.ORIGIN_PROD,
   headers: {
-    "Access-Control-Allow-Origin": "http://localhost:5000",
+    "Access-Control-Allow-Origin":
+      process.env.NODE_ENV === "development"
+        ? process.env.ORIGIN_DEV
+        : process.env.ORIGIN_PROD,
     "Access-Control-Allow-Methods": "POST, GET, PUT, DELETE, OPTIONS",
   },
 });
 // const api = axios.create({
-//   baseURL: "https://localhost",
+//   baseURL: "https://cluster-2022-9.dopolytech.fr",
 //   headers: {
 //     "Access-Control-Allow-Origin": "https://cluster-2022-9.dopolytech.fr",
 //     "Access-Control-Allow-Methods": "POST, GET, PUT, DELETE, OPTIONS",
