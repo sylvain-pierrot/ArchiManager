@@ -13,3 +13,7 @@ VALUES (1, 'Usage personnel'), (2, 'Autre usage');
 -- Insert some roles
 INSERT INTO roles (id, label)
 VALUES (1, 'admin'), (2, 'user');
+
+-- Insert admin
+INSERT INTO architectes (numero_national, nom, prenom, email, mot_de_passe, telephone, role_id)
+VALUES (123, 'PIERROT', 'SYLVAIN', 'pierrot.sylvain14@gmail.com', '$2b$10$FXXdh95/WbWFdJycGkyDGu5E5RZBoUS.jebnXm08bvvZrl4aPo.GO', '07-78-55-61-36', 1);

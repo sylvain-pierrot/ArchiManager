@@ -62,6 +62,9 @@
           flat
           bordered
           v-model:pagination="pagination"
+          @update:selected="
+            (val) => (selected = selected.filter((u) => u.email != user.email))
+          "
         >
           <template v-slot:body-cell-role="props">
             <q-td key="role" :props="props">
@@ -107,11 +110,11 @@
 </template>
 
 <script setup>
+import { Cookies } from "quasar";
 import PopupConfirm from "src/components/popups/PopupConfirm.vue";
 import { useUserStore } from "src/stores/user";
 import { ref, onBeforeMount } from "vue";
 
-const dialog_user_edit = ref(false);
 const dialog_confirm = ref(false);
 const usersStore = useUserStore();
 const users = ref(null);
@@ -119,6 +122,7 @@ const selected = ref([]);
 const pagination = ref({
   rowsPerPage: 0,
 });
+const user = ref(Cookies.get("user"));
 const columns = ref([
   {
     name: "role",

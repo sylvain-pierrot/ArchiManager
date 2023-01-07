@@ -172,15 +172,17 @@ FOR EACH ROW
 EXECUTE PROCEDURE update_project_status();
 
 -- Store procedure 2
-CREATE PROCEDURE update_expired_projects()
-BEGIN
-  UPDATE projets
-  SET statut_id = 4
-  WHERE date_fin < NOW();
-END;
+-- CREATE OR REPLACE PROCEDURE update_expired_projects()
+-- AS $$
+-- BEGIN
+--   UPDATE projets
+--   SET statut_id = 4
+--   WHERE date_fin < NOW();
+-- END;
+-- $$ LANGUAGE plpgsql;
 
--- Event
-CREATE EVENT update_expired_projects_event
-ON SCHEDULE EVERY 1 DAY
-DO
-  CALL update_expired_projects();
+-- -- Trigger event
+-- CREATE EVENT TRIGGER update_expired_projects_trigger
+-- ON ddl_command_start
+-- WHEN (TG_OP = 'SELECT') AND (TG_TABLE_NAME = 'projets')
+-- EXECUTE PROCEDURE update_expired_projects();
