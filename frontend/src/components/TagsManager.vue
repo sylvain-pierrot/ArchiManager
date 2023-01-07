@@ -52,6 +52,8 @@
                     autofocus
                     @keyup.enter="scope.set"
                     color="black"
+                    mask="A"
+                    reverse-fill-mask
                     :rules="[
                       (val) =>
                         (val && val.length > 0) || 'Ce champs est requis',

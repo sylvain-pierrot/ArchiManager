@@ -61,7 +61,7 @@
           <q-linear-progress
             stripe
             size="10px"
-            :value="progress.number"
+            :value="parseFloat(progress.number)"
             color="warning"
             rounded
           />

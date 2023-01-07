@@ -19,18 +19,18 @@ services:
     networks:
       - private
 
-  # gui:
-  #   image: dpage/pgadmin4
-  #   restart: always
-  #   environment:
-  #     - PGADMIN_DEFAULT_EMAIL=pierrot.sylvain14@gmail.com
-  #     - PGADMIN_DEFAULT_PASSWORD=admin
-  #   ports:
-  #     - 5050:80
-  #   networks:
-  #     - private
-  #   depends_on:
-  #     - database
+  gui:
+    image: dpage/pgadmin4
+    restart: always
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=pierrot.sylvain14@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    ports:
+      - 5050:80
+    networks:
+      - private
+    depends_on:
+      - database
 
   frontend:
     build:

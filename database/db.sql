@@ -163,3 +163,25 @@ CHECK (
     (realise_par_architecte = TRUE AND prestataire_id IS NULL AND architecte_id IS NOT NULL)
     OR (realise_par_architecte = FALSE AND prestataire_id IS NOT NULL AND architecte_id IS NULL)
 );
+
+-- Create the function
+CREATE OR REPLACE FUNCTION update_project_status()
+RETURNS TRIGGER AS $$
+BEGIN
+  -- Check if the statut_id is already 3
+  IF (SELECT statut_id FROM projets WHERE id = NEW.projet_id) <> 3 THEN
+    -- Update the statut_id based on the progression of the phases
+    IF NOT EXISTS (SELECT * FROM phases WHERE projet_id = NEW.projet_id AND progression = false) THEN
+      UPDATE projets SET statut_id = 2 WHERE id = NEW.projet_id;
+    ELSE
+      UPDATE projets SET statut_id = 1 WHERE id = NEW.projet_id;
+    END IF;
+  END IF;
+  RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER update_project_status_trigger
+AFTER INSERT OR UPDATE OF progression ON phases
+FOR EACH ROW
+EXECUTE PROCEDURE update_project_status();
