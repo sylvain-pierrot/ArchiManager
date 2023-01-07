@@ -128,6 +128,7 @@ const status_ = ref([
   { label: "En cours", value: 1 },
   { label: "Terminé", value: 2 },
   { label: "Annulé", value: 3 },
+  { label: "Échéance dépassée", value: 4 },
 ]);
 
 // emit value

@@ -108,9 +108,12 @@ function getStatus(id) {
   } else if (id === 2) {
     status.label = "Terminé";
     status.color = "blue";
-  } else {
+  } else if (id === 3) {
     status.label = "Annulé";
     status.color = "red";
+  } else {
+    status.label = "Échéance dépassée";
+    status.color = "orange";
   }
   return status;
 }

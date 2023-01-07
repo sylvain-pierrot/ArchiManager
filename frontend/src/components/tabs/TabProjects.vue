@@ -237,10 +237,14 @@ function getStatus(id) {
     status.label = "Terminé";
     status.icon = "check_circle";
     status.color = "blue";
-  } else {
+  } else if (id === 3) {
     status.label = "Annulé";
     status.icon = "cancel";
     status.color = "red";
+  } else {
+    status.label = "Échéance dépassée";
+    status.icon = "event_busy";
+    status.color = "orange";
   }
   return status;
 }

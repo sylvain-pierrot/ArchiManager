@@ -1,6 +1,6 @@
 -- Insert some statuts
 INSERT INTO statuts (id, label)
-VALUES (1, 'En cours'), (2, 'Terminé'), (3, 'Annulé');
+VALUES (1, 'En cours'), (2, 'Terminé'), (3, 'Annulé'), (4, 'Échéance passée');
 
 -- Insert some missions
 INSERT INTO missions (id, label)

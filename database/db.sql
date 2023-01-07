@@ -1,4 +1,3 @@
--- Supprimer les tables si elles existent
 DROP TABLE IF EXISTS statuts CASCADE;
 DROP TABLE IF EXISTS missions CASCADE;
 DROP TABLE IF EXISTS designations CASCADE;
@@ -14,31 +13,26 @@ DROP TABLE IF EXISTS tags CASCADE;
 DROP TABLE IF EXISTS tags_projets CASCADE;
 DROP TABLE IF EXISTS fichiers CASCADE;
 
--- Créer la table des statuts
 CREATE TABLE statuts (
   id INTEGER PRIMARY KEY,
   label VARCHAR(255) NOT NULL
 );
 
--- Créer la table des missions
 CREATE TABLE missions (
   id INTEGER PRIMARY KEY,
   label VARCHAR(255) NOT NULL
 );
 
--- Créer la table des désignations
 CREATE TABLE designations (
   id INTEGER PRIMARY KEY,
   label VARCHAR(255) NOT NULL
 );
 
--- Créer la table des rôles
 CREATE TABLE roles (
   id INTEGER PRIMARY KEY,
   label VARCHAR(255) NOT NULL
 );
 
--- Créer la table des architectes
 CREATE TABLE architectes (
   id serial PRIMARY KEY,
   numero_national INTEGER NOT NULL,
@@ -50,7 +44,6 @@ CREATE TABLE architectes (
   role_id INTEGER REFERENCES roles(id) NOT NULL DEFAULT 2
 );
 
--- Créer la table des prestataires
 CREATE TABLE prestataires (
   id serial PRIMARY KEY,
   assurance BYTEA NOT NULL,
@@ -63,7 +56,6 @@ CREATE TABLE prestataires (
   architecte_id INTEGER REFERENCES architectes(id)
 );
 
--- Créer la table des clients
 CREATE TABLE clients (
   id serial PRIMARY KEY,
   nom VARCHAR(255) NOT NULL,
@@ -76,7 +68,6 @@ CREATE TABLE clients (
   architecte_id INTEGER REFERENCES architectes(id)
 );
 
--- Créer la table des projets
 CREATE TABLE projets (
   id serial PRIMARY KEY,
   titre VARCHAR(255) NOT NULL,
@@ -95,7 +86,6 @@ CREATE TABLE projets (
   CHECK (date_debut <= date_fin)
 );
 
--- Créer la table des parcelles
 CREATE TABLE parcelles (
   section VARCHAR(255),
   numero INTEGER,
@@ -105,7 +95,6 @@ CREATE TABLE parcelles (
   PRIMARY KEY (section, numero)
 );
 
--- Créer la table des phases
 CREATE TABLE phases (
   id serial PRIMARY KEY,
   code VARCHAR(255) NOT NULL,
@@ -118,7 +107,6 @@ CREATE TABLE phases (
   CHECK (honoraires_paye <= honoraires)
 );
 
--- Créer la table des tâches
 CREATE TABLE taches (
   id serial PRIMARY KEY,
   titre VARCHAR(255) NOT NULL,
@@ -131,7 +119,6 @@ CREATE TABLE taches (
   architecte_id INTEGER REFERENCES architectes(id)
 );
 
--- Créer la table des tags
 CREATE TABLE tags (
   id serial PRIMARY KEY,
   label VARCHAR(255) NOT NULL,
@@ -139,14 +126,12 @@ CREATE TABLE tags (
   architecte_id INTEGER REFERENCES architectes(id)
 );
 
--- Créer la table de relation entre tags et projets
 CREATE TABLE tags_projets (
   tag_id INTEGER REFERENCES tags(id),
   projet_id INTEGER REFERENCES projets(id) ON DELETE CASCADE,
   PRIMARY KEY (tag_id, projet_id)
 );
 
--- Créer la table des fichiers
 CREATE TABLE fichiers (
   id serial PRIMARY KEY,
   nom VARCHAR(255) NOT NULL,
@@ -156,7 +141,6 @@ CREATE TABLE fichiers (
   projet_id INTEGER REFERENCES projets(id) ON DELETE CASCADE
 );
 
--- Contrainte
 ALTER TABLE taches
 ADD CONSTRAINT check_realise_par_architecte_and_ids
 CHECK (
@@ -164,7 +148,7 @@ CHECK (
     OR (realise_par_architecte = FALSE AND prestataire_id IS NOT NULL AND architecte_id IS NULL)
 );
 
--- Create the function
+-- Store procedure 1
 CREATE OR REPLACE FUNCTION update_project_status()
 RETURNS TRIGGER AS $$
 BEGIN
@@ -181,7 +165,22 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Trigger 1
 CREATE TRIGGER update_project_status_trigger
 AFTER INSERT OR UPDATE OF progression ON phases
 FOR EACH ROW
 EXECUTE PROCEDURE update_project_status();
+
+-- Store procedure 2
+CREATE PROCEDURE update_expired_projects()
+BEGIN
+  UPDATE projets
+  SET statut_id = 4
+  WHERE date_fin < NOW();
+END;
+
+-- Event
+CREATE EVENT update_expired_projects_event
+ON SCHEDULE EVERY 1 DAY
+DO
+  CALL update_expired_projects();
