@@ -105,6 +105,7 @@ export const useUserStore = defineStore("user", () => {
       console.error(error);
     }
   };
+
   return {
     createUser,
     deleteUser,

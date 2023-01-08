@@ -22,13 +22,6 @@ const api = axios.create({
     "Access-Control-Allow-Methods": "POST, GET, PUT, DELETE, OPTIONS, PATCH",
   },
 });
-// const api = axios.create({
-//   baseURL: "https://cluster-2022-9.dopolytech.fr",
-//   headers: {
-//     "Access-Control-Allow-Origin": "https://cluster-2022-9.dopolytech.fr",
-//     "Access-Control-Allow-Methods": "POST, GET, PUT, DELETE, OPTIONS",
-//   },
-// });
 
 export default boot(({ app }) => {
   // for use inside Vue files (Options API) through this.$axios and this.$api
