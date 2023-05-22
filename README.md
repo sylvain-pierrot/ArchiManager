@@ -1,4 +1,4 @@
-![[logo-archimanager.svg]]
+![logo-archimanager](./logo-archimanager.svg)
 
 #node #quasar #postgres
 
